@@ -1,5 +1,6 @@
 ﻿    using E_commerce.Ef.Core.Payment;
-    using System;
+using E_Commrece.Domain.BaseClass;
+using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
@@ -9,9 +10,8 @@
 
     namespace E_commerce.Ef.Core.Employee
     {
-        public class Employees
+        public class Employees : BaseEntityModel
         {
-            public int id { get; set; }
             [MaxLength(100)]
             public string FirstName { get; set; }
             [MaxLength(100)]

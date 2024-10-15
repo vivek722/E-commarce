@@ -24,7 +24,7 @@ namespace E_commarceWebApi.Controllers
         {
             if (SerchString == null)
             {
-                var roles = await _employeeService.GetAllEmployee();
+                var roles = await _employeeService.GetAll();
                 return Ok(roles);
             }
             var Searchroles = await _employeeService.SearchEmployee(SerchString);
@@ -37,38 +37,32 @@ namespace E_commarceWebApi.Controllers
             {
                 return BadRequest();
             }
-
-            var employee = new Employees
+            var emp = _mapper.Map<Employees>(EmpData);
+            if (ModelState.IsValid)
             {
-                FirstName = EmpData.FirstName,
-                LastName = EmpData.LastName,
-                DepartmentId = EmpData.DepartmentId,
-                ManagerId = EmpData.ManagerId,
-                EmployeeProject = EmpData.EmployeeProject.Select(p => new Projects
-                {
-                    ProjectName = p.ProjectName,
-                    StartDated = p.StartDate,
-                    EndDate = p.EndDate
-                }).ToList() ?? new List<Projects>(),
-            };
-            return Ok(employee);
+                await _employeeService.Add(emp);
+                return Ok("Role Updated Successfully");
+            }
+
+            return Ok(emp);
         }
-        [HttpDelete("DeleteCountrie")]
+        [HttpDelete("DeleteEmployee")]
         public async Task<IActionResult> DeleteCountrie(int id)
         {
             if (id <= 0)
             {
                 return BadRequest("Id Not in 0 or Lessthen 0");
             }
-            await _employeeService.DeleteEmployee(id);
+            await _employeeService.Delete(id);
             return Ok("Role Deleted Successfully");
         }
-        [HttpPut("UpdateCountrie")]
+        [HttpPut("UpdateEmployee")]
         public async Task<IActionResult> UpdateCountrie(EmployeeDto EmpData)
         {
+            var emp = _mapper.Map<Employees>(EmpData);
             if (ModelState.IsValid)
             {
-                    await _employeeService.updateEmployee(countries.id, countries);
+                    await _employeeService.update(emp);
                     return Ok("Role Updated Successfully");
 
             }
