@@ -4,6 +4,9 @@ using E_commerce.Ef.Core;
 using E_Commrece.Domain.services.User;
 using E_commerce.Ef.Core.Repository;
 using Newtonsoft.Json;
+using E_Commrece.Domain.FireBaseSevice;
+using E_commarceWebApi.FireBaseSevice;
+using E_Commrece.Domain.services.Employee;
 namespace E_commarceWebApi
 {
     public class Startup
@@ -34,6 +37,17 @@ namespace E_commarceWebApi
             services.AddScoped<CountrieService>();
             services.AddTransient<ICountrieRepository, CountrieRepository>();
             services.AddTransient<ICountrieService, CountrieService>();
+
+            services.AddScoped<EmployeeService>();
+            services.AddTransient<IEmployeeRepository, EmployeeRepository>();
+            services.AddTransient<IEmployeeService, EmployeeService>();
+
+
+            string bucketName = "e-commerce-593f3.appspot.com";
+            string firebaseStorageUrl = $"https://firebasestorage.googleapis.com/v0/b/{bucketName}/o/";
+
+            services.AddSingleton(new FireBaseService(bucketName, firebaseStorageUrl));
+            services.AddTransient<IFireBaseUploadImageService, FireBaseUploadImageService>();
 
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();

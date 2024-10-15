@@ -1,4 +1,5 @@
 ﻿using E_commerce.Ef.Core.User;
+using E_Commrece.Domain.services.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,13 +8,8 @@ using System.Threading.Tasks;
 
 namespace E_Commrece.Domain.services.User
 {
-    public interface ICountrieRepository
-    {
-        Task<List<Countrie>> GetAllCountries();
-        Task<Countrie> GetCountrieById(int id);
+    public interface ICountrieRepository : IGenricRepository<Countrie>
+    { 
         Task<List<Countrie>> SearchCountries(string SearchString);
-        Task<Countrie> AddCountrie(Countrie countrie);
-        Task<Countrie> DeleteCountrie(int id);
-        Task<Countrie> updateCountrie(int id, Countrie countrie);
     }
 }

@@ -21,21 +21,21 @@ namespace E_commarceWebApi.Controllers
         {
             if (SerchString == null)
             {
-                var roles = await _countrieService.GetAllCountries();
+                var roles = await _countrieService.GetAll();
                 return Ok(roles);
             }
             var Searchroles = await _countrieService.SearchCountries(SerchString);
             return Ok(Searchroles);
         }
         [HttpPost("AddCountries")]
-        public async Task<IActionResult> AddCountries(CountrieDto Countries)
+        public async Task<IActionResult> AddCountries([FromForm]CountrieDto Countries)
         {
             if (ModelState.IsValid)
             {
                 var countrie = _mapper.Map<Countrie>(Countries);
                 if (countrie != null)
                 {
-                    await _countrieService.AddCountrie(countrie);
+                    await _countrieService.Add(countrie);
                     return Ok(countrie);
                 }
             }
@@ -46,9 +46,9 @@ namespace E_commarceWebApi.Controllers
         {
             if (id <= 0)
             {
-                return BadRequest("Id Not in 0 or Lessthen 0");
+                return BadRequest("Id Is Not  0 or Lessthen 0");
             }
-            await _countrieService.DeleteCountrie(id);
+            await _countrieService.Delete(id);
             return Ok("Role Deleted Successfully");
         }
         [HttpPut("UpdateCountrie")]
@@ -58,10 +58,9 @@ namespace E_commarceWebApi.Controllers
             {
                 Countrie countries = new Countrie();
                 countries.CountryName = Countrie.CountryName;
-                Citie Citie = new Citie();
-                if (countries.id != null)
+                if (countries != null)
                 {
-                    await _countrieService.updateCountrie(countries.id, countries);
+                    await _countrieService.update(countries);
                     return Ok("Role Updated Successfully");
                 }
             }
