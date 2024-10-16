@@ -17,7 +17,7 @@ namespace E_commarceWebApi.Controllers
             _mapper = mapper;
         }
         [HttpGet("GetAllCountries")]
-        public async Task<IActionResult> GetAllCountries(string? SerchString)
+        public async Task<IActionResult> GetAllCountries([FromForm] string? SerchString)
         {
             if (SerchString == null)
             {
@@ -42,7 +42,7 @@ namespace E_commarceWebApi.Controllers
             return BadRequest("Data Is Not Proper");
         }
         [HttpDelete("DeleteCountrie")]
-        public async Task<IActionResult> DeleteCountrie(int id)
+        public async Task<IActionResult> DeleteCountrie([FromForm] int id)
         {
             if (id <= 0)
             {
@@ -52,7 +52,7 @@ namespace E_commarceWebApi.Controllers
             return Ok("Role Deleted Successfully");
         }
         [HttpPut("UpdateCountrie")]
-        public async Task<IActionResult> UpdateCountrie(CountrieDto Countrie)
+        public async Task<IActionResult> UpdateCountrie([FromForm] CountrieDto Countrie)
         {
             if (ModelState.IsValid)
             {

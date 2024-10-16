@@ -17,7 +17,7 @@ namespace E_commerce.Ef.Core.Configration.User
             builder.HasKey(x => x.id);
             builder.Property(x => x.UserName).IsRequired().HasMaxLength(100);
             builder.Property(x => x.Email).IsRequired().HasMaxLength(100);
-            builder.Property(x => x.Email).IsRequired().HasMaxLength(8);
+            builder.Property(x => x.PasswordHash).IsRequired().HasMaxLength(8);
 
             builder.HasOne(x => x.Role)
                 .WithMany(x=>x.users)

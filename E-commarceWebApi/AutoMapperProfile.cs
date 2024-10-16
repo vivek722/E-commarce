@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using E_commarceWebApi.RequestModel;
+using E_commerce.Ef.Core.Employee;
 using E_commerce.Ef.Core.User;
 
 namespace E_commarceWebApi
@@ -32,6 +33,10 @@ namespace E_commarceWebApi
                 .ForMember(dest => dest.State, opt => opt.MapFrom(src => src.Addresse.FirstOrDefault().State))
                 .ForMember(dest => dest.ZipCode, opt => opt.MapFrom(src => src.Addresse.FirstOrDefault().ZipCode));
 
+            CreateMap<Department, DepartmentDto>().ReverseMap();
+            CreateMap<Employees, EmployeeDto>().ReverseMap();
+            CreateMap<Projects, EmployeeDto>().ReverseMap();
+            CreateMap<EmployeeProject, EmployeeDto>().ReverseMap();
 
         }
     }

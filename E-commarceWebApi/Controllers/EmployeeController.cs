@@ -13,10 +13,12 @@ namespace E_commarceWebApi.Controllers
     public class EmployeeController : Controller
     {
         private readonly IEmployeeService _employeeService;
+        private readonly IProjectService _projectService;
         private readonly IMapper _mapper;
-        public EmployeeController(IEmployeeService employeeService, IMapper mapper)
+        public EmployeeController(IEmployeeService employeeService, IProjectService projectService, IMapper mapper)
         {
             _employeeService = employeeService;
+            _projectService = projectService;
             _mapper = mapper;
         }
         [HttpGet("GetAllEmployess")]
@@ -31,39 +33,44 @@ namespace E_commarceWebApi.Controllers
             return Ok(Searchroles);
         }
         [HttpPost("AddEmployee")]
-        public async Task<IActionResult> AddEmployee(EmployeeDto EmpData)
+        public async Task<IActionResult> AddEmployee([FromForm] EmployeeDto EmpData)
         {
             if (EmpData == null)
             {
                 return BadRequest();
             }
+            var projects = _mapper.Map<Projects>(EmpData);
+            if (projects != null)
+            {
+                await _projectService.Add(projects);
+            }
             var emp = _mapper.Map<Employees>(EmpData);
             if (ModelState.IsValid)
             {
                 await _employeeService.Add(emp);
-                return Ok("Role Updated Successfully");
+                return Ok("Employee Data Add Successfully");
             }
 
             return Ok(emp);
         }
         [HttpDelete("DeleteEmployee")]
-        public async Task<IActionResult> DeleteCountrie(int id)
+        public async Task<IActionResult> DeleteEmplyee([FromForm] int id)
         {
             if (id <= 0)
             {
                 return BadRequest("Id Not in 0 or Lessthen 0");
             }
             await _employeeService.Delete(id);
-            return Ok("Role Deleted Successfully");
+            return Ok("Em Deleted Successfully");
         }
         [HttpPut("UpdateEmployee")]
-        public async Task<IActionResult> UpdateCountrie(EmployeeDto EmpData)
+        public async Task<IActionResult> UpdateEmployee([FromForm] EmployeeDto EmpData)
         {
             var emp = _mapper.Map<Employees>(EmpData);
             if (ModelState.IsValid)
             {
                     await _employeeService.update(emp);
-                    return Ok("Role Updated Successfully");
+                    return Ok("Update Updated Successfully");
 
             }
             return BadRequest("Data Is Not Proper");
