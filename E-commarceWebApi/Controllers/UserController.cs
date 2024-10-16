@@ -18,41 +18,41 @@ namespace E_commarceWebApi.Controllers
             _mapper = mapper;
         }
         [HttpGet("GetAllUser")]
-        public async Task<IActionResult> GetAllUser(string? SerchString)
+        public async Task<IActionResult> GetAllUser([FromForm] string? SerchString)
         {
             if (SerchString == null)
             {
-                var roles = await _userService.GetAllUsers();
+                var roles = await _userService.GetAll();
                 return Ok(roles);
             }
             var Searchroles = await _userService.SearchUsers(SerchString);
             return Ok(Searchroles);
         }
         [HttpPost("AddUser")]
-        public async Task<IActionResult> AddUser(UserDto UserData)
+        public async Task<IActionResult> AddUser([FromForm] UserDto UserData)
         {
             if (ModelState.IsValid)
             {
                 var User = _mapper.Map<Users>(UserData);
                 {
-                   await _userService.AddUser(User);
+                   await _userService.Add(User);
                     return Ok(User);
                 }
             }
             return BadRequest("Data Is Not Proper");
         }
         [HttpDelete("DeleteUser")]
-        public async Task<IActionResult> DeleteUser(int id)
+        public async Task<IActionResult> DeleteUser([FromForm] int id)
         {
             if (id <= 0)
             {
                 return BadRequest("Id Not in 0 or Lessthen 0");
             }
-            await _userService.DeleteUser(id);
+            await _userService.Delete(id);
             return Ok("Role Deleted Successfully");
         }
         [HttpPut("UpdateUser")]
-        public async Task<IActionResult> UpdateUser(UserDto UserData)
+        public async Task<IActionResult> UpdateUser([FromForm] UserDto UserData)
         {
             if (ModelState.IsValid)
             {

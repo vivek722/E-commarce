@@ -13,7 +13,7 @@ namespace E_commarceWebApi.Controllers
             _imageService = imageService;
         }
         [HttpPost("UploadImage")]
-        public async Task<IActionResult> UploadImage(IFormFile File)
+        public async Task<IActionResult> UploadImage([FromForm] IFormFile File)
         {
             var file = Guid.NewGuid().ToString() + "-" + File.FileName;
             var path = Path.Combine(Path.GetTempPath(), file);
@@ -26,13 +26,13 @@ namespace E_commarceWebApi.Controllers
             return Ok(url);
         }
         [HttpDelete("DeleteImage")]
-        public async Task<IActionResult> DeleteImage(string FileName)
+        public async Task<IActionResult> DeleteImage([FromForm] string FileName)
         {
             var url = await _imageService.FireBaseDeleteImageAsync(FileName, "Uploads");
             return Ok(url);
         }
         [HttpGet("GetAllImage")]
-        public async Task<IActionResult> GetAllImage(string FileName)
+        public async Task<IActionResult> GetAllImage([FromForm] string FileName)
         {
             var url = await _imageService.FireBaseGetImageAsync(FileName, "Uploads");
             return Ok(url);

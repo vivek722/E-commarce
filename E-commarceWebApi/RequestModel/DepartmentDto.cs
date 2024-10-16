@@ -2,9 +2,8 @@
 
 namespace E_commarceWebApi.RequestModel
 {
-    public class DepartmentRequestModel
+    public class DepartmentDto
     {
-        public int id { get; set; }
         public string DepartmentName { get; set; }
     }
 }

@@ -18,8 +18,5 @@ namespace E_commerce.Ef.Core.Employee
         public int ProjectId { get; set; }
         [ForeignKey("ProjectId")]
         public Projects Projects { get; set; }
-
-
-
     }
 }

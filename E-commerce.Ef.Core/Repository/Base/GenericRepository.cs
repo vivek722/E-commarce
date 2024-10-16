@@ -23,8 +23,6 @@ namespace E_commerce.Ef.Core.Repository.Base
             await applicationDb.SaveChangesAsync();
             return TModel;
         }
-
-
         public async Task<TModel> Delete(int id)
         {
             var DeletedData = await GetById(id);
@@ -32,12 +30,10 @@ namespace E_commerce.Ef.Core.Repository.Base
             await applicationDb.SaveChangesAsync();
             return DeletedData;
         }
-
         public async Task<List<TModel>> GetAll()
         {
             return await applicationDb.Set<TModel>().AsNoTracking().ToListAsync();
         }
-
         public async Task<TModel> GetById(int id)
         {
             return await applicationDb.Set<TModel>().AsNoTracking().Where(x=>x.id == id).FirstOrDefaultAsync();

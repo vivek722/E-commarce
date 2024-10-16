@@ -1,4 +1,5 @@
 ﻿using E_commerce.Ef.Core.Product;
+using E_Commrece.Domain.BaseClass;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,9 +8,8 @@ using System.Threading.Tasks;
 
 namespace E_commerce.Ef.Core.User
 {
-    public class Role
+    public class Role : BaseEntityModel
     {
-        public int id { get; set; }
         public string RoleName { get; set; }
         public ICollection<Users> users { get; set; }
     }

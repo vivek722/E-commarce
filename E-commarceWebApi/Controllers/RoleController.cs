@@ -20,14 +20,14 @@ namespace E_commarceWebApi.Controllers
         {
             if (SerchString == null)
             {
-                var roles = await _roleService.GetAllRoles();
+                var roles = await _roleService.GetAll();
                 return Ok(roles);
             }
             var Searchroles = await _roleService.SearchRoles(SerchString);
             return Ok(Searchroles);
         }
         [HttpPost("AddRoles")]
-        public async Task<IActionResult> AddRoles(RoleDto RoleData)
+        public async Task<IActionResult> AddRoles([FromForm] RoleDto RoleData)
         {
             if (ModelState.IsValid)
             {
@@ -35,32 +35,32 @@ namespace E_commarceWebApi.Controllers
                 Roles.RoleName = RoleData.RoleName;
                 if (Roles != null)
                 {
-                    await _roleService.AddRole(Roles);
+                    await _roleService.Add(Roles);
                     return Ok(Roles);
                 }
             }
             return BadRequest("Data Is Not Proper");
         }
         [HttpDelete("DeleteRoles")]
-        public async Task<IActionResult> DeleteRoles(int id)
+        public async Task<IActionResult> DeleteRoles([FromForm] int id)
         {
             if (id <= 0)
             {
                 return BadRequest("Id Not in 0 or Lessthen 0");
             }
-            await _roleService.DeleteRole(id);
+            await _roleService.Delete(id);
             return Ok("Role Deleted Successfully");
         }
         [HttpPut("UpdateRoles")]
-        public async Task<IActionResult> UpdateRoles(RoleDto RoleData)
+        public async Task<IActionResult> UpdateRoles([FromForm] RoleDto RoleData)
         {
             if (ModelState.IsValid)
             {
                 Role Roles = new Role();
                 Roles.RoleName = RoleData.RoleName;
-                if (RoleData.id != null)
+                if (RoleData != null)
                 {
-                    await _roleService.updateRole(RoleData.id, Roles);
+                    await _roleService.update(Roles);
                     return Ok("Role Updated Successfully");
                 }
             }
