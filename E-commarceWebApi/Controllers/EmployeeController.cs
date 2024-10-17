@@ -14,11 +14,13 @@ namespace E_commarceWebApi.Controllers
     {
         private readonly IEmployeeService _employeeService;
         private readonly IProjectService _projectService;
+        private readonly IEmployeeProjectService _employeeProjectService;
         private readonly IMapper _mapper;
-        public EmployeeController(IEmployeeService employeeService, IProjectService projectService, IMapper mapper)
+        public EmployeeController(IEmployeeService employeeService, IProjectService projectService, IEmployeeProjectService employeeProjectService, IMapper mapper)
         {
             _employeeService = employeeService;
             _projectService = projectService;
+            _employeeProjectService = employeeProjectService;
             _mapper = mapper;
         }
         [HttpGet("GetAllEmployess")]
@@ -33,16 +35,19 @@ namespace E_commarceWebApi.Controllers
             return Ok(Searchroles);
         }
         [HttpPost("AddEmployee")]
-        public async Task<IActionResult> AddEmployee([FromForm] EmployeeDto EmpData)
+        public async Task<IActionResult> AddEmployee([FromBody]EmployeeDto EmpData)
         {
             if (EmpData == null)
             {
                 return BadRequest();
             }
-            var projects = _mapper.Map<Projects>(EmpData);
+            var projects = _mapper.Map<List<Projects>>(EmpData.projects);
             if (projects != null)
             {
-                await _projectService.Add(projects);
+                foreach (var project in projects)
+                {
+                    await _projectService.Add(project);
+                }
             }
             var emp = _mapper.Map<Employees>(EmpData);
             if (ModelState.IsValid)
@@ -50,7 +55,17 @@ namespace E_commarceWebApi.Controllers
                 await _employeeService.Add(emp);
                 return Ok("Employee Data Add Successfully");
             }
+            EmployeeProject employeeProject = new EmployeeProject();
 
+            employeeProject.EmployeeId = emp.id;
+            foreach (var project in projects)
+            {
+                employeeProject.ProjectId = project.id;
+            }
+            if (employeeProject != null)
+            {
+                await _employeeProjectService.Add(employeeProject);
+            }
             return Ok(emp);
         }
         [HttpDelete("DeleteEmployee")]

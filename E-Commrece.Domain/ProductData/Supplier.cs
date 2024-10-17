@@ -1,4 +1,5 @@
-﻿using System;
+﻿using E_Commrece.Domain.BaseClass;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,9 +7,8 @@ using System.Threading.Tasks;
 
 namespace E_commerce.Ef.Core.Product
 {
-    public class Supplier
+    public class Supplier : BaseEntityModel
     {
-        public int Id { get; set; }
         public string SupplierName { get; set; }
         public string Phone { get; set; }
         public string Email { get; set; }

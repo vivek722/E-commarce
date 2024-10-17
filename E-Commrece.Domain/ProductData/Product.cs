@@ -1,4 +1,5 @@
-﻿using System;
+﻿using E_Commrece.Domain.BaseClass;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -9,9 +10,8 @@ using System.Threading.Tasks;
 
 namespace E_commerce.Ef.Core.Product
 {
-    public class Products
+    public class Products : BaseEntityModel
     {
-        public int Id { get; set; }
         [MaxLength(100)]
         public string ProductName { get; set; }
         [Column(TypeName = "decimal(10, 2)")]

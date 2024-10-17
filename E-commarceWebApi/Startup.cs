@@ -50,6 +50,10 @@ namespace E_commarceWebApi
             services.AddTransient<IProjectRepository, ProjectRepository>();
             services.AddTransient<IProjectService, ProjectService>();
 
+            services.AddScoped<EmployeeProjectService>();
+            services.AddTransient<IEmployeeProjectRepository, EmployeeProjectRepository>();
+            services.AddTransient<IEmployeeProjectService, EmployeeProjectService>();
+
 
             string bucketName = "e-commerce-593f3.appspot.com";
             string firebaseStorageUrl = $"https://firebasestorage.googleapis.com/v0/b/{bucketName}/o/";

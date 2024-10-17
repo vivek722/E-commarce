@@ -23,7 +23,7 @@ using System;
             public int? ManagerId { get; set; }
 
             public Employees Manager { get; set; }
-            public ICollection<EmployeeProject> EmployeeProject { get; set; }
-            public ICollection<Employees> Subordinates { get; set; }
+            public ICollection<EmployeeProject>? EmployeeProject { get; set; }
+            public ICollection<Employees>? Subordinates { get; set; }
         }
     }

@@ -1,5 +1,6 @@
 ﻿using E_commerce.Ef.Core.Payment;
 using E_commerce.Ef.Core.User;
+using E_Commrece.Domain.BaseClass;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -9,9 +10,8 @@ using System.Threading.Tasks;
 
 namespace E_commerce.Ef.Core.Product
 {
-    public class Customer
+    public class Customer : BaseEntityModel
     {
-        public int id { get; set; }
         [MaxLength(100)]
         public string FirstName { get; set; }
         [MaxLength(100)]

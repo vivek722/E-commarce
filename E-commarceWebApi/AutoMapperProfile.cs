@@ -35,7 +35,7 @@ namespace E_commarceWebApi
 
             CreateMap<Department, DepartmentDto>().ReverseMap();
             CreateMap<Employees, EmployeeDto>().ReverseMap();
-            CreateMap<Projects, EmployeeDto>().ReverseMap();
+            CreateMap<Projects, ProjectDto>().ReverseMap();
             CreateMap<EmployeeProject, EmployeeDto>().ReverseMap();
 
         }
