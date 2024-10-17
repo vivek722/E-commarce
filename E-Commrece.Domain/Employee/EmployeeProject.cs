@@ -1,4 +1,5 @@
-﻿using System;
+﻿using E_Commrece.Domain.BaseClass;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -7,9 +8,8 @@ using System.Threading.Tasks;
 
 namespace E_commerce.Ef.Core.Employee
 {
-    public class EmployeeProject
+    public class EmployeeProject : BaseEntityModel
     {
-        public int id { get; set; }
         [ForeignKey("EmployeeId")]
 
         public int EmployeeId { get; set; }
