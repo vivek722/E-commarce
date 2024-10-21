@@ -14,7 +14,7 @@ namespace E_commerce.Ef.Core.Configration.Product
         public void Configure(EntityTypeBuilder<OrderDetail> builder)
         {
             builder.ToTable("OrderDetails");
-            builder.HasKey(x => x.Id);
+            builder.HasKey(x => x.id);
             builder.Property(x => x.Quantity).IsRequired();
 
             builder.HasOne(x => x.Order).WithMany(x => x.OrderDetail).HasForeignKey(x => x.OrderId).OnDelete(DeleteBehavior.Cascade);

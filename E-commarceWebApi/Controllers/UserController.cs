@@ -2,6 +2,7 @@
 using E_commarceWebApi.RequestModel;
 using E_commerce.Ef.Core.User;
 using E_Commrece.Domain.services.User;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace E_commarceWebApi.Controllers
@@ -11,11 +12,13 @@ namespace E_commarceWebApi.Controllers
     {
         private readonly IUserService _userService;
         private readonly IMapper _mapper;
+        private readonly PasswordHasher<Users> _passwordHasher;
 
         public UserController(IUserService userService, IMapper mapper)
         {
             _userService = userService;
             _mapper = mapper;
+            _passwordHasher = new PasswordHasher<Users>();
         }
         [HttpGet("GetAllUser")]
         public async Task<IActionResult> GetAllUser([FromForm] string? SerchString)
@@ -35,7 +38,8 @@ namespace E_commarceWebApi.Controllers
             {
                 var User = _mapper.Map<Users>(UserData);
                 {
-                   await _userService.Add(User);
+                     User.PasswordHash  = _passwordHasher.HashPassword(User, UserData.PasswordHash);
+                    await _userService.Add(User);
                     return Ok(User);
                 }
             }

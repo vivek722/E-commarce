@@ -23,7 +23,7 @@ namespace E_commerce.Ef.Core.Repository
 
         public async Task<List<Users>> SearchUsers(string SearchString)
         {
-            return await applicationDbContext.Users.AsNoTracking().Where(x => x.UserName == SearchString).ToListAsync();
+            return await applicationDbContext.Users.AsNoTracking().Where(x => x.UserName == SearchString|| x.Email == SearchString).Include(x=>x.Role).ToListAsync();
         }
     }
 }

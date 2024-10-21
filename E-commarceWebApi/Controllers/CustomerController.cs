@@ -34,7 +34,7 @@ namespace E_commarceWebApi.Controllers
                 Roles.RoleName = RoleData.RoleName;
                 if (Roles != null)
                 {
-                    await _customerService.Add(Roles);
+                   // await _customerService.Add(Roles);
                     return Ok(Roles);
                 }
             }
@@ -59,7 +59,7 @@ namespace E_commarceWebApi.Controllers
                 Roles.RoleName = RoleData.RoleName;
                 if (RoleData != null)
                 {
-                    await _customerService.update(Roles);
+                 //   await _customerService.update(Roles);
                     return Ok("Role Updated Successfully");
                 }
             }
