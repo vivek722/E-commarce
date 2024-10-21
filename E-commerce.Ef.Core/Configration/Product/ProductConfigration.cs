@@ -14,7 +14,7 @@ namespace E_commerce.Ef.Core.Configration.Product
         public void Configure(EntityTypeBuilder<Products> builder)
         {
             builder.ToTable("Products");
-            builder.HasKey(x => x.Id);
+            builder.HasKey(x => x.id);
 
             builder.Property(x => x.ProductName)
                    .IsRequired()

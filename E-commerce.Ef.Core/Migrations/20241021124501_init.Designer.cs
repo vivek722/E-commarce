@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace E_commerce.Ef.Core.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241017112125_updateaddnullableonemplyeereference")]
-    partial class updateaddnullableonemplyeereference
+    [Migration("20241021124501_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -378,11 +378,11 @@ namespace E_commerce.Ef.Core.Migrations
 
             modelBuilder.Entity("E_commerce.Ef.Core.Product.OrderDetail", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
 
                     b.Property<int>("OrderId")
                         .HasColumnType("int");
@@ -393,7 +393,7 @@ namespace E_commerce.Ef.Core.Migrations
                     b.Property<int>("productId")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.HasKey("id");
 
                     b.HasIndex("OrderId");
 
@@ -425,11 +425,11 @@ namespace E_commerce.Ef.Core.Migrations
 
             modelBuilder.Entity("E_commerce.Ef.Core.Product.ProductSupplier", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
 
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
@@ -437,7 +437,7 @@ namespace E_commerce.Ef.Core.Migrations
                     b.Property<int>("SupplierId")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.HasKey("id");
 
                     b.HasIndex("ProductId");
 
@@ -448,11 +448,11 @@ namespace E_commerce.Ef.Core.Migrations
 
             modelBuilder.Entity("E_commerce.Ef.Core.Product.Products", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(10, 2)");
@@ -462,7 +462,7 @@ namespace E_commerce.Ef.Core.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.HasKey("Id");
+                    b.HasKey("id");
 
                     b.ToTable("Products", (string)null);
                 });
@@ -499,11 +499,11 @@ namespace E_commerce.Ef.Core.Migrations
 
             modelBuilder.Entity("E_commerce.Ef.Core.Product.Supplier", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -520,7 +520,7 @@ namespace E_commerce.Ef.Core.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.HasKey("Id");
+                    b.HasKey("id");
 
                     b.ToTable("Supplier", (string)null);
                 });
@@ -637,8 +637,8 @@ namespace E_commerce.Ef.Core.Migrations
 
                     b.Property<string>("PasswordHash")
                         .IsRequired()
-                        .HasMaxLength(8)
-                        .HasColumnType("nvarchar(8)");
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
 
                     b.Property<int>("RoleId")
                         .HasColumnType("int");

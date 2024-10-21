@@ -14,7 +14,7 @@ namespace E_commerce.Ef.Core.Configration.Product
         public void Configure(EntityTypeBuilder<ProductSupplier> builder)
         {
             builder.ToTable("ProductSupplier");
-            builder.HasKey(x => x.Id);
+            builder.HasKey(x => x.id);
                 
             builder.HasOne(x => x.Product)
                .WithMany(p => p.ProductSuppliers)

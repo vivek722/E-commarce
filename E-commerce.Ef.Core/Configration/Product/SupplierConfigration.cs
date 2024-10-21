@@ -14,7 +14,7 @@ namespace E_commerce.Ef.Core.Configration.Product
         public void Configure(EntityTypeBuilder<Supplier> builder)
         {
             builder.ToTable("Supplier");
-            builder.HasKey(x => x.Id);
+            builder.HasKey(x => x.id);
             builder.Property(x => x.SupplierName).IsRequired().HasMaxLength(100);
             builder.Property(x => x.Phone).HasMaxLength(20);
             builder.Property(x => x.Email).HasMaxLength(100);

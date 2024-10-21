@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace E_commerce.Ef.Core.Migrations
 {
     /// <inheritdoc />
-    public partial class initlization : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -70,14 +70,14 @@ namespace E_commerce.Ef.Core.Migrations
                 name: "Products",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ProductName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Price = table.Column<decimal>(type: "decimal(10,2)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Products", x => x.Id);
+                    table.PrimaryKey("PK_Products", x => x.id);
                 });
 
             migrationBuilder.CreateTable(
@@ -126,7 +126,7 @@ namespace E_commerce.Ef.Core.Migrations
                 name: "Supplier",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     SupplierName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Phone = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
@@ -134,7 +134,7 @@ namespace E_commerce.Ef.Core.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Supplier", x => x.Id);
+                    table.PrimaryKey("PK_Supplier", x => x.id);
                 });
 
             migrationBuilder.CreateTable(
@@ -263,7 +263,7 @@ namespace E_commerce.Ef.Core.Migrations
                         name: "FK_Discount_Products_ProductId",
                         column: x => x.ProductId,
                         principalTable: "Products",
-                        principalColumn: "Id",
+                        principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -291,7 +291,7 @@ namespace E_commerce.Ef.Core.Migrations
                         name: "FK_Reviews_Products_ProductId",
                         column: x => x.ProductId,
                         principalTable: "Products",
-                        principalColumn: "Id",
+                        principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -302,8 +302,8 @@ namespace E_commerce.Ef.Core.Migrations
                     id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(8)", maxLength: 8, nullable: false),
-                    PasswordHash = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    PasswordHash = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
                     RoleId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -321,25 +321,25 @@ namespace E_commerce.Ef.Core.Migrations
                 name: "ProductSupplier",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ProductId = table.Column<int>(type: "int", nullable: false),
                     SupplierId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ProductSupplier", x => x.Id);
+                    table.PrimaryKey("PK_ProductSupplier", x => x.id);
                     table.ForeignKey(
                         name: "FK_ProductSupplier_Products_ProductId",
                         column: x => x.ProductId,
                         principalTable: "Products",
-                        principalColumn: "Id",
+                        principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_ProductSupplier_Supplier_SupplierId",
                         column: x => x.SupplierId,
                         principalTable: "Supplier",
-                        principalColumn: "Id",
+                        principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -360,7 +360,7 @@ namespace E_commerce.Ef.Core.Migrations
                         name: "FK_Inventory_Products_ProductId",
                         column: x => x.ProductId,
                         principalTable: "Products",
-                        principalColumn: "Id",
+                        principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Inventory_Warehouses_WarehouseId",
@@ -395,7 +395,7 @@ namespace E_commerce.Ef.Core.Migrations
                 name: "OrderDetails",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     OrderId = table.Column<int>(type: "int", nullable: false),
                     productId = table.Column<int>(type: "int", nullable: false),
@@ -403,7 +403,7 @@ namespace E_commerce.Ef.Core.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_OrderDetails", x => x.Id);
+                    table.PrimaryKey("PK_OrderDetails", x => x.id);
                     table.ForeignKey(
                         name: "FK_OrderDetails_Orders_OrderId",
                         column: x => x.OrderId,
@@ -414,7 +414,7 @@ namespace E_commerce.Ef.Core.Migrations
                         name: "FK_OrderDetails_Products_productId",
                         column: x => x.productId,
                         principalTable: "Products",
-                        principalColumn: "Id",
+                        principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -483,17 +483,11 @@ namespace E_commerce.Ef.Core.Migrations
                     City = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     State = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     ZipCode = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
-                    Userid = table.Column<int>(type: "int", nullable: false),
-                    Countrieid = table.Column<int>(type: "int", nullable: true)
+                    Userid = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Addresses", x => x.id);
-                    table.ForeignKey(
-                        name: "FK_Addresses_Countries_Countrieid",
-                        column: x => x.Countrieid,
-                        principalTable: "Countries",
-                        principalColumn: "id");
                     table.ForeignKey(
                         name: "FK_Addresses_Users_Userid",
                         column: x => x.Userid,
@@ -522,11 +516,6 @@ namespace E_commerce.Ef.Core.Migrations
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Addresses_Countrieid",
-                table: "Addresses",
-                column: "Countrieid");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Addresses_Userid",
