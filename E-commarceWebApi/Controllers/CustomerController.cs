@@ -33,8 +33,7 @@ namespace E_commarceWebApi.Controllers
                 Role Roles = new Role();
                 Roles.RoleName = RoleData.RoleName;
                 if (Roles != null)
-                {
-                   // await _customerService.Add(Roles);
+                {   
                     return Ok(Roles);
                 }
             }

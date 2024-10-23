@@ -1,4 +1,5 @@
-﻿using System;
+﻿using E_Commrece.Domain.BaseClass;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -8,10 +9,8 @@ using System.Threading.Tasks;
 
 namespace E_commerce.Ef.Core.User
 {
-    public class Addresse
+    public class Addresse : BaseEntityModel
     {
-        public int id { get; set; }
-
         [MaxLength(255)]
         public string Street { get; set; }
         [MaxLength(100)]

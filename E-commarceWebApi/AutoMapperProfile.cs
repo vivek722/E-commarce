@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using E_commarceWebApi.RequestModel;
 using E_commerce.Ef.Core.Employee;
+using E_commerce.Ef.Core.Product;
 using E_commerce.Ef.Core.User;
 
 namespace E_commarceWebApi
@@ -16,27 +17,44 @@ namespace E_commarceWebApi
               .ForMember(dest => dest.CityNames, opt => opt.MapFrom(src => src.Cities.Select(c => c.CityName)));
 
             CreateMap<UserDto, Users>()
-                .ForMember(dest => dest.Addresse, opt => opt.MapFrom(src => new List<Addresse>
-                {
-        new Addresse
-        {
-            Street = src.Street,
-            City = src.City,
-            State = src.State,
-            ZipCode = src.ZipCode
-        }
-                }));
+            .ForMember(dest => dest.Addresse, opt => opt.MapFrom(src => new List<Addresse>
+            {
+            new Addresse
+            {
+                Street = src.Street,
+                City = src.City,
+                State = src.State,
+                ZipCode = src.ZipCode
+            }
+                    }));
 
             CreateMap<Users, UserDto>()
-                .ForMember(dest => dest.Street, opt => opt.MapFrom(src => src.Addresse.FirstOrDefault().Street))
-                .ForMember(dest => dest.City, opt => opt.MapFrom(src => src.Addresse.FirstOrDefault().City))
-                .ForMember(dest => dest.State, opt => opt.MapFrom(src => src.Addresse.FirstOrDefault().State))
-                .ForMember(dest => dest.ZipCode, opt => opt.MapFrom(src => src.Addresse.FirstOrDefault().ZipCode));
+                .ForMember(dest => dest.Street, opt => opt.MapFrom(src => src.Addresse.Street))
+                .ForMember(dest => dest.City, opt => opt.MapFrom(src => src.Addresse.City))
+                .ForMember(dest => dest.State, opt => opt.MapFrom(src => src.Addresse.State))
+                .ForMember(dest => dest.ZipCode, opt => opt.MapFrom(src => src.Addresse.ZipCode));
 
             CreateMap<Department, DepartmentDto>().ReverseMap();
             CreateMap<Employees, EmployeeDto>().ReverseMap();
             CreateMap<Projects, ProjectDto>().ReverseMap();
             CreateMap<EmployeeProject, EmployeeDto>().ReverseMap();
+            CreateMap<Products, ProductDto>().ReverseMap();
+            CreateMap<SupplierDto, Supplier>()
+            .ForMember(dest => dest.Address, opt => opt.MapFrom(src => new List<Addresse>
+            {
+            new Addresse
+            {
+                Street = src.Street,
+                City = src.City,
+                State = src.State,
+                ZipCode = src.ZipCode
+            }
+                    }));
+            CreateMap<Supplier, SupplierDto>()
+                .ForMember(dest => dest.Street, opt => opt.MapFrom(src => src.Address.Street))
+                .ForMember(dest => dest.City, opt => opt.MapFrom(src => src.Address.City))
+                .ForMember(dest => dest.State, opt => opt.MapFrom(src => src.Address.State))
+                .ForMember(dest => dest.ZipCode, opt => opt.MapFrom(src => src.Address.ZipCode));
 
         }
     }

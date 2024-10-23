@@ -20,7 +20,7 @@ namespace E_commerce.Ef.Core.User
         public int RoleId { get; set; }
         [ForeignKey("RoleId")]
         public Role Role { get; set; }
-        public ICollection<Addresse> Addresse { get; set; }
+        public Addresse Addresse { get; set; }
 
     }
 }
