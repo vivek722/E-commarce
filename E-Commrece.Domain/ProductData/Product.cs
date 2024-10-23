@@ -14,8 +14,12 @@ namespace E_commerce.Ef.Core.Product
     {
         [MaxLength(100)]
         public string ProductName { get; set; }
-        [Column(TypeName = "decimal(10, 2)")]
-        public decimal Price { get; set; }
+        public string ProductDesc { get; set; }
+        public decimal ProductOrignalprice { get; set; }
+        public decimal ProductActualprice { get; set; }
+        public string ProductImag { get; set; }
+        public DateTime CrateAt { get; set; }
+        public DateTime? UpdateAt { get; set; }
         public ICollection<OrderDetail> OrderDetail { get; set; }
         public ICollection<ProductSupplier> ProductSuppliers { get; set; }
         public ICollection<Discount> Discount { get; set; }

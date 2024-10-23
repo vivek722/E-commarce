@@ -11,6 +11,9 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.OpenApi.Models;
+using E_Commrece.Domain.services.productData;
+using E_Commrece.Domain.services.Base;
+using E_commerce.Ef.Core.Repository.Base;
 namespace E_commarceWebApi
 {
     public class Startup
@@ -58,12 +61,32 @@ namespace E_commarceWebApi
             services.AddTransient<IEmployeeProjectRepository, EmployeeProjectRepository>();
             services.AddTransient<IEmployeeProjectService, EmployeeProjectService>();
 
+            services.AddScoped<ProductService>();
+            services.AddTransient<IProductRepository, ProductSupplier>();
+            services.AddTransient<IProductService, ProductService>();
+
+            services.AddScoped<SupplierService>();
+            services.AddTransient<ISupplierRepository, SupplierRepository>();
+            services.AddTransient<ISupplierService, SupplierService>();
+
+            services.AddScoped(typeof(IGenricRepository<>), typeof(GenericRepository<>));
+
 
             string bucketName = "e-commerce-593f3.appspot.com";
             string firebaseStorageUrl = $"https://firebasestorage.googleapis.com/v0/b/{bucketName}/o/";
 
             services.AddSingleton(new FireBaseService(bucketName, firebaseStorageUrl));
             services.AddTransient<IFireBaseUploadImageService, FireBaseUploadImageService>();
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("MyCorsPolicy", builder =>
+                {
+                    builder.WithOrigins("http://localhost:4200")
+                           .AllowAnyMethod()
+                           .AllowAnyHeader();
+                });
+            });
 
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen(c => {
@@ -119,14 +142,13 @@ namespace E_commarceWebApi
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"]))
                     };
                 });
-
-
-
+            
             services.AddAutoMapper(typeof(Startup));
         }
 
         public void Configure(WebApplication app, IWebHostEnvironment env)
         {
+            
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
@@ -134,8 +156,8 @@ namespace E_commarceWebApi
             }
 
             app.UseHttpsRedirection();
+            app.UseCors("MyCorsPolicy");
             app.UseAuthorization();
-
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=WeatherForecast}/{action=Get}");

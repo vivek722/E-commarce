@@ -1,5 +1,8 @@
-﻿using E_commarceWebApi.RequestModel;
+﻿using AutoMapper;
+using E_commarceWebApi.RequestModel;
+using E_commerce.Ef.Core.Product;
 using E_commerce.Ef.Core.User;
+using E_Commrece.Domain.FireBaseSevice;
 using E_Commrece.Domain.services.productData;
 using E_Commrece.Domain.services.User;
 using Microsoft.AspNetCore.Mvc;
@@ -9,10 +12,14 @@ namespace E_commarceWebApi.Controllers
     [ApiController]
     public class ProductController : Controller
     {
-        private readonly ProductService _productService;
-        public ProductController(ProductService productService)
+        private readonly IProductService _productService;
+        private readonly IFireBaseUploadImageService _imageService;
+        private readonly IMapper _mapper;
+        public ProductController(ProductService productService, IMapper mapper, IFireBaseUploadImageService imageService)
         {
             _productService = productService;
+            _mapper = mapper;
+            _imageService = imageService;
         }
 
         [HttpGet("GetAllProducts")]
@@ -20,23 +27,39 @@ namespace E_commarceWebApi.Controllers
         {
             if (SerchString == null)
             {
-                var roles = await _productService.GetAll();
-                return Ok(roles);
+                var products = await _productService.GetAll();
+                return Ok(products);
             }
             var Searchroles = await _productService.SearchProduct(SerchString);
             return Ok(Searchroles);
         }
         [HttpPost("AddProduct")]
-        public async Task<IActionResult> AddProduct([FromForm] RoleDto RoleData)
+        public async Task<IActionResult> AddProduct([FromForm] ProductDto ProductDto)
         {
             if (ModelState.IsValid)
             {
-                Role Roles = new Role();
-                Roles.RoleName = RoleData.RoleName;
-                if (Roles != null)
+                var product = _mapper.Map<Products>(ProductDto);
+                if (ProductDto.ProductImag != null)
                 {
-                   // await _productService.Add(Roles);
-                    return Ok(Roles);
+                    foreach (var item in ProductDto.ProductImag)
+                    {
+                        var file = Guid.NewGuid().ToString() + "-" + item.FileName;
+                        var path = Path.Combine(Path.GetTempPath(), file);
+                        var folder = "Product-Images";
+                        using (var strem = new FileStream(path, FileMode.Create))
+                        {
+                            await item.CopyToAsync(strem);
+                        }
+                        var url = await _imageService.FireBaseUploadImageAsync(file, path, folder);
+                        product.ProductImag += url;
+                    }
+                }
+                product.CrateAt = DateTime.Now;
+                product.UpdateAt = null;
+                if (product != null)
+                {
+                  await _productService.Add(product);
+                  return Ok(product);
                 }
             }
             return BadRequest("Data Is Not Proper");
@@ -46,21 +69,20 @@ namespace E_commarceWebApi.Controllers
         {
             if (id <= 0)
             {
-                return BadRequest("Id Not in 0 or Lessthen 0");
+                return BadRequest("Id Is Not 0 or  Not Lessthen 0");
             }
             await _productService.Delete(id);
             return Ok("Role Deleted Successfully");
         }
         [HttpPut("UpdateProduct")]
-        public async Task<IActionResult> UpdateProduct([FromForm] RoleDto RoleData)
+        public async Task<IActionResult> UpdateProduct([FromForm] ProductDto Product)
         {
             if (ModelState.IsValid)
             {
-                Role Roles = new Role();
-                Roles.RoleName = RoleData.RoleName;
-                if (RoleData != null)
+                var product = _mapper.Map<Products>(Product);
+                if (product != null)
                 {
-                   // await _productService.update(Roles);
+                    await _productService.update(product);
                     return Ok("Role Updated Successfully");
                 }
             }

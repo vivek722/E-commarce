@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace E_commarceWebApi.Controllers
 {
+    [Route("[controller]")]
     [ApiController]
     public class UserController : Controller
     {
@@ -32,7 +33,7 @@ namespace E_commarceWebApi.Controllers
             return Ok(Searchroles);
         }
         [HttpPost("AddUser")]
-        public async Task<IActionResult> AddUser([FromForm] UserDto UserData)
+        public async Task<IActionResult> AddUser(UserDto UserData)
         {
             if (ModelState.IsValid)
             {

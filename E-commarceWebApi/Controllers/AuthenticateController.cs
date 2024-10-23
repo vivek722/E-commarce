@@ -10,7 +10,8 @@ using System.Text;
 
 namespace E_commarceWebApi.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
+    [ApiController]
     public class AuthenticateController : Controller
     {
 
@@ -22,15 +23,15 @@ namespace E_commarceWebApi.Controllers
             _configuration = configuration;
 
         }
-        [HttpPost]
-        public async Task<IActionResult> Login(string UseraName, string Password)
+        [HttpPost("Login")]
+        public async Task<IActionResult> Login(LoginModel login)
         {
-            var users = await _userService.SearchUsers(UseraName);
+            var users = await _userService.SearchUsers(login.UserName);
             var User = users.FirstOrDefault();
             if (User != null)
             {
                 var passwordHasher = new PasswordHasher<Users>();
-                var verificationResult = passwordHasher.VerifyHashedPassword(User,User.PasswordHash,Password);
+                var verificationResult = passwordHasher.VerifyHashedPassword(User,User.PasswordHash, login.Password);
 
                 if (verificationResult == PasswordVerificationResult.Failed)
                 {

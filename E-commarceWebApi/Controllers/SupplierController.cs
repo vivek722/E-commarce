@@ -1,7 +1,8 @@
-﻿using E_commarceWebApi.RequestModel;
+﻿using AutoMapper;
+using E_commarceWebApi.RequestModel;
 using E_commerce.Ef.Core.User;
 using E_Commrece.Domain.services.productData;
-using E_Commrece.Domain.services.User;
+using E_commerce.Ef.Core.Product;
 using Microsoft.AspNetCore.Mvc;
 
 namespace E_commarceWebApi.Controllers
@@ -10,10 +11,12 @@ namespace E_commarceWebApi.Controllers
     public class SupplierController : Controller
     {
         private readonly SupplierService _supplierService;
+        private readonly IMapper _mapper;
 
-        public SupplierController(SupplierService supplierService)
+        public SupplierController(SupplierService supplierService, IMapper mapper)
         {
             _supplierService = supplierService;
+            _mapper = mapper;   
         }
 
         [HttpGet("GetAllSuppliers")]
@@ -28,16 +31,15 @@ namespace E_commarceWebApi.Controllers
             return Ok(Searchroles);
         }
         [HttpPost("AddSupplier")]
-        public async Task<IActionResult> AddSupplier([FromForm] RoleDto RoleData)
+        public async Task<IActionResult> AddSupplier([FromForm] SupplierDto supplierDto)
         {
             if (ModelState.IsValid)
             {
-                Role Roles = new Role();
-                Roles.RoleName = RoleData.RoleName;
-                if (Roles != null)
+                var Supplier = _mapper.Map<Supplier>(supplierDto);
+                if (Supplier != null)
                 {
-                    //await _supplierService.Add(Roles);
-                    return Ok(Roles);
+                    await _supplierService.Add(Supplier);
+                    return Ok(Supplier);
                 }
             }
             return BadRequest("Data Is Not Proper");
@@ -50,19 +52,18 @@ namespace E_commarceWebApi.Controllers
                 return BadRequest("Id Not in 0 or Lessthen 0");
             }
             await _supplierService.Delete(id);
-            return Ok("Role Deleted Successfully");
+            return Ok("supplier Deleted Successfully");
         }
         [HttpPut("UpdateSupplier")]
-        public async Task<IActionResult> UpdateSupplier([FromForm] RoleDto RoleData)
+        public async Task<IActionResult> UpdateSupplier([FromForm] SupplierDto supplierDto)
         {
             if (ModelState.IsValid)
             {
-                Role Roles = new Role();
-                Roles.RoleName = RoleData.RoleName;
-                if (RoleData != null)
+                var supplier = _mapper.Map<Supplier>(supplierDto);
+                if (supplier != null)
                 {
-                    //await _supplierService.update(Roles);
-                    return Ok("Role Updated Successfully");
+                    await _supplierService.update(supplier);
+                    return Ok("supplier Updated Successfully");
                 }
             }
             return BadRequest("Data Is Not Proper");
