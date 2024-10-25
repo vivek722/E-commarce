@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace E_commerce.Ef.Core.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241021124501_init")]
+    [Migration("20241025050915_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -358,7 +358,7 @@ namespace E_commerce.Ef.Core.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
 
-                    b.Property<int>("ProductId")
+                    b.Property<int?>("Productsid")
                         .HasColumnType("int");
 
                     b.Property<int>("Quantity")
@@ -369,7 +369,7 @@ namespace E_commerce.Ef.Core.Migrations
 
                     b.HasKey("id");
 
-                    b.HasIndex("ProductId");
+                    b.HasIndex("Productsid");
 
                     b.HasIndex("WarehouseId");
 
@@ -454,15 +454,46 @@ namespace E_commerce.Ef.Core.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
 
+                    b.Property<DateTime>("CrateAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("InventoryId")
+                        .HasColumnType("int");
+
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(10, 2)");
+
+                    b.Property<decimal>("ProductActualprice")
+                        .HasColumnType("decimal(10, 2)");
+
+                    b.Property<string>("ProductDesc")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("ProductImag")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ProductName")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<decimal>("ProductOrignalprice")
+                        .HasColumnType("decimal(10, 2)");
+
+                    b.Property<DateTime?>("UpdateAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("supplierId")
+                        .HasColumnType("int");
+
                     b.HasKey("id");
+
+                    b.HasIndex("InventoryId");
+
+                    b.HasIndex("supplierId");
 
                     b.ToTable("Products", (string)null);
                 });
@@ -505,6 +536,10 @@ namespace E_commerce.Ef.Core.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
 
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -515,10 +550,22 @@ namespace E_commerce.Ef.Core.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
+                    b.Property<string>("State")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Street")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("SupplierName")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("ZipCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("id");
 
@@ -765,11 +812,9 @@ namespace E_commerce.Ef.Core.Migrations
 
             modelBuilder.Entity("E_commerce.Ef.Core.Product.Inventory", b =>
                 {
-                    b.HasOne("E_commerce.Ef.Core.Product.Products", "product")
+                    b.HasOne("E_commerce.Ef.Core.Product.Products", null)
                         .WithMany("Inventorys")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("Productsid");
 
                     b.HasOne("E_commerce.Ef.Core.Payment.Warehouse", "Warehouse")
                         .WithMany("Inventory")
@@ -778,8 +823,6 @@ namespace E_commerce.Ef.Core.Migrations
                         .IsRequired();
 
                     b.Navigation("Warehouse");
-
-                    b.Navigation("product");
                 });
 
             modelBuilder.Entity("E_commerce.Ef.Core.Product.OrderDetail", b =>
@@ -829,6 +872,25 @@ namespace E_commerce.Ef.Core.Migrations
                     b.Navigation("Product");
 
                     b.Navigation("Supplier");
+                });
+
+            modelBuilder.Entity("E_commerce.Ef.Core.Product.Products", b =>
+                {
+                    b.HasOne("E_commerce.Ef.Core.Product.Inventory", "Inventory")
+                        .WithMany("Product")
+                        .HasForeignKey("InventoryId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("E_commerce.Ef.Core.Product.Supplier", "supplier")
+                        .WithMany("Product")
+                        .HasForeignKey("supplierId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Inventory");
+
+                    b.Navigation("supplier");
                 });
 
             modelBuilder.Entity("E_commerce.Ef.Core.Product.Review", b =>
@@ -929,6 +991,11 @@ namespace E_commerce.Ef.Core.Migrations
                     b.Navigation("orders");
                 });
 
+            modelBuilder.Entity("E_commerce.Ef.Core.Product.Inventory", b =>
+                {
+                    b.Navigation("Product");
+                });
+
             modelBuilder.Entity("E_commerce.Ef.Core.Product.Orders", b =>
                 {
                     b.Navigation("Invoices");
@@ -953,6 +1020,8 @@ namespace E_commerce.Ef.Core.Migrations
 
             modelBuilder.Entity("E_commerce.Ef.Core.Product.Supplier", b =>
                 {
+                    b.Navigation("Product");
+
                     b.Navigation("ProductSuppliers");
                 });
 

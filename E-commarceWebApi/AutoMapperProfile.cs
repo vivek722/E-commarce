@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using E_commarceWebApi.RequestModel;
 using E_commerce.Ef.Core.Employee;
+using E_commerce.Ef.Core.Payment;
+using E_commerce.Ef.Core.Product;
 using E_commerce.Ef.Core.User;
 
 namespace E_commarceWebApi
@@ -37,6 +39,10 @@ namespace E_commarceWebApi
             CreateMap<Employees, EmployeeDto>().ReverseMap();
             CreateMap<Projects, ProjectDto>().ReverseMap();
             CreateMap<EmployeeProject, EmployeeDto>().ReverseMap();
+            CreateMap<Products, ProductDto>().ReverseMap();
+            CreateMap<Supplier, SupplierDto>().ReverseMap();
+            CreateMap<Warehouse, InventoryDto>().ReverseMap();
+            CreateMap<Inventory, InventoryDto>().ReverseMap();
 
         }
     }

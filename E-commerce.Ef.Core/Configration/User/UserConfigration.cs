@@ -23,8 +23,6 @@ namespace E_commerce.Ef.Core.Configration.User
                 .WithMany(x=>x.users)
                 .HasForeignKey(x=>x.RoleId)
                 .OnDelete(DeleteBehavior.Cascade);
-
-
         }
     }
 }

@@ -11,6 +11,10 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.OpenApi.Models;
+using E_Commrece.Domain.services.productData;
+using E_Commrece.Domain.services.Base;
+using E_commerce.Ef.Core.Repository.Base;
+using E_Commrece.Domain.services.Payment;
 namespace E_commarceWebApi
 {
     public class Startup
@@ -57,6 +61,24 @@ namespace E_commarceWebApi
             services.AddScoped<EmployeeProjectService>();
             services.AddTransient<IEmployeeProjectRepository, EmployeeProjectRepository>();
             services.AddTransient<IEmployeeProjectService, EmployeeProjectService>();
+
+            services.AddScoped<ProductService>();
+            services.AddTransient<IProductRepository, ProductSupplier>();
+            services.AddTransient<IProductService, ProductService>();
+
+            services.AddScoped<InventoryService>();
+            services.AddTransient<IInventoryRepository,InventoryRepository>();
+            services.AddTransient<IInventoryService, InventoryService>();
+
+            services.AddScoped<SupplierService>();
+            services.AddTransient<ISupplierRepository, SupplierRepository>();
+            services.AddTransient<ISupplierService, SupplierService>();
+
+            services.AddScoped<WarehouseService>();
+            services.AddTransient<IWarehouseRepository, WarehouseRepository>();
+            services.AddTransient<IWarehouseService, WarehouseService>();
+
+            services.AddScoped(typeof(IGenricRepository<>), typeof(GenericRepository<>));
 
 
             string bucketName = "e-commerce-593f3.appspot.com";

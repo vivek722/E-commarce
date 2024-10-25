@@ -355,7 +355,7 @@ namespace E_commerce.Ef.Core.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
 
-                    b.Property<int>("ProductId")
+                    b.Property<int?>("Productsid")
                         .HasColumnType("int");
 
                     b.Property<int>("Quantity")
@@ -366,7 +366,7 @@ namespace E_commerce.Ef.Core.Migrations
 
                     b.HasKey("id");
 
-                    b.HasIndex("ProductId");
+                    b.HasIndex("Productsid");
 
                     b.HasIndex("WarehouseId");
 
@@ -451,7 +451,13 @@ namespace E_commerce.Ef.Core.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
 
-                    b.Property<decimal>("Price")
+                    b.Property<DateTime>("CrateAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("InventoryId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("ProductActualprice")
                         .HasColumnType("decimal(10, 2)");
 
                     b.Property<string>("ProductName")
@@ -459,7 +465,20 @@ namespace E_commerce.Ef.Core.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<decimal>("ProductOrignalprice")
+                        .HasColumnType("decimal(10, 2)");
+
+                    b.Property<DateTime?>("UpdateAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("supplierId")
+                        .HasColumnType("int");
+
                     b.HasKey("id");
+
+                    b.HasIndex("InventoryId");
+
+                    b.HasIndex("supplierId");
 
                     b.ToTable("Products", (string)null);
                 });
@@ -502,6 +521,15 @@ namespace E_commerce.Ef.Core.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
 
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CompanyName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -512,10 +540,17 @@ namespace E_commerce.Ef.Core.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
-                    b.Property<string>("SupplierName")
+                    b.Property<string>("State")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Street")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ZipCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("id");
 
@@ -555,7 +590,8 @@ namespace E_commerce.Ef.Core.Migrations
 
                     b.HasKey("id");
 
-                    b.HasIndex("Userid");
+                    b.HasIndex("Userid")
+                        .IsUnique();
 
                     b.ToTable("Addresses", (string)null);
                 });
@@ -627,6 +663,9 @@ namespace E_commerce.Ef.Core.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
 
+                    b.Property<int>("Addresseid")
+                        .HasColumnType("int");
+
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -646,6 +685,8 @@ namespace E_commerce.Ef.Core.Migrations
                         .HasColumnType("nvarchar(100)");
 
                     b.HasKey("id");
+
+                    b.HasIndex("Addresseid");
 
                     b.HasIndex("RoleId");
 
@@ -762,11 +803,9 @@ namespace E_commerce.Ef.Core.Migrations
 
             modelBuilder.Entity("E_commerce.Ef.Core.Product.Inventory", b =>
                 {
-                    b.HasOne("E_commerce.Ef.Core.Product.Products", "product")
+                    b.HasOne("E_commerce.Ef.Core.Product.Products", null)
                         .WithMany("Inventorys")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("Productsid");
 
                     b.HasOne("E_commerce.Ef.Core.Payment.Warehouse", "Warehouse")
                         .WithMany("Inventory")
@@ -775,8 +814,6 @@ namespace E_commerce.Ef.Core.Migrations
                         .IsRequired();
 
                     b.Navigation("Warehouse");
-
-                    b.Navigation("product");
                 });
 
             modelBuilder.Entity("E_commerce.Ef.Core.Product.OrderDetail", b =>
@@ -828,6 +865,25 @@ namespace E_commerce.Ef.Core.Migrations
                     b.Navigation("Supplier");
                 });
 
+            modelBuilder.Entity("E_commerce.Ef.Core.Product.Products", b =>
+                {
+                    b.HasOne("E_commerce.Ef.Core.Product.Inventory", "Inventory")
+                        .WithMany("Product")
+                        .HasForeignKey("InventoryId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("E_commerce.Ef.Core.Product.Supplier", "supplier")
+                        .WithMany("Product")
+                        .HasForeignKey("supplierId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Inventory");
+
+                    b.Navigation("supplier");
+                });
+
             modelBuilder.Entity("E_commerce.Ef.Core.Product.Review", b =>
                 {
                     b.HasOne("E_commerce.Ef.Core.Product.Customer", "Customer")
@@ -850,9 +906,9 @@ namespace E_commerce.Ef.Core.Migrations
             modelBuilder.Entity("E_commerce.Ef.Core.User.Addresse", b =>
                 {
                     b.HasOne("E_commerce.Ef.Core.User.Users", "User")
-                        .WithMany("Addresse")
-                        .HasForeignKey("Userid")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .WithOne()
+                        .HasForeignKey("E_commerce.Ef.Core.User.Addresse", "Userid")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("User");
@@ -871,11 +927,19 @@ namespace E_commerce.Ef.Core.Migrations
 
             modelBuilder.Entity("E_commerce.Ef.Core.User.Users", b =>
                 {
+                    b.HasOne("E_commerce.Ef.Core.User.Addresse", "Addresse")
+                        .WithMany()
+                        .HasForeignKey("Addresseid")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("E_commerce.Ef.Core.User.Role", "Role")
                         .WithMany("users")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Addresse");
 
                     b.Navigation("Role");
                 });
@@ -926,6 +990,11 @@ namespace E_commerce.Ef.Core.Migrations
                     b.Navigation("orders");
                 });
 
+            modelBuilder.Entity("E_commerce.Ef.Core.Product.Inventory", b =>
+                {
+                    b.Navigation("Product");
+                });
+
             modelBuilder.Entity("E_commerce.Ef.Core.Product.Orders", b =>
                 {
                     b.Navigation("Invoices");
@@ -950,6 +1019,8 @@ namespace E_commerce.Ef.Core.Migrations
 
             modelBuilder.Entity("E_commerce.Ef.Core.Product.Supplier", b =>
                 {
+                    b.Navigation("Product");
+
                     b.Navigation("ProductSuppliers");
                 });
 
@@ -961,11 +1032,6 @@ namespace E_commerce.Ef.Core.Migrations
             modelBuilder.Entity("E_commerce.Ef.Core.User.Role", b =>
                 {
                     b.Navigation("users");
-                });
-
-            modelBuilder.Entity("E_commerce.Ef.Core.User.Users", b =>
-                {
-                    b.Navigation("Addresse");
                 });
 #pragma warning restore 612, 618
         }

@@ -12,7 +12,11 @@ namespace E_commerce.Ef.Core.Product
         public string SupplierName { get; set; }
         public string Phone { get; set; }
         public string Email { get; set; }
-
+        public string Street { get; set; }
+        public string City { get; set; }
+        public string State { get; set; }
+        public string ZipCode { get; set; }
         public ICollection<ProductSupplier> ProductSuppliers { get; set; }
+        public ICollection<Products> Product { get; set; }
     }
 }

@@ -16,13 +16,24 @@ namespace E_commerce.Ef.Core.Configration.Product
             builder.ToTable("Products");
             builder.HasKey(x => x.id);
 
-            builder.Property(x => x.ProductName)
-                   .IsRequired()
-                   .HasMaxLength(100);
+            builder.Property(x => x.ProductName).IsRequired().HasMaxLength(100);
+            builder.Property(x => x.ProductDesc).IsRequired().HasMaxLength(255);
+            builder.Property(x => x.ProductOrignalprice).IsRequired().HasColumnType("decimal(10, 2)");
+            builder.Property(x => x.ProductActualprice).IsRequired().HasColumnType("decimal(10, 2)");
+            builder.Property(x => x.ProductImag).IsRequired();
+            builder.Property(x => x.CrateAt).IsRequired();
+            builder.Property(x => x.UpdateAt);
 
-            builder.Property(x => x.Price)
-                   .IsRequired()
-                   .HasColumnType("decimal(10, 2)");
+
+            builder.HasOne(x => x.supplier)
+              .WithMany(s => s.Product)
+              .HasForeignKey(x => x.supplierId)
+              .OnDelete(DeleteBehavior.Restrict);
+
+            builder.HasOne(x => x.Inventory)
+             .WithMany(s => s.Product)
+             .HasForeignKey(x => x.InventoryId)
+             .OnDelete(DeleteBehavior.Restrict);
         }
     }
 

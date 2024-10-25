@@ -17,11 +17,7 @@ namespace E_commerce.Ef.Core.Configration.Payment
             builder.HasKey(x => x.id);
             builder.Property(x => x.Quantity);
 
-            builder.HasOne(x => x.product)
-                .WithMany(x => x.Inventorys)
-                .HasForeignKey(x => x.ProductId)
-                .OnDelete(DeleteBehavior.Cascade);
-
+         
 
             builder.HasOne(x => x.Warehouse)
                 .WithMany(x => x.Inventory)

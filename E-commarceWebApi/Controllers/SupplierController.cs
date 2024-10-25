@@ -10,7 +10,7 @@ namespace E_commarceWebApi.Controllers
     public class SupplierController : Controller
     {
         private readonly SupplierService _supplierService;
-
+        private readonly Ma
         public SupplierController(SupplierService supplierService)
         {
             _supplierService = supplierService;
@@ -28,12 +28,11 @@ namespace E_commarceWebApi.Controllers
             return Ok(Searchroles);
         }
         [HttpPost("AddSupplier")]
-        public async Task<IActionResult> AddSupplier([FromForm] RoleDto RoleData)
+        public async Task<IActionResult> AddSupplier([FromForm] SupplierDto SupplierDto)
         {
             if (ModelState.IsValid)
             {
-                Role Roles = new Role();
-                Roles.RoleName = RoleData.RoleName;
+                var supplier = _m
                 if (Roles != null)
                 {
                     //await _supplierService.Add(Roles);

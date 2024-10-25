@@ -1,5 +1,9 @@
 ﻿using E_commarceWebApi.RequestModel;
+using E_commerce.Ef.Core.Payment;
+using E_commerce.Ef.Core.Product;
 using E_commerce.Ef.Core.User;
+using E_Commrece.Domain.FireBaseSevice;
+using E_Commrece.Domain.services.Payment;
 using E_Commrece.Domain.services.productData;
 using E_Commrece.Domain.services.User;
 using Microsoft.AspNetCore.Mvc;
@@ -9,8 +13,11 @@ namespace E_commarceWebApi.Controllers
     [ApiController]
     public class ProductController : Controller
     {
-        private readonly ProductService _productService;
-        public ProductController(ProductService productService)
+        private readonly IProductService _productService;
+        
+        private readonly IFireBaseUploadImageService _imageService;
+        private readonly IMapper _mapper;
+        public ProductController(ProductService productService, IMapper mapper, IFireBaseUploadImageService imageService)
         {
             _productService = productService;
         }
@@ -35,9 +42,29 @@ namespace E_commarceWebApi.Controllers
                 Roles.RoleName = RoleData.RoleName;
                 if (Roles != null)
                 {
-                   // await _productService.Add(Roles);
-                    return Ok(Roles);
+                    foreach (var item in ProductDto.ProductImag)
+                    {
+                        var file = Guid.NewGuid().ToString() + "-" + item.FileName;
+                        var path = Path.Combine(Path.GetTempPath(), file);
+                        var folder = "Product-Images";
+                        using (var strem = new FileStream(path, FileMode.Create))
+                        {
+                            await item.CopyToAsync(strem);
+                        }
+                        var url = await _imageService.FireBaseUploadImageAsync(file, path, folder);
+                        product.ProductImag += url;
+                    }
                 }
+
+
+                product.CrateAt = DateTime.Now;
+                product.UpdateAt = null;
+                if (product != null)
+                {
+                        await _productService.Add(product);
+                    return Ok(product);
+                }
+
             }
             return BadRequest("Data Is Not Proper");
         }
