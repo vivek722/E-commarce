@@ -12,6 +12,7 @@ namespace E_commerce.Ef.Core.Product
     public class Inventory :BaseEntityModel
     {
         public int ProductId { get; set; }
+        public Products products { get; set; }
         public int WarehouseId { get; set; }
 
         [ForeignKey("WarehouseId")]

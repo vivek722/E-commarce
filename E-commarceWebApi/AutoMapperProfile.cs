@@ -19,7 +19,7 @@ namespace E_commarceWebApi
 
             CreateMap<UserDto, Users>()
             .ForMember(dest => dest.Addresse, opt => opt.MapFrom(src => new List<Addresse>
-            {
+            {   
             new Addresse
             {
                 Street = src.Street,
