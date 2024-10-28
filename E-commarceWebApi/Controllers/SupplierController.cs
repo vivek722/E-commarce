@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace E_commarceWebApi.Controllers
 {
+    [Route("[controller]")]
     [ApiController]
     public class SupplierController : Controller
     {
@@ -21,7 +22,7 @@ namespace E_commarceWebApi.Controllers
 
         [HttpGet("GetAllSuppliers")]
         public async Task<IActionResult> GetAllSuppliers(string? SerchString)
-        {
+            {
             if (SerchString == null)
             {
                 var roles = await _supplierService.GetAll();

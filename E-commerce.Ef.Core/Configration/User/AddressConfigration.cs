@@ -22,8 +22,8 @@ namespace E_commerce.Ef.Core.Configration.User
 
             builder.HasOne(x => x.User)
                 .WithOne()
-                .HasForeignKey(x => x.Userid)
-                .OnDelete(DeleteBehavior.Cascade);
+                .HasForeignKey<Addresse>(x => x.Userid)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

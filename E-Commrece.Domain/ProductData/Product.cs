@@ -20,6 +20,8 @@ namespace E_commerce.Ef.Core.Product
         public string ProductImag { get; set; }
         public DateTime CrateAt { get; set; }
         public DateTime? UpdateAt { get; set; }
+        public int SupplierId { get; set; }
+        public Supplier Supplier { get; set; }
         public ICollection<OrderDetail> OrderDetail { get; set; }
         public ICollection<ProductSupplier> ProductSuppliers { get; set; }
         public ICollection<Discount> Discount { get; set; }
