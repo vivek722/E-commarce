@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace E_commarceWebApi.Controllers
 {
+    [Route("[controller]")]
     [ApiController]
     public class DepartmentController : Controller
     {

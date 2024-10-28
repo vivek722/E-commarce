@@ -358,6 +358,9 @@ namespace E_commerce.Ef.Core.Migrations
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("Productsid")
+                        .HasColumnType("int");
+
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
@@ -366,7 +369,7 @@ namespace E_commerce.Ef.Core.Migrations
 
                     b.HasKey("id");
 
-                    b.HasIndex("ProductId");
+                    b.HasIndex("Productsid");
 
                     b.HasIndex("WarehouseId");
 
@@ -474,10 +477,15 @@ namespace E_commerce.Ef.Core.Migrations
                     b.Property<decimal>("ProductOrignalprice")
                         .HasColumnType("decimal(10, 2)");
 
+                    b.Property<int>("SupplierId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime?>("UpdateAt")
                         .HasColumnType("datetime2");
 
                     b.HasKey("id");
+
+                    b.HasIndex("SupplierId");
 
                     b.ToTable("Products", (string)null);
                 });
@@ -520,6 +528,11 @@ namespace E_commerce.Ef.Core.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
 
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
                     b.Property<string>("CompanyName")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -534,6 +547,20 @@ namespace E_commerce.Ef.Core.Migrations
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
+
+                    b.Property<string>("State")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Street")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ZipCode")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
 
                     b.HasKey("id");
 
@@ -563,9 +590,6 @@ namespace E_commerce.Ef.Core.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.Property<int?>("Supplierid")
-                        .HasColumnType("int");
-
                     b.Property<int>("Userid")
                         .HasColumnType("int");
 
@@ -576,9 +600,8 @@ namespace E_commerce.Ef.Core.Migrations
 
                     b.HasKey("id");
 
-                    b.HasIndex("Supplierid");
-
-                    b.HasIndex("Userid");
+                    b.HasIndex("Userid")
+                        .IsUnique();
 
                     b.ToTable("Addresses", (string)null);
                 });
@@ -650,6 +673,9 @@ namespace E_commerce.Ef.Core.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
 
+                    b.Property<int>("Addresseid")
+                        .HasColumnType("int");
+
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -669,6 +695,8 @@ namespace E_commerce.Ef.Core.Migrations
                         .HasColumnType("nvarchar(100)");
 
                     b.HasKey("id");
+
+                    b.HasIndex("Addresseid");
 
                     b.HasIndex("RoleId");
 
@@ -785,11 +813,9 @@ namespace E_commerce.Ef.Core.Migrations
 
             modelBuilder.Entity("E_commerce.Ef.Core.Product.Inventory", b =>
                 {
-                    b.HasOne("E_commerce.Ef.Core.Product.Products", "product")
+                    b.HasOne("E_commerce.Ef.Core.Product.Products", null)
                         .WithMany("Inventorys")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("Productsid");
 
                     b.HasOne("E_commerce.Ef.Core.Payment.Warehouse", "Warehouse")
                         .WithMany("Inventory")
@@ -798,8 +824,6 @@ namespace E_commerce.Ef.Core.Migrations
                         .IsRequired();
 
                     b.Navigation("Warehouse");
-
-                    b.Navigation("product");
                 });
 
             modelBuilder.Entity("E_commerce.Ef.Core.Product.OrderDetail", b =>
@@ -843,10 +867,21 @@ namespace E_commerce.Ef.Core.Migrations
                     b.HasOne("E_commerce.Ef.Core.Product.Supplier", "Supplier")
                         .WithMany("ProductSuppliers")
                         .HasForeignKey("SupplierId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Product");
+
+                    b.Navigation("Supplier");
+                });
+
+            modelBuilder.Entity("E_commerce.Ef.Core.Product.Products", b =>
+                {
+                    b.HasOne("E_commerce.Ef.Core.Product.Supplier", "Supplier")
+                        .WithMany("Products")
+                        .HasForeignKey("SupplierId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Supplier");
                 });
@@ -872,14 +907,10 @@ namespace E_commerce.Ef.Core.Migrations
 
             modelBuilder.Entity("E_commerce.Ef.Core.User.Addresse", b =>
                 {
-                    b.HasOne("E_commerce.Ef.Core.Product.Supplier", null)
-                        .WithMany("Address")
-                        .HasForeignKey("Supplierid");
-
                     b.HasOne("E_commerce.Ef.Core.User.Users", "User")
-                        .WithMany("Addresse")
-                        .HasForeignKey("Userid")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .WithOne()
+                        .HasForeignKey("E_commerce.Ef.Core.User.Addresse", "Userid")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("User");
@@ -898,11 +929,19 @@ namespace E_commerce.Ef.Core.Migrations
 
             modelBuilder.Entity("E_commerce.Ef.Core.User.Users", b =>
                 {
+                    b.HasOne("E_commerce.Ef.Core.User.Addresse", "Addresse")
+                        .WithMany()
+                        .HasForeignKey("Addresseid")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("E_commerce.Ef.Core.User.Role", "Role")
                         .WithMany("users")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Addresse");
 
                     b.Navigation("Role");
                 });
@@ -977,9 +1016,9 @@ namespace E_commerce.Ef.Core.Migrations
 
             modelBuilder.Entity("E_commerce.Ef.Core.Product.Supplier", b =>
                 {
-                    b.Navigation("Address");
-
                     b.Navigation("ProductSuppliers");
+
+                    b.Navigation("Products");
                 });
 
             modelBuilder.Entity("E_commerce.Ef.Core.User.Countrie", b =>
@@ -990,11 +1029,6 @@ namespace E_commerce.Ef.Core.Migrations
             modelBuilder.Entity("E_commerce.Ef.Core.User.Role", b =>
                 {
                     b.Navigation("users");
-                });
-
-            modelBuilder.Entity("E_commerce.Ef.Core.User.Users", b =>
-                {
-                    b.Navigation("Addresse");
                 });
 #pragma warning restore 612, 618
         }

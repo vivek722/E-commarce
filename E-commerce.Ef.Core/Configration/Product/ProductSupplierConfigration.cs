@@ -24,7 +24,7 @@ namespace E_commerce.Ef.Core.Configration.Product
         builder.HasOne(x => x.Supplier)
                .WithMany(s => s.ProductSuppliers)
                .HasForeignKey(x => x.SupplierId)
-               .OnDelete(DeleteBehavior.Cascade);
+               .OnDelete(DeleteBehavior.Restrict);
 
        
         builder.Property(x => x.ProductId)

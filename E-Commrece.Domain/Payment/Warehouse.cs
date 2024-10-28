@@ -1,4 +1,5 @@
 ﻿using E_commerce.Ef.Core.Product;
+using E_Commrece.Domain.BaseClass;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -8,9 +9,8 @@ using System.Threading.Tasks;
 
 namespace E_commerce.Ef.Core.Payment
 {
-    public class Warehouse
+    public class Warehouse : BaseEntityModel
     {
-        public int id { get; set; }
         [MaxLength(100)]
         public string WarehouseName { get; set; }
         [MaxLength(255)]

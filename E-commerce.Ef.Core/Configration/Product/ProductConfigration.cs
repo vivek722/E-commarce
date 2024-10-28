@@ -22,7 +22,13 @@ namespace E_commerce.Ef.Core.Configration.Product
             builder.Property(x => x.ProductActualprice).IsRequired().HasColumnType("decimal(10, 2)");
             builder.Property(x => x.ProductImag).IsRequired();
             builder.Property(x => x.CrateAt).IsRequired();
-            builder.Property(x => x.UpdateAt);   
+            builder.Property(x => x.UpdateAt);
+
+
+            builder.HasOne(x => x.Supplier)
+            .WithMany(s => s.Products)
+            .HasForeignKey(x => x.SupplierId)
+            .OnDelete(DeleteBehavior.Cascade);
         }
     }
 

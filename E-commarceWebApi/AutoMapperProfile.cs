@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using E_commarceWebApi.RequestModel;
 using E_commerce.Ef.Core.Employee;
+using E_commerce.Ef.Core.Payment;
 using E_commerce.Ef.Core.Product;
 using E_commerce.Ef.Core.User;
 
@@ -39,23 +40,9 @@ namespace E_commarceWebApi
             CreateMap<Projects, ProjectDto>().ReverseMap();
             CreateMap<EmployeeProject, EmployeeDto>().ReverseMap();
             CreateMap<Products, ProductDto>().ReverseMap();
-            CreateMap<SupplierDto, Supplier>()
-            .ForMember(dest => dest.Address, opt => opt.MapFrom(src => new List<Addresse>
-            {
-            new Addresse
-            {
-                Street = src.Street,
-                City = src.City,
-                State = src.State,
-                ZipCode = src.ZipCode
-            }
-                    }));
-            CreateMap<Supplier, SupplierDto>()
-                .ForMember(dest => dest.Street, opt => opt.MapFrom(src => src.Address.Street))
-                .ForMember(dest => dest.City, opt => opt.MapFrom(src => src.Address.City))
-                .ForMember(dest => dest.State, opt => opt.MapFrom(src => src.Address.State))
-                .ForMember(dest => dest.ZipCode, opt => opt.MapFrom(src => src.Address.ZipCode));
-
+            CreateMap<SupplierDto, Supplier>().ReverseMap();
+            CreateMap<Inventory, InventoryDto>().ReverseMap();
+            CreateMap<Warehouse, InventoryDto>().ReverseMap();
         }
     }
 }

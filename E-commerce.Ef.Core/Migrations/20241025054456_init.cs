@@ -67,20 +67,6 @@ namespace E_commerce.Ef.Core.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Products",
-                columns: table => new
-                {
-                    id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ProductName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Price = table.Column<decimal>(type: "decimal(10,2)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Products", x => x.id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Projects",
                 columns: table => new
                 {
@@ -128,9 +114,13 @@ namespace E_commerce.Ef.Core.Migrations
                 {
                     id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    SupplierName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    CompanyName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Phone = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false)
+                    Email = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Street = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    City = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    State = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    ZipCode = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -246,126 +236,27 @@ namespace E_commerce.Ef.Core.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Discount",
+                name: "Products",
                 columns: table => new
                 {
                     id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ProductId = table.Column<int>(type: "int", nullable: false),
-                    DiscountAmount = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
-                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Discount", x => x.id);
-                    table.ForeignKey(
-                        name: "FK_Discount_Products_ProductId",
-                        column: x => x.ProductId,
-                        principalTable: "Products",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Reviews",
-                columns: table => new
-                {
-                    id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    CustomerId = table.Column<int>(type: "int", nullable: false),
-                    ProductId = table.Column<int>(type: "int", nullable: false),
-                    Rating = table.Column<int>(type: "int", nullable: false),
-                    ReviewText = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Reviews", x => x.id);
-                    table.ForeignKey(
-                        name: "FK_Reviews_Customers_CustomerId",
-                        column: x => x.CustomerId,
-                        principalTable: "Customers",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Reviews_Products_ProductId",
-                        column: x => x.ProductId,
-                        principalTable: "Products",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Users",
-                columns: table => new
-                {
-                    id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    PasswordHash = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
-                    RoleId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Users", x => x.id);
-                    table.ForeignKey(
-                        name: "FK_Users_Roles_RoleId",
-                        column: x => x.RoleId,
-                        principalTable: "Roles",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ProductSupplier",
-                columns: table => new
-                {
-                    id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ProductId = table.Column<int>(type: "int", nullable: false),
+                    ProductName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    ProductDesc = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    ProductOrignalprice = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
+                    ProductActualprice = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
+                    ProductImag = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CrateAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdateAt = table.Column<DateTime>(type: "datetime2", nullable: true),
                     SupplierId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ProductSupplier", x => x.id);
+                    table.PrimaryKey("PK_Products", x => x.id);
                     table.ForeignKey(
-                        name: "FK_ProductSupplier_Products_ProductId",
-                        column: x => x.ProductId,
-                        principalTable: "Products",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_ProductSupplier_Supplier_SupplierId",
+                        name: "FK_Products_Supplier_SupplierId",
                         column: x => x.SupplierId,
                         principalTable: "Supplier",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Inventory",
-                columns: table => new
-                {
-                    id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ProductId = table.Column<int>(type: "int", nullable: false),
-                    WarehouseId = table.Column<int>(type: "int", nullable: false),
-                    Quantity = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Inventory", x => x.id);
-                    table.ForeignKey(
-                        name: "FK_Inventory_Products_ProductId",
-                        column: x => x.ProductId,
-                        principalTable: "Products",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Inventory_Warehouses_WarehouseId",
-                        column: x => x.WarehouseId,
-                        principalTable: "Warehouses",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -387,33 +278,6 @@ namespace E_commerce.Ef.Core.Migrations
                         name: "FK_Invoices_Orders_orderId",
                         column: x => x.orderId,
                         principalTable: "Orders",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "OrderDetails",
-                columns: table => new
-                {
-                    id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    OrderId = table.Column<int>(type: "int", nullable: false),
-                    productId = table.Column<int>(type: "int", nullable: false),
-                    Quantity = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_OrderDetails", x => x.id);
-                    table.ForeignKey(
-                        name: "FK_OrderDetails_Orders_OrderId",
-                        column: x => x.OrderId,
-                        principalTable: "Orders",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_OrderDetails_Products_productId",
-                        column: x => x.productId,
-                        principalTable: "Products",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -474,24 +338,131 @@ namespace E_commerce.Ef.Core.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Addresses",
+                name: "Discount",
                 columns: table => new
                 {
                     id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Street = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    City = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    State = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    ZipCode = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
-                    Userid = table.Column<int>(type: "int", nullable: false)
+                    ProductId = table.Column<int>(type: "int", nullable: false),
+                    DiscountAmount = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
+                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Addresses", x => x.id);
+                    table.PrimaryKey("PK_Discount", x => x.id);
                     table.ForeignKey(
-                        name: "FK_Addresses_Users_Userid",
-                        column: x => x.Userid,
-                        principalTable: "Users",
+                        name: "FK_Discount_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Inventory",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ProductId = table.Column<int>(type: "int", nullable: false),
+                    WarehouseId = table.Column<int>(type: "int", nullable: false),
+                    Quantity = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Inventory", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_Inventory_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Inventory_Warehouses_WarehouseId",
+                        column: x => x.WarehouseId,
+                        principalTable: "Warehouses",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "OrderDetails",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    OrderId = table.Column<int>(type: "int", nullable: false),
+                    productId = table.Column<int>(type: "int", nullable: false),
+                    Quantity = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OrderDetails", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_OrderDetails_Orders_OrderId",
+                        column: x => x.OrderId,
+                        principalTable: "Orders",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_OrderDetails_Products_productId",
+                        column: x => x.productId,
+                        principalTable: "Products",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ProductSupplier",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ProductId = table.Column<int>(type: "int", nullable: false),
+                    SupplierId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProductSupplier", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_ProductSupplier_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ProductSupplier_Supplier_SupplierId",
+                        column: x => x.SupplierId,
+                        principalTable: "Supplier",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Reviews",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CustomerId = table.Column<int>(type: "int", nullable: false),
+                    ProductId = table.Column<int>(type: "int", nullable: false),
+                    Rating = table.Column<int>(type: "int", nullable: false),
+                    ReviewText = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Reviews", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_Reviews_Customers_CustomerId",
+                        column: x => x.CustomerId,
+                        principalTable: "Customers",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Reviews_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -517,10 +488,57 @@ namespace E_commerce.Ef.Core.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Addresses",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Street = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
+                    City = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    State = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    ZipCode = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
+                    Userid = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Addresses", x => x.id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Users",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    PasswordHash = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
+                    RoleId = table.Column<int>(type: "int", nullable: false),
+                    Addresseid = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_Users_Addresses_Addresseid",
+                        column: x => x.Addresseid,
+                        principalTable: "Addresses",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Users_Roles_RoleId",
+                        column: x => x.RoleId,
+                        principalTable: "Roles",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Addresses_Userid",
                 table: "Addresses",
-                column: "Userid");
+                column: "Userid",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Cities_CountryId",
@@ -598,6 +616,11 @@ namespace E_commerce.Ef.Core.Migrations
                 column: "InvoicesId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Products_SupplierId",
+                table: "Products",
+                column: "SupplierId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ProductSupplier_ProductId",
                 table: "ProductSupplier",
                 column: "ProductId");
@@ -628,16 +651,30 @@ namespace E_commerce.Ef.Core.Migrations
                 column: "ShipperId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Users_Addresseid",
+                table: "Users",
+                column: "Addresseid");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Users_RoleId",
                 table: "Users",
                 column: "RoleId");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Addresses_Users_Userid",
+                table: "Addresses",
+                column: "Userid",
+                principalTable: "Users",
+                principalColumn: "id",
+                onDelete: ReferentialAction.Restrict);
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "Addresses");
+            migrationBuilder.DropForeignKey(
+                name: "FK_Addresses_Users_Userid",
+                table: "Addresses");
 
             migrationBuilder.DropTable(
                 name: "Cities");
@@ -670,9 +707,6 @@ namespace E_commerce.Ef.Core.Migrations
                 name: "Shipments");
 
             migrationBuilder.DropTable(
-                name: "Users");
-
-            migrationBuilder.DropTable(
                 name: "Countries");
 
             migrationBuilder.DropTable(
@@ -691,16 +725,10 @@ namespace E_commerce.Ef.Core.Migrations
                 name: "Invoices");
 
             migrationBuilder.DropTable(
-                name: "Supplier");
-
-            migrationBuilder.DropTable(
                 name: "Products");
 
             migrationBuilder.DropTable(
                 name: "Shippers");
-
-            migrationBuilder.DropTable(
-                name: "Roles");
 
             migrationBuilder.DropTable(
                 name: "Department");
@@ -709,7 +737,19 @@ namespace E_commerce.Ef.Core.Migrations
                 name: "Orders");
 
             migrationBuilder.DropTable(
+                name: "Supplier");
+
+            migrationBuilder.DropTable(
                 name: "Customers");
+
+            migrationBuilder.DropTable(
+                name: "Users");
+
+            migrationBuilder.DropTable(
+                name: "Addresses");
+
+            migrationBuilder.DropTable(
+                name: "Roles");
         }
     }
 }

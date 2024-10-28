@@ -10,13 +10,15 @@ namespace E_Commrece.Domain.services.productData
 {
     public class ProductService : GenericService<Products>, IProductService
     {
-        public ProductService(IGenricRepository<Products> genricRepository) : base(genricRepository)
+        private readonly IProductRepository _productRepository;
+        public ProductService(IProductRepository productRepository) : base(productRepository)
         {
+            _productRepository = productRepository;
         }
 
         public Task<List<Products>> SearchProduct(string SearchString)
         {
-            throw new NotImplementedException();
+            return _productRepository.SearchProduct(SearchString);
         }
     }
 }
