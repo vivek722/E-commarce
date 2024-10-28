@@ -22,6 +22,12 @@ namespace E_commerce.Ef.Core.Configration.Payment
                 .WithMany(x => x.Inventory)
                 .HasForeignKey(x => x.WarehouseId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+
+            builder.HasOne(x => x.products)
+                .WithOne(x => x.Inventorys)
+                .HasForeignKey<Inventory>(x => x.ProductId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

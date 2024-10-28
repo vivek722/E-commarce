@@ -25,7 +25,7 @@ namespace E_commerce.Ef.Core.Product
         public ICollection<OrderDetail> OrderDetail { get; set; }
         public ICollection<ProductSupplier> ProductSuppliers { get; set; }
         public ICollection<Discount> Discount { get; set; }
-        public ICollection<Inventory> Inventorys{ get; set; }
+        public Inventory Inventorys{ get; set; }
         public ICollection<Review> Review { get; set; }
     }
 }
