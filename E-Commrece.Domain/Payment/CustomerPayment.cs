@@ -18,8 +18,11 @@ namespace E_commerce.Ef.Core.Payment
         public int paymentMethodId { get; set; }
 
         [ForeignKey("paymentMethodId")]
-        public PaymentMethod  paymentMethod { get; set; }
         public DateTime PaymentDate { get; set; }
+
+        [Column(TypeName = "decimal(10, 2)")]
+        public decimal PaymentAmount { get; set; }
+        public PaymentMethod  paymentMethod { get; set; }
 
     }
 }

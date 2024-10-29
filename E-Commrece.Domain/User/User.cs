@@ -1,4 +1,5 @@
 ﻿using E_Commrece.Domain.BaseClass;
+using E_Commrece.Domain.ProductData;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -21,6 +22,9 @@ namespace E_commerce.Ef.Core.User
         [ForeignKey("RoleId")]
         public Role Role { get; set; }
         public Addresse Addresse { get; set; }
+        public AddToCart AddToCart { get; set; }
+        public Wishlist Wishlist { get; set; }
+
 
     }
 }

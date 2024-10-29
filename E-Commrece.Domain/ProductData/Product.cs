@@ -1,4 +1,5 @@
 ﻿using E_Commrece.Domain.BaseClass;
+using E_Commrece.Domain.ProductData;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -22,10 +23,13 @@ namespace E_commerce.Ef.Core.Product
         public DateTime? UpdateAt { get; set; }
         public int SupplierId { get; set; }
         public Supplier Supplier { get; set; }
-        public ICollection<OrderDetail> OrderDetail { get; set; }
+        public OrderDetail OrderDetail { get; set; }
         public ICollection<ProductSupplier> ProductSuppliers { get; set; }
         public ICollection<Discount> Discount { get; set; }
-        public Inventory Inventorys{ get; set; }
+        public Inventory Inventorys { get; set; }
         public ICollection<Review> Review { get; set; }
+        public ICollection<AddToCart> AddToCart { get; set; }
+        public ICollection<Wishlist> Wishlist { get; set; }
+
     }
 }
