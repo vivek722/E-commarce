@@ -74,7 +74,6 @@ namespace E_commarceWebApi
             services.AddTransient<InventoryIRepository, InvenoryRepository>();
             services.AddTransient<InventoryIService, InventoryService>();
 
-
             services.AddScoped<warehouseService>();
             services.AddTransient<IWarehouseRepository, warehouseRepository>();
             services.AddTransient<IWarehouseService, warehouseService>();

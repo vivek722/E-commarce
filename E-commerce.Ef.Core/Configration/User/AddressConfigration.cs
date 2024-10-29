@@ -21,7 +21,7 @@ namespace E_commerce.Ef.Core.Configration.User
             builder.Property(x => x.ZipCode).IsRequired().HasMaxLength(10);
 
             builder.HasOne(x => x.User)
-                .WithOne()
+                .WithOne(x=>x.Addresse) 
                 .HasForeignKey<Addresse>(x => x.Userid)
                 .OnDelete(DeleteBehavior.Restrict);
         }

@@ -4,6 +4,7 @@ using E_commerce.Ef.Core.User;
 using E_Commrece.Domain.services.User;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
 
 namespace E_commarceWebApi.Controllers
 {
@@ -37,10 +38,24 @@ namespace E_commarceWebApi.Controllers
         {
             if (ModelState.IsValid)
             {
+
                 var User = _mapper.Map<Users>(UserData);
                 {
-                     User.PasswordHash  = _passwordHasher.HashPassword(User, UserData.PasswordHash);
-                    await _userService.Add(User);
+                    if (User != null)
+                    {
+                        if (UserData.AddressDto != null)
+                        {
+                            User.Addresse = new Addresse // A
+                            {
+                                Street = UserData.AddressDto.Street,
+                                City = UserData.AddressDto.City,
+                                State = UserData.AddressDto.State,
+                                ZipCode = UserData.AddressDto.ZipCode
+                            };
+                            User.PasswordHash = _passwordHasher.HashPassword(User, UserData.PasswordHash);
+                            await _userService.Add(User);
+                        }
+                    }
                     return Ok(User);
                 }
             }

@@ -17,10 +17,10 @@ namespace E_commerce.Ef.Core.Configration.Payment
             builder.HasKey(x => x.id);
             builder.Property(x => x.PaymentAmount);
 
-            builder.HasOne(x=>x.invoices)
-                .WithMany(x=>x.Payments)
-                .HasForeignKey(x=>x.InvoicesId)
-                .OnDelete(DeleteBehavior.Cascade);
+            //builder.HasOne(x=>x.invoices)
+            //    .WithOne(x=>x.CustomerPayment)
+            //    .HasForeignKey(x=>x.InvoicesId)
+            //    .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

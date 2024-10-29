@@ -14,7 +14,7 @@ namespace E_commerce.Ef.Core.Payment
         public int ShipperName { get; set; }
         [MaxLength(20)]
         public int Phone { get; set; }
-        public ICollection<Shipment> Shipment { get; set; }
+        public Shipment Shipment { get; set; }
 
 
     }

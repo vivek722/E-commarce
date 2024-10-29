@@ -17,24 +17,7 @@ namespace E_commarceWebApi
             CreateMap<Countrie, CountrieDto>()
               .ForMember(dest => dest.CityNames, opt => opt.MapFrom(src => src.Cities.Select(c => c.CityName)));
 
-            CreateMap<UserDto, Users>()
-            .ForMember(dest => dest.Addresse, opt => opt.MapFrom(src => new List<Addresse>
-            {   
-            new Addresse
-            {
-                Street = src.Street,
-                City = src.City,
-                State = src.State,
-                ZipCode = src.ZipCode
-            }
-                    }));
-
-            CreateMap<Users, UserDto>()
-                .ForMember(dest => dest.Street, opt => opt.MapFrom(src => src.Addresse.Street))
-                .ForMember(dest => dest.City, opt => opt.MapFrom(src => src.Addresse.City))
-                .ForMember(dest => dest.State, opt => opt.MapFrom(src => src.Addresse.State))
-                .ForMember(dest => dest.ZipCode, opt => opt.MapFrom(src => src.Addresse.ZipCode));
-
+            CreateMap<Users, UserDto>().ReverseMap();
             CreateMap<Department, DepartmentDto>().ReverseMap();
             CreateMap<Employees, EmployeeDto>().ReverseMap();
             CreateMap<Projects, ProjectDto>().ReverseMap();

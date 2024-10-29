@@ -16,10 +16,8 @@ namespace E_commerce.Ef.Core.Configration.Product
             builder.ToTable("OrderDetails");
             builder.HasKey(x => x.id);
             builder.Property(x => x.Quantity).IsRequired();
-
-            builder.HasOne(x => x.Order).WithMany(x => x.OrderDetail).HasForeignKey(x => x.OrderId).OnDelete(DeleteBehavior.Cascade);
-
-            builder.HasOne(x => x.product).WithMany(x => x.OrderDetail).HasForeignKey(x => x.productId).OnDelete(DeleteBehavior.Cascade);
+            builder.HasOne(x => x.Order).WithOne(x => x.OrderDetail).HasForeignKey<OrderDetail>(x => x.OrderId).OnDelete(DeleteBehavior.Restrict);
+            builder.HasOne(x => x.product).WithOne(x => x.OrderDetail).HasForeignKey<OrderDetail>(x => x.productId).OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

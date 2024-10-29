@@ -19,9 +19,9 @@ namespace E_commerce.Ef.Core.Configration.Payment
             builder.Property(x => x.InvoiceDate);
             builder.Property(x => x.TotalAmount);
             builder.HasOne(x=>x.orders)
-                .WithMany(x => x.Invoices)
-                .HasForeignKey(x=>x.orderId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .WithOne(x => x.Invoices)
+                .HasForeignKey<Invoices>(x=>x.orderId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

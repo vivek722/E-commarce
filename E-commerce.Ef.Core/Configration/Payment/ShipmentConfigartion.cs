@@ -23,8 +23,8 @@ namespace E_commerce.Ef.Core.Configration.Payment
                 .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasOne(x => x.Shippers)
-                .WithMany(x => x.Shipment)
-                .HasForeignKey(x => x.ShipperId)
+                .WithOne(x => x.Shipment)
+                .HasForeignKey<Shipment>(x => x.ShipperId)
                 .OnDelete(DeleteBehavior.Cascade);
 
         }

@@ -18,8 +18,9 @@ namespace E_commerce.Ef.Core.Payment
 
         [Column(TypeName = "decimal(10, 2)")]
         public decimal TotalAmount { get; set; }
-
-        public ICollection<Payments> Payments { get; set; }
+        public int CustomerPaymentId { get; set; }
+        [ForeignKey("CustomerPaymentId")]
+        public CustomerPayment CustomerPayment { get; set; }
 
     }
 }

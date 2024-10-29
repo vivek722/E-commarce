@@ -14,11 +14,11 @@ namespace E_commerce.Ef.Core.Product
         public int customerId { get; set; }
         public Customer customer { get; set; }
         public DateTime OrderDate { get; set; }
-        public ICollection<OrderDetail> OrderDetail { get; set; }
-        public ICollection<Invoices> Invoices { get; set; }
+        public OrderDetail OrderDetail { get; set; }
+        public Invoices Invoices { get; set; }
 
         public ICollection<Shipment> Shipment { get; set; }
 
 
     }
-}
+}   

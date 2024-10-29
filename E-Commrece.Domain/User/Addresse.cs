@@ -23,5 +23,9 @@ namespace E_commerce.Ef.Core.User
         [ForeignKey("Userid")]
         public Users User { get; set; }
 
+        public static implicit operator Addresse(List<Addresse> v)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
