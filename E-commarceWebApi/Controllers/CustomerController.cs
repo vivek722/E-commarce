@@ -9,8 +9,8 @@ namespace E_commarceWebApi.Controllers
     [ApiController]
     public class CustomerController : Controller
     {
-        private readonly CustomerService _customerService;
-        public CustomerController(CustomerService customerService)
+        private readonly ICustomerService _customerService;
+        public CustomerController(ICustomerService customerService)
         {
             _customerService = customerService;
         }
