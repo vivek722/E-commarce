@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace E_commarceWebApi.Controllers
 {
-    [Route("[controller]")]
     [ApiController]
     public class FireBaseController : Controller
     {
@@ -14,7 +13,7 @@ namespace E_commarceWebApi.Controllers
             _imageService = imageService;
         }
         [HttpPost("UploadImage")]
-        public async Task<IActionResult> UploadImage([FromForm] IFormFile File)
+        public async Task<IActionResult> UploadImage( IFormFile File)
         {
             var file = Guid.NewGuid().ToString() + "-" + File.FileName;
             var path = Path.Combine(Path.GetTempPath(), file);
