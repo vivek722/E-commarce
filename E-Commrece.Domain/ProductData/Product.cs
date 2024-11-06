@@ -18,7 +18,6 @@ namespace E_commerce.Ef.Core.Product
         public string ProductDesc { get; set; }
         public decimal ProductOrignalprice { get; set; }
         public decimal ProductActualprice { get; set; }
-        public string ProductImag { get; set; }
         public DateTime CrateAt { get; set; }
         public DateTime? UpdateAt { get; set; }
         public int SupplierId { get; set; }
@@ -27,6 +26,7 @@ namespace E_commerce.Ef.Core.Product
         public ICollection<ProductSupplier> ProductSuppliers { get; set; }
         public ICollection<Discount> Discount { get; set; }
         public Inventory Inventorys { get; set; }
+        public ICollection<ProductImage> ProductImage { get; set; }
         public ICollection<Review> Review { get; set; }
         public ICollection<AddToCart> AddToCart { get; set; }
         public ICollection<Wishlist> Wishlist { get; set; }

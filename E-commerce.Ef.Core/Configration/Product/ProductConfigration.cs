@@ -20,7 +20,6 @@ namespace E_commerce.Ef.Core.Configration.Product
             builder.Property(x => x.ProductDesc).IsRequired().HasMaxLength(255);
             builder.Property(x => x.ProductOrignalprice).IsRequired().HasColumnType("decimal(10, 2)");
             builder.Property(x => x.ProductActualprice).IsRequired().HasColumnType("decimal(10, 2)");
-            builder.Property(x => x.ProductImag).IsRequired();
             builder.Property(x => x.CrateAt).IsRequired();
             builder.Property(x => x.UpdateAt);
 

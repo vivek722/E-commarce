@@ -23,5 +23,9 @@ namespace E_commerce.Ef.Core.Repository
         {
             return _context.Products.AsNoTracking().Where(x => x.ProductName == SearchString).ToListAsync();
         }
+        public override Task<List<Products>> GetAll()
+        {
+            return _context.Products.AsNoTracking().Include(x=>x.ProductImage).ToListAsync();
+        }
     }
 }

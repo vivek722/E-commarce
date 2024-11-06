@@ -3,6 +3,7 @@ using E_commarceWebApi.RequestModel;
 using E_commerce.Ef.Core.Product;
 using E_commerce.Ef.Core.User;
 using E_Commrece.Domain.FireBaseSevice;
+using E_Commrece.Domain.ProductData;
 using E_Commrece.Domain.services.productData;
 using E_Commrece.Domain.services.User;
 using Microsoft.AspNetCore.Mvc;
@@ -40,6 +41,10 @@ namespace E_commarceWebApi.Controllers
             if (ModelState.IsValid)
             {
                 var product = _mapper.Map<Products>(ProductDto);
+
+                // Initialize the ProductImage collection if it's null
+                product.ProductImage = product.ProductImage ?? new List<ProductImage>();
+
                 if (ProductDto.ProductImag != null)
                 {
                     foreach (var item in ProductDto.ProductImag)
@@ -47,24 +52,32 @@ namespace E_commarceWebApi.Controllers
                         var file = Guid.NewGuid().ToString() + "-" + item.FileName;
                         var path = Path.Combine(Path.GetTempPath(), file);
                         var folder = "Product-Images";
-                        using (var strem = new FileStream(path, FileMode.Create))
+
+                        using (var stream = new FileStream(path, FileMode.Create))
                         {
-                            await item.CopyToAsync(strem);
+                            await item.CopyToAsync(stream);
                         }
+
                         var url = await _imageService.FireBaseUploadImageAsync(file, path, folder);
-                        product.ProductImag += url;
+
+                        // Add the image URL to the ProductImage collection
+                        product.ProductImage.Add(new ProductImage { ProductImag = url });
                     }
                 }
+
                 product.CrateAt = DateTime.Now;
                 product.UpdateAt = null;
+
                 if (product != null)
                 {
-                  await _productService.Add(product);
-                  return Ok(product);
+                    await _productService.Add(product);
+                    return Ok(product);
                 }
             }
+
             return BadRequest("Data Is Not Proper");
         }
+
         [HttpDelete("DeleteProduct")]
         public async Task<IActionResult> DeleteProduct([FromForm] int id)
         {
