@@ -30,7 +30,7 @@ namespace E_commerce.Ef.Core.Repository.Base
             await applicationDb.SaveChangesAsync();
             return DeletedData;
         }
-        public async Task<List<TModel>> GetAll()
+        public virtual async Task<List<TModel>> GetAll()
         {
             return await applicationDb.Set<TModel>().AsNoTracking().ToListAsync();
         }
