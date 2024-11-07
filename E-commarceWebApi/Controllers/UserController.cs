@@ -43,14 +43,14 @@ namespace E_commarceWebApi.Controllers
                 {
                     if (User != null)
                     {
-                        if (UserData.AddressDto != null)
+                        if (UserData != null)
                         {
                             User.Addresse = new Addresse // A
                             {
-                                Street = UserData.AddressDto.Street,
-                                City = UserData.AddressDto.City,
-                                State = UserData.AddressDto.State,
-                                ZipCode = UserData.AddressDto.ZipCode
+                                Street = UserData.Street,
+                                City = UserData.City,
+                                State = UserData.State,
+                                ZipCode = UserData.ZipCode
                             };
                             User.PasswordHash = _passwordHasher.HashPassword(User, UserData.PasswordHash);
                             await _userService.Add(User);
