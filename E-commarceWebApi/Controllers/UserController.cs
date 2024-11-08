@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using E_commarceWebApi.RequestModel;
 using E_commerce.Ef.Core.User;
+using E_Commrece.Domain.Email_SMS_Sender;
 using E_Commrece.Domain.services.User;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -14,13 +15,15 @@ namespace E_commarceWebApi.Controllers
     {
         private readonly IUserService _userService;
         private readonly IMapper _mapper;
+        private readonly IEmailSender _emailSender;
         private readonly PasswordHasher<Users> _passwordHasher;
 
-        public UserController(IUserService userService, IMapper mapper)
+        public UserController(IUserService userService, IMapper mapper, IEmailSender emailSender)
         {
             _userService = userService;
             _mapper = mapper;
             _passwordHasher = new PasswordHasher<Users>();
+            _emailSender = emailSender;
         }
         [HttpGet("GetAllUser")]
         public async Task<IActionResult> GetAllUser([FromForm] string? SerchString)
@@ -54,6 +57,7 @@ namespace E_commarceWebApi.Controllers
                             };
                             User.PasswordHash = _passwordHasher.HashPassword(User, UserData.PasswordHash);
                             await _userService.Add(User);
+                            await _emailSender.SendEmailAsync(UserData.Email, "Welcome to Our ShopMart!",UserData.UserName);
                         }
                     }
                     return Ok(User);

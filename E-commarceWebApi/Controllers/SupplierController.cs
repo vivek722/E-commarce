@@ -4,6 +4,8 @@ using E_commerce.Ef.Core.User;
 using E_Commrece.Domain.services.productData;
 using E_commerce.Ef.Core.Product;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Identity;
+using E_Commrece.Domain.Email_SMS_Sender;
 
 namespace E_commarceWebApi.Controllers
 {
@@ -13,11 +15,15 @@ namespace E_commarceWebApi.Controllers
     {
         private readonly SupplierService _supplierService;
         private readonly IMapper _mapper;
+        private readonly IEmailSender _emailSender;
+        private readonly PasswordHasher<Supplier> _passwordHasher;
 
-        public SupplierController(SupplierService supplierService, IMapper mapper)
+        public SupplierController(SupplierService supplierService, IMapper mapper, IEmailSender emailSender)
         {
             _supplierService = supplierService;
-            _mapper = mapper;   
+            _mapper = mapper;
+            _passwordHasher = new PasswordHasher<Supplier>();
+            _emailSender = emailSender;
         }
 
         [HttpGet("GetAllSuppliers")]
@@ -40,6 +46,7 @@ namespace E_commarceWebApi.Controllers
                 if (Supplier != null)
                 {
                     await _supplierService.Add(Supplier);
+                    await _emailSender.SendEmailAsync(supplierDto.Email, "Thank You To Join Our ShopMart!", supplierDto.UserName);
                     return Ok(Supplier);
                 }
             }
