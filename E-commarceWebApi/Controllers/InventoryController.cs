@@ -18,7 +18,7 @@ namespace E_commarceWebApi.Controllers
         private readonly IWarehouseService _warehouseService;
         private readonly IProductService  _productService;
         private readonly IMapper _mapper;
-        public InventoryController(ICountrieService countrieService, IMapper mapper, InventoryIService inventoryService, IWarehouseService warehouseService, IProductService productService)
+        public InventoryController(IMapper mapper, InventoryIService inventoryService, IWarehouseService warehouseService, IProductService productService)
         {
             _inventoryService = inventoryService;
             _warehouseService = warehouseService;
@@ -26,7 +26,7 @@ namespace E_commarceWebApi.Controllers
             _mapper = mapper;
         }
         [HttpGet("GetAllInventory")]
-        public async Task<IActionResult> GetAllInventory([FromForm] string? SerchString)
+        public async Task<IActionResult> GetAllInventory( string? SerchString)
         {
             if (SerchString == null)
             {

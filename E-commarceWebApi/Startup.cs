@@ -1,6 +1,5 @@
 ﻿using E_Commrece.Domain;
 using Microsoft.EntityFrameworkCore;
-using E_commerce.Ef.Core;
 using E_Commrece.Domain.services.User;
 using E_commerce.Ef.Core.Repository;
 using Newtonsoft.Json;
@@ -15,6 +14,8 @@ using E_Commrece.Domain.services.productData;
 using E_Commrece.Domain.services.Base;
 using E_commerce.Ef.Core.Repository.Base;
 using E_Commrece.Domain.services.Payment;
+using E_Commrece.Domain.Email_SMS_Sender;
+using Microsoft.Extensions.DependencyInjection;
 namespace E_commarceWebApi
 {
     public class Startup
@@ -86,6 +87,8 @@ namespace E_commarceWebApi
 
             services.AddSingleton(new FireBaseService(bucketName, firebaseStorageUrl));
             services.AddTransient<IFireBaseUploadImageService, FireBaseUploadImageService>();
+
+            services.AddTransient<IEmailSender, EmailSender>();
 
             services.AddCors(options =>
             {
