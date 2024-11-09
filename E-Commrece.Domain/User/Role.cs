@@ -12,5 +12,6 @@ namespace E_commerce.Ef.Core.User
     {
         public string RoleName { get; set; }
         public ICollection<Users> users { get; set; }
+        public ICollection<Supplier> Supplier { get; set; }
     }
 }
