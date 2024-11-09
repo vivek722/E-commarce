@@ -1,5 +1,7 @@
 ﻿using E_commarceWebApi.RequestModel;
+using E_commerce.Ef.Core.Product;
 using E_commerce.Ef.Core.User;
+using E_Commrece.Domain.services.productData;
 using E_Commrece.Domain.services.User;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -16,11 +18,13 @@ namespace E_commarceWebApi.Controllers
     {
 
         private readonly IUserService _userService;
+        private readonly ISupplierService _supplierService;
         private readonly IConfiguration _configuration;
-        public AuthenticateController(IUserService userService, IConfiguration configuration)
+        public AuthenticateController(IUserService userService, IConfiguration configuration, ISupplierService supplierService)
         {
             _userService = userService;
             _configuration = configuration;
+            _supplierService = supplierService;
 
         }
         [HttpPost("Login")]
@@ -28,28 +32,59 @@ namespace E_commarceWebApi.Controllers
         {
             var users = await _userService.SearchUsers(login.UserName);
             var User = users.FirstOrDefault();
-            if (User != null)
-            {
-                var passwordHasher = new PasswordHasher<Users>();
-                var verificationResult = passwordHasher.VerifyHashedPassword(User,User.PasswordHash, login.Password);
 
-                if (verificationResult == PasswordVerificationResult.Failed)
+            if (User == null)
+            {
+                var suppliers = await _supplierService.SearchSupplier(login.UserName);
+                var supplier = suppliers.FirstOrDefault();
+
+                if (supplier != null)
                 {
-                    return Unauthorized("Invalid username or password.");
+                    var passwordHasher = new PasswordHasher<Supplier>();
+                    var verificationResult = passwordHasher.VerifyHashedPassword(supplier, supplier.Password, login.Password);
+
+                    if (verificationResult == PasswordVerificationResult.Failed)
+                    {
+                        return Unauthorized("Invalid username or password.");
+                    }
+
+                    var authClaims = new List<Claim>
+                    {
+                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                    new Claim(ClaimTypes.Name,supplier.UserName),
+                    new Claim("Id",supplier.id.ToString()),
+                    new Claim("Role",supplier.Role.RoleName),
+                    };
+                    var token = GetToken(authClaims);
+                    return Ok(new
+                    {
+                        token = new JwtSecurityTokenHandler().WriteToken(token),
+                    });
                 }
-                var authClaims = new List<Claim>
+            }
+                if (User != null)
+                {
+                    var passwordHasher = new PasswordHasher<Users>();
+                    var verificationResult = passwordHasher.VerifyHashedPassword(User, User.PasswordHash, login.Password);
+
+                    if (verificationResult == PasswordVerificationResult.Failed)
+                    {
+                        return Unauthorized("Invalid username or password.");
+                    }
+                    var authClaims = new List<Claim>
                 {
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                     new Claim(ClaimTypes.Name,User.UserName),
-                    new Claim("UserId",User.id.ToString()),
-                    new Claim(ClaimTypes.Role,User.Role.RoleName),
+                    new Claim("Id",User.id.ToString()),
+                    new Claim("Role",User.Role.RoleName),
                 };
-                var token = GetToken(authClaims);
-                return Ok(new
-                {
-                    token = new JwtSecurityTokenHandler().WriteToken(token),
-                });
-            }
+                    var token = GetToken(authClaims);
+                    return Ok(new
+                    {
+                        token = new JwtSecurityTokenHandler().WriteToken(token),
+                    });
+                }
+            
             return BadRequest("Please Provide Valid User");
         }
         private JwtSecurityToken GetToken(List<Claim> authClaims)

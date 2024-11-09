@@ -2,6 +2,7 @@
 using E_commerce.Ef.Core.Repository.Base;
 using E_Commrece.Domain;
 using E_Commrece.Domain.services.productData;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,7 +21,7 @@ namespace E_commerce.Ef.Core.Repository
 
         public Task<List<Supplier>> SearchSupplier(string SearchString)
         {
-            throw new NotImplementedException();
+            return _context.Suppliers.AsNoTracking().Where(x => x.UserName == SearchString || x.CompanyName == SearchString).Include(x => x.Role).ToListAsync();
         }
     }
 }
