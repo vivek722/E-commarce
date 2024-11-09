@@ -40,6 +40,7 @@ namespace E_commarceWebApi.Controllers
                 if (Supplier != null)
                 {
                     await _supplierService.Add(Supplier);
+                    await _emailSender.SendEmailAsync(supplierDto.Email, "Thank You To Join Our ShopMart!", supplierDto.user);
                     return Ok(Supplier);
                 }
             }
