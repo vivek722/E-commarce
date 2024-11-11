@@ -19,9 +19,10 @@ namespace E_commerce.Ef.Core.Repository.Base
         }
         public async Task<TModel> Add(TModel TModel)
         {
-            await applicationDb.Set<TModel>().AddAsync(TModel);
-            await applicationDb.SaveChangesAsync();
-            return TModel;
+           
+                await applicationDb.Set<TModel>().AddAsync(TModel);
+                await applicationDb.SaveChangesAsync();
+                return TModel;
         }
         public async Task<TModel> Delete(int id)
         {

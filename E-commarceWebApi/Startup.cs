@@ -79,6 +79,15 @@ namespace E_commarceWebApi
             services.AddTransient<IWarehouseRepository, warehouseRepository>();
             services.AddTransient<IWarehouseService, warehouseService>();
 
+
+            services.AddScoped<WishListService>();
+            services.AddTransient<IWishlistRepository, WishListRepository>();
+            services.AddTransient<IWishListService, WishListService>();
+
+            services.AddScoped<AddToCartService>();
+            //services.AddTransient<IAddToCartRepository, AddressRepository>();
+            services.AddTransient<IAddToCartService, AddToCartService>();
+
             services.AddScoped(typeof(IGenricRepository<>), typeof(GenericRepository<>));
 
 

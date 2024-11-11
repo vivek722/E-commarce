@@ -20,8 +20,8 @@ namespace E_commarceWebApi.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet("GetAllCustomer")]
-        public async Task<IActionResult> GetAllCustomer(string? SerchString)
+        [HttpGet("GetAllCartProducts")]
+        public async Task<IActionResult> GetAllCartProducts(string? SerchString)
         {
             if (SerchString == null)
             {
@@ -31,8 +31,8 @@ namespace E_commarceWebApi.Controllers
             var SearchCartProducts = await _addToCartService.SearcAddToCart(SerchString);
             return Ok(SearchCartProducts);
         }
-        [HttpPost("AddProductInCart")]
-        public async Task<IActionResult> AddProductInCart([FromForm] AddToCartDto AddToCartDto)
+        [HttpPost("AddCartProduct")]
+        public async Task<IActionResult> AddCartProduct(AddToCartDto AddToCartDto)
         {
             if (ModelState.IsValid)
             {
@@ -46,7 +46,7 @@ namespace E_commarceWebApi.Controllers
             return BadRequest("Data Is Not Proper");
         }
         [HttpDelete("DeleteProductInCart")]
-        public async Task<IActionResult> DeleteProductInCart([FromForm] int id)
+        public async Task<IActionResult> DeleteProductInCart( int id)
         {
             if (id <= 0)
             {
@@ -55,8 +55,8 @@ namespace E_commarceWebApi.Controllers
             await _addToCartService.Delete(id);
             return Ok("Cart Product Remove Successfully");
         }
-        [HttpPut("UpdateProductInCart")]
-        public async Task<IActionResult> UpdateProductInCart([FromForm] AddToCartDto AddToCartDto)
+        [HttpPut("UpdateCartProduct")]
+        public async Task<IActionResult> UpdateCartProduct( AddToCartDto AddToCartDto)
         {
             if (ModelState.IsValid)
             {

@@ -11,9 +11,13 @@ namespace E_commarceWebApi.FireBaseSevice
     public class FireBaseUploadImageService : IFireBaseUploadImageService
     {
         private readonly FireBaseService _fireBaseService;
+        //private readonly IDatabaseService _databaseService;
+
+        private const long FirebaseStorageLimitBytes = 1L * 1024 * 1024 * 1024;
         public FireBaseUploadImageService(FireBaseService fireBaseService)
         {
             _fireBaseService = fireBaseService;
+
         }
 
         public async Task<string> FireBaseDeleteImageAsync(string fileName, string folderName)
@@ -36,6 +40,5 @@ namespace E_commarceWebApi.FireBaseSevice
             var DowloadUrl = await storge.Child(folderName).Child(fileName).PutAsync(System.IO.File.OpenRead(filePath));
             return DowloadUrl;
         }
-
     }
 }

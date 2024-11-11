@@ -18,8 +18,8 @@ namespace E_commarceWebApi.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet("GetAllCustomer")]
-        public async Task<IActionResult> GetAllCustomer(string? SerchString)
+        [HttpGet("GetAllWishlistProducts")]
+        public async Task<IActionResult> GetAllWishlistProducts(string? SerchString)
         {
             if (SerchString == null)
             {
@@ -29,8 +29,8 @@ namespace E_commarceWebApi.Controllers
             var SearchCartProducts = await _wishlistService.SearcWishlist(SerchString);
             return Ok(SearchCartProducts);
         }
-        [HttpPost("AddProductInCart")]
-        public async Task<IActionResult> AddProductInCart([FromForm] WishListDto WishListDto)
+        [HttpPost("AddWishlistProduct")]
+        public async Task<IActionResult> AddWishlistProduct(WishListDto WishListDto)
         {
             if (ModelState.IsValid)
             {
@@ -43,8 +43,8 @@ namespace E_commarceWebApi.Controllers
             }
             return BadRequest("Data Is Not Proper");
         }
-        [HttpDelete("DeleteProductInCart")]
-        public async Task<IActionResult> DeleteProductInCart([FromForm] int id)
+        [HttpDelete("DeleteWishlistProduct")]
+        public async Task<IActionResult> DeleteWishlistProduct(int id)
         {
             if (id <= 0)
             {
@@ -53,8 +53,8 @@ namespace E_commarceWebApi.Controllers
             await _wishlistService.Delete(id);
             return Ok("Cart Product Remove Successfully");
         }
-        [HttpPut("UpdateProductInCart")]
-        public async Task<IActionResult> UpdateProductInCart([FromForm] WishListDto WishListDto)
+        [HttpPut("UpdateWishlistProduct")]
+        public async Task<IActionResult> UpdateWishlistProduct( WishListDto WishListDto)
         {
             if (ModelState.IsValid)
             {

@@ -2,6 +2,7 @@
 using E_commerce.Ef.Core.Repository.Base;
 using E_Commrece.Domain;
 using E_Commrece.Domain.services.Payment;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,6 +22,10 @@ namespace E_commerce.Ef.Core.Repository
         public Task<List<Inventory>> SearchInventory(string SearchString)
         {
             throw new NotImplementedException();
+        }
+        public override Task<List<Inventory>> GetAll()
+        {
+            return _applicationDbContext1.Inventories.AsNoTracking().Include(x => x.products).ThenInclude(x=>x.ProductImage).Include(x=>x.Warehouse).ToListAsync();
         }
     }
 }
