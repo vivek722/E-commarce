@@ -36,13 +36,12 @@ namespace E_commarceWebApi.Controllers
             return Ok(Searchroles);
         }
         [HttpPost("AddProduct")]
-        public async Task<IActionResult> AddProduct([FromForm] ProductDto ProductDto)
+        public async Task<IActionResult> AddProduct(ProductDto ProductDto)
         {
             if (ModelState.IsValid)
             {
                 var product = _mapper.Map<Products>(ProductDto);
 
-                // Initialize the ProductImage collection if it's null
                 product.ProductImage = product.ProductImage ?? new List<ProductImage>();
 
                 if (ProductDto.ProductImag != null)
@@ -60,7 +59,7 @@ namespace E_commarceWebApi.Controllers
 
                         var url = await _imageService.FireBaseUploadImageAsync(file, path, folder);
 
-                        // Add the image URL to the ProductImage collection
+                       
                         product.ProductImage.Add(new ProductImage { ProductImag = url });
                     }
                 }
@@ -79,7 +78,7 @@ namespace E_commarceWebApi.Controllers
         }
 
         [HttpDelete("DeleteProduct")]
-        public async Task<IActionResult> DeleteProduct([FromForm] int id)
+        public async Task<IActionResult> DeleteProduct(int id)
         {
             if (id <= 0)
             {
@@ -89,7 +88,7 @@ namespace E_commarceWebApi.Controllers
             return Ok("Role Deleted Successfully");
         }
         [HttpPut("UpdateProduct")]
-        public async Task<IActionResult> UpdateProduct([FromForm] ProductDto Product)
+        public async Task<IActionResult> UpdateProduct(ProductDto Product)
         {
             if (ModelState.IsValid)
             {

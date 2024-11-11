@@ -30,8 +30,8 @@ namespace E_commarceWebApi.Controllers
         {
             if (SerchString == null)
             {
-                var roles = await _inventoryService.GetAll();
-                return Ok(roles);
+                var Inventory = await _inventoryService.GetAll();
+                return Ok(Inventory);
             }
             var Searchroles = await _inventoryService.SearchInventory(SerchString);
             return Ok(Searchroles);

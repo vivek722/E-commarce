@@ -9,9 +9,7 @@ namespace E_Commrece.Domain.FireBaseSevice
     public interface IFireBaseUploadImageService
     {
         Task<string> FireBaseUploadImageAsync(string fileName, string filePath, string folderName);
-        Task<string> FireBaseDeleteImageAsync(string fileName,string folderName);
+        Task<string> FireBaseDeleteImageAsync(string fileName, string folderName);
         Task<string> FireBaseGetImageAsync(string fileName, string folderName);
-
-
     }
 }

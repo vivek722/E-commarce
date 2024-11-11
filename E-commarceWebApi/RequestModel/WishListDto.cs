@@ -4,6 +4,5 @@
     {
         public int UserId { get; set; }
         public int ProductId { get; set; }
-        public DateTime AddedDate { get; set; } = DateTime.UtcNow;
     }
 }

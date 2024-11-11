@@ -4,6 +4,7 @@ using E_Commrece.Domain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace E_commerce.Ef.Core.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241111123608_updateWishlist")]
+    partial class updateWishlist
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -47,9 +50,8 @@ namespace E_commerce.Ef.Core.Migrations
 
                     b.HasKey("id");
 
-                    b.HasIndex("ProductId");
-
-                    b.HasIndex("UserId");
+                    b.HasIndex("ProductId")
+                        .IsUnique();
 
                     b.ToTable("AddToCart", (string)null);
                 });
@@ -97,7 +99,8 @@ namespace E_commerce.Ef.Core.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserId")
+                        .IsUnique();
 
                     b.ToTable("WishList", (string)null);
                 });
@@ -807,8 +810,8 @@ namespace E_commerce.Ef.Core.Migrations
                         .IsRequired();
 
                     b.HasOne("E_commerce.Ef.Core.User.Users", "User")
-                        .WithMany("AddToCart")
-                        .HasForeignKey("UserId")
+                        .WithOne("AddToCart")
+                        .HasForeignKey("E_Commrece.Domain.ProductData.AddToCart", "ProductId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
@@ -837,8 +840,8 @@ namespace E_commerce.Ef.Core.Migrations
                         .IsRequired();
 
                     b.HasOne("E_commerce.Ef.Core.User.Users", "User")
-                        .WithMany("Wishlist")
-                        .HasForeignKey("UserId")
+                        .WithOne("Wishlist")
+                        .HasForeignKey("E_Commrece.Domain.ProductData.Wishlist", "UserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
@@ -1200,12 +1203,14 @@ namespace E_commerce.Ef.Core.Migrations
 
             modelBuilder.Entity("E_commerce.Ef.Core.User.Users", b =>
                 {
-                    b.Navigation("AddToCart");
+                    b.Navigation("AddToCart")
+                        .IsRequired();
 
                     b.Navigation("Addresse")
                         .IsRequired();
 
-                    b.Navigation("Wishlist");
+                    b.Navigation("Wishlist")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

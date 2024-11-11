@@ -17,7 +17,7 @@ namespace E_commerce.Ef.Core.Configration.Product
             builder.HasKey(x => x.id);
             builder.Property(x => x.AddedDate).IsRequired();
             builder.HasOne(x => x.Product).WithMany(x => x.Wishlist).HasForeignKey(x => x.ProductId).OnDelete(DeleteBehavior.Cascade);
-            builder.HasOne(x => x.User).WithOne(x => x.Wishlist).HasForeignKey<Wishlist>(x => x.ProductId).OnDelete(DeleteBehavior.Restrict);
+            builder.HasOne(x => x.User).WithMany(x => x.Wishlist).HasForeignKey(x => x.UserId).OnDelete(DeleteBehavior.Restrict);
         }
     }
 }
