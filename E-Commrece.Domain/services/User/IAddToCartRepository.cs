@@ -11,5 +11,6 @@ namespace E_Commrece.Domain.services.User
     public interface IAddToCartRepository : IGenricRepository<AddToCart>
     {
         Task<List<AddToCart>> SearcAddToCart(string SearchString);
+        Task<AddToCart> isProductInCart(int productId, int UserId);
     }
 }

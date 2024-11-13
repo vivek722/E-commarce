@@ -56,7 +56,7 @@ namespace E_commarceWebApi.Controllers
             return Ok("Cart Product Remove Successfully");
         }
         [HttpPut("UpdateCartProduct")]
-        public async Task<IActionResult> UpdateCartProduct( AddToCartDto AddToCartDto)
+        public async Task<IActionResult> UpdateCartProduct(AddToCartDto AddToCartDto)
         {
             if (ModelState.IsValid)
             {
@@ -68,6 +68,16 @@ namespace E_commarceWebApi.Controllers
                 }
             }
             return BadRequest("Data Is Not Proper");
+        }
+        [HttpGet("isProductInCart")]
+        public async Task<IActionResult> isProductInCart(int ProductId, int UserId)
+        {
+            var AddToCartData = await _addToCartService.isProductInCart(ProductId, UserId);
+            if (AddToCartData != null)
+            {
+                return Ok(AddToCartData);
+            }
+            return Ok(AddToCartData);
         }
     }
 }
