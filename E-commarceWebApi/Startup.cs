@@ -85,7 +85,7 @@ namespace E_commarceWebApi
             services.AddTransient<IWishListService, WishListService>();
 
             services.AddScoped<AddToCartService>();
-            //services.AddTransient<IAddToCartRepository, AddressRepository>();
+            services.AddTransient<IAddToCartRepository, AddToCartRepoSitory>();
             services.AddTransient<IAddToCartService, AddToCartService>();
 
             services.AddScoped(typeof(IGenricRepository<>), typeof(GenericRepository<>));
@@ -170,11 +170,11 @@ namespace E_commarceWebApi
         public void Configure(WebApplication app, IWebHostEnvironment env)
         {
             
-            if (app.Environment.IsDevelopment())
-            {
+            //if (app.Environment.IsDevelopment())
+            //{
                 app.UseSwagger();
                 app.UseSwaggerUI();
-            }
+            //}
 
             app.UseHttpsRedirection();
             app.UseCors("MyCorsPolicy");
@@ -182,7 +182,6 @@ namespace E_commarceWebApi
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=WeatherForecast}/{action=Get}");
-
             app.Run();
         }
     }

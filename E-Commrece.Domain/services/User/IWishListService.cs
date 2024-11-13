@@ -12,5 +12,7 @@ namespace E_Commrece.Domain.services.User
     public interface IWishListService : IGenricservice<Wishlist>
     {
         Task<List<Wishlist>> SearcWishlist(string SearchString);
+
+        Task<Wishlist> isProductInWishlist(int productId, int UserId);
     }
 }

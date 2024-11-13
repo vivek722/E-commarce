@@ -2,6 +2,7 @@
 using E_commerce.Ef.Core.Payment;
 using E_commerce.Ef.Core.Product;
 using E_commerce.Ef.Core.User;
+using E_Commrece.Domain.ProductData;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -44,6 +45,9 @@ namespace E_Commrece.Domain
         public DbSet<Employees> Employees { get; set; }
         public DbSet<EmployeeProject> EmployeeProjects { get; set; }
         public DbSet<Projects> Projects { get; set; }
+        public DbSet<Wishlist> Wishlist { get; set; }
+        public DbSet<AddToCart> AddToCart { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

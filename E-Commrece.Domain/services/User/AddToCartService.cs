@@ -10,8 +10,15 @@ namespace E_Commrece.Domain.services.User
 {
     public class AddToCartService : GenericService<AddToCart>, IAddToCartService
     {
-        public AddToCartService(IGenricRepository<AddToCart> genricRepository) : base(genricRepository)
+        private IAddToCartRepository _repository;
+        public AddToCartService(IAddToCartRepository repository) : base(repository)
         {
+            _repository = repository;
+        }
+
+        public Task<AddToCart> isProductInCart(int productId, int UserId)
+        {
+           return _repository.isProductInCart(productId, UserId);
         }
 
         public Task<List<AddToCart>> SearcAddToCart(string SearchString)
