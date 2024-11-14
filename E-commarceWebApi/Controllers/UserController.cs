@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using E_commarceWebApi.RequestModel;
+using E_commarceWebApi.RequestModel.ResponseModel;
+using E_commerce.Ef.Core.Product;
 using E_commerce.Ef.Core.User;
 using E_Commrece.Domain.Email_SMS_Sender;
 using E_Commrece.Domain.services.User;
@@ -28,64 +30,98 @@ namespace E_commarceWebApi.Controllers
         [HttpGet("GetAllUser")]
         public async Task<IActionResult> GetAllUser([FromForm] string? SerchString)
         {
-            if (SerchString == null)
+            try
             {
-                var roles = await _userService.GetAll();
-                return Ok(roles);
+                if (SerchString == null)
+                {
+                    var roles = await _userService.GetAll();
+                    return Ok(roles);
+                }
+                var Searchroles = await _userService.SearchUsers(SerchString);
+                return Ok(Searchroles);
             }
-            var Searchroles = await _userService.SearchUsers(SerchString);
-            return Ok(Searchroles);
+            catch (Exception ex) 
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = ex.Message });
+            }
         }
         [HttpPost("AddUser")]
         public async Task<IActionResult> AddUser(UserDto UserData)
         {
-            if (ModelState.IsValid)
+            try
             {
-
-                var User = _mapper.Map<Users>(UserData);
+                var UserName = await _userService.SearchUsers(UserData.UserName);
+                if (UserName != null)
                 {
-                    if (User != null)
-                    {
-                        if (UserData != null)
-                        {
-                            User.Addresse = new Addresse // A
-                            {
-                                Street = UserData.Street,
-                                City = UserData.City,
-                                State = UserData.State,
-                                ZipCode = UserData.ZipCode
-                            };
-                            User.PasswordHash = _passwordHasher.HashPassword(User, UserData.PasswordHash);
-                            await _userService.Add(User);
-                            await _emailSender.SendEmailAsync(UserData.Email, "Welcome to Our ShopMart!",UserData.UserName);
-                        }
-                    }
-                    return Ok(User);
+                    return Ok(new Response { Status = "Error", Message = "ThIs UserName Already Exists!" });
                 }
+                if (ModelState.IsValid)
+                {
+                    var User = _mapper.Map<Users>(UserData);
+                    {
+                        if (User != null)
+                        {
+                            if (UserData != null)
+                            {
+                                User.Addresse = new Addresse
+                                {
+                                    Street = UserData.Street,
+                                    City = UserData.City,
+                                    State = UserData.State,
+                                    ZipCode = UserData.ZipCode
+                                };
+                                User.PasswordHash = _passwordHasher.HashPassword(User, UserData.PasswordHash);
+                                await _userService.Add(User);
+                                await _emailSender.SendEmailAsync(UserData.Email, "Welcome to Our ShopMart!", UserData.UserName);
+                            }
+                        }
+                        return Ok(new Response { Status = "Success", Message = "User Add SuccessFully" });
+                    }
+                }
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User Not Add" });
             }
-            return BadRequest("Data Is Not Proper");
-        }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = ex.Message });
+            }
+          }
         [HttpDelete("DeleteUser")]
         public async Task<IActionResult> DeleteUser([FromForm] int id)
         {
-            if (id <= 0)
+            try
             {
-                return BadRequest("Id Not in 0 or Lessthen 0");
+                if (id <= 0)
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Id Not in 0 or Lessthen 0" });
+                }
+                await _userService.Delete(id);
+                return Ok(new Response { Status = "Success", Message = "User Delete SuccessFully" });
             }
-            await _userService.Delete(id);
-            return Ok("Role Deleted Successfully");
+            catch (Exception ex) 
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = ex.Message });
+            }
         }
         [HttpPut("UpdateUser")]
         public async Task<IActionResult> UpdateUser([FromForm] UserDto UserData)
         {
-            if (ModelState.IsValid)
+            try
             {
+                if (ModelState.IsValid)
                 {
-                //    await _userService.updateUser(RoleData.id, Roles);
-                    return Ok("Role Updated Successfully");
+                    var User = _mapper.Map<Users>(UserData);
+                    if (User != null)
+                    {
+                        await _userService.update(User);
+                        return Ok(new Response { Status = "Success", Message = "User Data Update SuccessFully" });
+                    }
                 }
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User Data Not Update" });
             }
-            return BadRequest("Data Is Not Proper");
+            catch(Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = ex.Message });
+            }
         }
     }
-}
+    }
