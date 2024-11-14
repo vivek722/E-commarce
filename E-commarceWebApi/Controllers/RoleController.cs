@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using E_commarceWebApi.RequestModel;
+using E_commarceWebApi.RequestModel.ResponseModel;
 using E_commerce.Ef.Core.User;
 using E_Commrece.Domain.services.User;
 using Microsoft.AspNetCore.Mvc;
@@ -19,53 +20,87 @@ namespace E_commarceWebApi.Controllers
         [HttpGet("GetAllRoles")]
         public async Task<IActionResult> GetAllRoles(string? SerchString)
         {
-            if (SerchString == null)
+            try
             {
-                var roles = await _roleService.GetAll();
-                return Ok(roles);
+                if (SerchString == null)
+                {
+                    var roles = await _roleService.GetAll();
+                    return Ok(roles);
+                }
+                var Searchroles = await _roleService.SearchRoles(SerchString);
+                return Ok(Searchroles);
             }
-            var Searchroles = await _roleService.SearchRoles(SerchString);
-            return Ok(Searchroles);
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = ex.Message });
+            }
         }
         [HttpPost("AddRoles")]
         public async Task<IActionResult> AddRoles([FromForm] RoleDto RoleData)
         {
-            if (ModelState.IsValid)
+            try
             {
-                Role Roles = new Role();
-                Roles.RoleName = RoleData.RoleName;
-                if (Roles != null)
+                var roleExists = await _roleService.SearchRoles(RoleData.RoleName);
+                if (roleExists != null)
                 {
-                    await _roleService.Add(Roles);
-                    return Ok(Roles);
+                    return Ok(new Response { Status = "Error", Message = "Role Already Have Exists!" });
                 }
+                if (ModelState.IsValid)
+                {
+                    Role Roles = new Role();
+                    Roles.RoleName = RoleData.RoleName;
+                    if (Roles != null)
+                    {
+                        await _roleService.Add(Roles);
+                        return Ok(new Response { Status = "Success", Message = "Role Add Successfully !" });
+                    }
+                }
+               return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Role Not Created" });
             }
-            return BadRequest("Data Is Not Proper");
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = ex.Message });
+            }
         }
-        [HttpDelete("DeleteRoles")]
+            [HttpDelete("DeleteRoles")]
         public async Task<IActionResult> DeleteRoles([FromForm] int id)
         {
-            if (id <= 0)
+            try
             {
-                return BadRequest("Id Not in 0 or Lessthen 0");
+                if (id <= 0)
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Role Not Delete !" });
+                }
+                await _roleService.Delete(id);
+                return Ok(new Response { Status = "Success", Message = "Role Is Delete !" });
             }
-            await _roleService.Delete(id);
-            return Ok("Role Deleted Successfully");
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = ex.Message });
+            }
         }
         [HttpPut("UpdateRoles")]
         public async Task<IActionResult> UpdateRoles([FromForm] RoleDto RoleData)
         {
-            if (ModelState.IsValid)
+            try
             {
-                Role Roles = new Role();
-                Roles.RoleName = RoleData.RoleName;
-                if (RoleData != null)
+                if (ModelState.IsValid)
                 {
-                    await _roleService.update(Roles);
-                    return Ok("Role Updated Successfully");
+                    Role Roles = new Role();
+                    Roles.RoleName = RoleData.RoleName;
+                    if (RoleData != null)
+                    {
+                        await _roleService.update(Roles);
+                        return Ok(new Response { Status = "Success", Message = "Role Update Successfully !" });
+                    }
                 }
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Role Not Update!" });
+
             }
-            return BadRequest("Data Is Not Proper");
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = ex.Message });
+            }
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using E_commarceWebApi.RequestModel;
+using E_commarceWebApi.RequestModel.ResponseModel;
 using E_Commrece.Domain.ProductData;
 using E_Commrece.Domain.services.User;
 using Microsoft.AspNetCore.Mvc;
@@ -21,51 +22,97 @@ namespace E_commarceWebApi.Controllers
         [HttpGet("GetAllWishlistProducts")]
         public async Task<IActionResult> GetAllWishlistProducts(string? SerchString)
         {
-            if (SerchString == null)
+            try
             {
-                var CartAllProducts = await _wishlistService.GetAll();
-                return Ok(CartAllProducts);
+                if (SerchString == null)
+                {
+                    var CartAllProducts = await _wishlistService.GetAll();
+                    return Ok(CartAllProducts);
+                }
+                var SearchCartProducts = await _wishlistService.SearcWishlist(SerchString);
+                return Ok(SearchCartProducts);
             }
-            var SearchCartProducts = await _wishlistService.SearcWishlist(SerchString);
-            return Ok(SearchCartProducts);
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,new Response { Status ="Error",Message= ex.Message });
+            }
         }
         [HttpPost("AddWishlistProduct")]
         public async Task<IActionResult> AddWishlistProduct(WishListDto WishListDto)
         {
-            if (ModelState.IsValid)
+            try
             {
-                var Product = _mapper.Map<Wishlist>(WishListDto);
-                if (Product != null)
+                if (ModelState.IsValid)
                 {
-                    await _wishlistService.Add(Product);
-                    return Ok(Product);
+                    var Product = _mapper.Map<Wishlist>(WishListDto);
+                    if (Product != null)
+                    {
+                        await _wishlistService.Add(Product);
+                        return Ok(new Response { Status = "Success", Message = "Product Add In Wishlist" });
+                    }
                 }
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = " Product Not Add In Wishlist" });
             }
-            return BadRequest("Data Is Not Proper");
+            catch (Exception ex) 
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = ex.Message });
+            }
         }
         [HttpDelete("DeleteWishlistProduct")]
         public async Task<IActionResult> DeleteWishlistProduct(int id)
         {
-            if (id <= 0)
+            try
             {
-                return BadRequest("Id Not in 0 or Lessthen 0");
+                if (id <= 0)
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Id Not in 0 or Lessthen 0" });
+                }
+                await _wishlistService.Delete(id);
+                return Ok(new Response { Status = "Success", Message = "Product Remove From Wishlist" });
             }
-            await _wishlistService.Delete(id);
-            return Ok("Cart Product Remove Successfully");
+            catch(Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = ex.Message });
+            }
         }
         [HttpPut("UpdateWishlistProduct")]
         public async Task<IActionResult> UpdateWishlistProduct(WishListDto WishListDto)
         {
-            if (ModelState.IsValid)
+            try
             {
-                var Product = _mapper.Map<Wishlist>(WishListDto);
-                if (Product != null)
+                if (ModelState.IsValid)
                 {
-                    await _wishlistService.update(Product);
-                    return Ok(Product);
+                    var Product = _mapper.Map<Wishlist>(WishListDto);
+                    if (Product != null)
+                    {
+                        await _wishlistService.update(Product);
+                        return Ok(new Response { Status = "Success", Message = "Wishlist Data Updated" });
+                    }
                 }
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Wishlist not updated" });
             }
-            return BadRequest("Data Is Not Proper");
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = ex.Message });
+            }
+        }
+        [HttpGet("isProductInWishlist")]
+        public async Task<IActionResult> isProductInWishlist(int ProductId, int UserId)
+        {
+            try
+            {
+                var wishlistData = await _wishlistService.isProductInWishlist(ProductId, UserId);
+                if (wishlistData != null)
+                {
+                    return Ok(wishlistData);
+                }
+                return Ok(wishlistData);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = ex.Message });
+
+            }
         }
         [HttpGet("isProductInWishlist")]
         public async Task<IActionResult> isProductInWishlist(int ProductId, int UserId)

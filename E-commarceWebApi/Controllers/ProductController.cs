@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using E_commarceWebApi.RequestModel;
+using E_commarceWebApi.RequestModel.ResponseModel;
 using E_commerce.Ef.Core.Product;
 using E_commerce.Ef.Core.User;
 using E_Commrece.Domain.FireBaseSevice;
@@ -27,65 +28,86 @@ namespace E_commarceWebApi.Controllers
         [HttpGet("GetAllProducts")]
         public async Task<IActionResult> GetAllProducts(string? SerchString)
         {
-            if (SerchString == null)
+            try
             {
-                var products = await _productService.GetAll();
-                return Ok(products);
+                if (SerchString == null)
+                {
+                    var products = await _productService.GetAll();
+                    return Ok(products);
+                }
+                var Searchroles = await _productService.SearchProduct(SerchString);
+                return Ok(Searchroles);
             }
-            var Searchroles = await _productService.SearchProduct(SerchString);
-            return Ok(Searchroles);
+            catch (Exception ex) 
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = ex.Message });
+            }
         }
         [HttpPost("AddProduct")]
         public async Task<IActionResult> AddProduct(ProductDto ProductDto)
         {
-            if (ModelState.IsValid)
+            try
             {
-                var product = _mapper.Map<Products>(ProductDto);
-
-                product.ProductImage = product.ProductImage ?? new List<ProductImage>();
-
-                if (ProductDto.ProductImag != null)
+                if (ModelState.IsValid)
                 {
-                    foreach (var item in ProductDto.ProductImag)
+                    var product = _mapper.Map<Products>(ProductDto);
+
+                    product.ProductImage = product.ProductImage ?? new List<ProductImage>();
+
+                    if (ProductDto.ProductImag != null)
                     {
-                        var file = Guid.NewGuid().ToString() + "-" + item.FileName;
-                        var path = Path.Combine(Path.GetTempPath(), file);
-                        var folder = "Product-Images";
-
-                        using (var stream = new FileStream(path, FileMode.Create))
+                        foreach (var item in ProductDto.ProductImag)
                         {
-                            await item.CopyToAsync(stream);
+                            var file = Guid.NewGuid().ToString() + "-" + item.FileName;
+                            var path = Path.Combine(Path.GetTempPath(), file);
+                            var folder = "Product-Images";
+
+                            using (var stream = new FileStream(path, FileMode.Create))
+                            {
+                                await item.CopyToAsync(stream);
+                            }
+
+                            var url = await _imageService.FireBaseUploadImageAsync(file, path, folder);
+
+
+                            product.ProductImage.Add(new ProductImage { ProductImag = url });
                         }
+                    }
 
-                        var url = await _imageService.FireBaseUploadImageAsync(file, path, folder);
+                    product.CrateAt = DateTime.Now;
+                    product.UpdateAt = null;
 
-                       
-                        product.ProductImage.Add(new ProductImage { ProductImag = url });
+                    if (product != null)
+                    {
+                        await _productService.Add(product);
+                        return Ok(product);
                     }
                 }
 
-                product.CrateAt = DateTime.Now;
-                product.UpdateAt = null;
-
-                if (product != null)
-                {
-                    await _productService.Add(product);
-                    return Ok(product);
-                }
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Product Is Not Add" });
             }
-
-            return BadRequest("Data Is Not Proper");
+            catch(Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = ex.Message });
+            }
         }
 
         [HttpDelete("DeleteProduct")]
         public async Task<IActionResult> DeleteProduct(int id)
         {
-            if (id <= 0)
+            try
             {
-                return BadRequest("Id Is Not 0 or  Not Lessthen 0");
+                if (id <= 0)
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Id Is Not 0 or  Not Lessthen 0" });
+                }
+                await _productService.Delete(id);
+                return Ok("Role Deleted Successfully");
             }
-            await _productService.Delete(id);
-            return Ok("Role Deleted Successfully");
+            catch(Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = ex.Message });
+            }
         }
         [HttpPut("UpdateProduct")]
         public async Task<IActionResult> UpdateProduct(ProductDto Product)
