@@ -24,11 +24,24 @@ namespace E_commarceWebApi.Controllers
             {
                 if (SerchString == null)
                 {
-                    var roles = await _roleService.GetAll();
-                    return Ok(roles);
+                    var Allroles = await _roleService.GetAll();
+                    return Ok(new DataResponseList() { Data = Allroles, Status = StatusCodes.Status200OK, Message = "ok" });
                 }
                 var Searchroles = await _roleService.SearchRoles(SerchString);
-                return Ok(Searchroles);
+                return Ok(new DataResponseList() { Data = Searchroles, Status = StatusCodes.Status200OK, Message = "ok" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = ex.Message });
+            }
+        }
+        [HttpGet("GetRoleById/{id}")]
+        public async Task<IActionResult> GetRoleById(int id)
+        {
+            try
+            {
+                var RoleDataByid = await _roleService.GetById(id);
+                return Ok(new DataResponseList() { Data = RoleDataByid, Status = StatusCodes.Status200OK, Message = "ok" });
             }
             catch (Exception ex)
             {

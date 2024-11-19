@@ -27,11 +27,24 @@ namespace E_commarceWebApi.Controllers
             {
                 if (SerchString == null)
                 {
-                    var roles = await _orderService.GetAll();
-                    return Ok(roles);
+                    var AllOrders = await _orderService.GetAll();
+                    return Ok(new DataResponseList() { Data = AllOrders, Status = StatusCodes.Status200OK, Message = "ok" });
                 }
-                var Searchroles = await _orderService.SearchOrder(SerchString);
-                return Ok(Searchroles);
+                var SearchOrders = await _orderService.SearchOrder(SerchString);
+                return Ok(new DataResponseList() { Data = SearchOrders, Status = StatusCodes.Status200OK, Message = "ok" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = ex.Message });
+            }
+        }
+        [HttpGet("GetOrderById/{id}")]
+        public async Task<IActionResult> GetOrderById(int id)
+        {
+            try
+            {
+                var OrderDataByid = await _orderService.GetById(id);
+                return Ok(new DataResponseList() { Data = OrderDataByid, Status = StatusCodes.Status200OK, Message = "ok" });
             }
             catch (Exception ex)
             {

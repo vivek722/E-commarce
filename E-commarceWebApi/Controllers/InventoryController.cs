@@ -27,7 +27,7 @@ namespace E_commarceWebApi.Controllers
             _mapper = mapper;
         }
         [HttpGet("GetAllInventory")]
-        public async Task<IActionResult> GetAllInventory( string? SerchString)
+        public async Task<IActionResult> GetAllInventory(string? SerchString)
         {
             try
             {
@@ -35,10 +35,23 @@ namespace E_commarceWebApi.Controllers
                 if (SerchString == null)
                 {
                     var Inventory = await _inventoryService.GetAll();
-                    return Ok(Inventory);
+                    return Ok(new DataResponseList() { Data = Inventory, Status = StatusCodes.Status200OK, Message = "ok" });
                 }
                 var Searchroles = await _inventoryService.SearchInventory(SerchString);
-                return Ok(Searchroles);
+                return Ok(new DataResponseList() { Data = Searchroles, Status = StatusCodes.Status200OK, Message = "ok" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = ex.Message });
+            }
+        }
+        [HttpGet("GetInventoryById/{id}")]
+        public async Task<IActionResult> GetInventoryById(int id)
+        {
+            try
+            {
+                var InventoryDataByid = await _inventoryService.GetById(id);
+                return Ok(new DataResponseList() { Data = InventoryDataByid, Status = StatusCodes.Status200OK, Message = "ok" });
             }
             catch (Exception ex)
             {

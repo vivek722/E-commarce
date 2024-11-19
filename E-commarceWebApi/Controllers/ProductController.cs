@@ -32,13 +32,26 @@ namespace E_commarceWebApi.Controllers
             {
                 if (SerchString == null)
                 {
-                    var products = await _productService.GetAll();
-                    return Ok(products);
+                    var Allproducts = await _productService.GetAllProducts();
+                    return Ok(new DataResponseList() { Data = Allproducts, Status = StatusCodes.Status200OK, Message = "ok" });
                 }
-                var Searchroles = await _productService.SearchProduct(SerchString);
-                return Ok(Searchroles);
+                var SearchProduct = await _productService.SearchProduct(SerchString);
+                return Ok(new DataResponseList() { Data = SearchProduct, Status = StatusCodes.Status200OK, Message = "ok" });
             }
-            catch (Exception ex) 
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = ex.Message });
+            }
+        }
+        [HttpGet("GetProductById/{id}")]
+        public async Task<IActionResult> GetProductById(int id)
+        {
+            try
+            {
+                var ProductDataByid = await _productService.GetById(id);
+                return Ok(new DataResponseList() { Data = ProductDataByid, Status = StatusCodes.Status200OK, Message = "ok" });
+            }
+            catch (Exception ex)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = ex.Message });
             }
