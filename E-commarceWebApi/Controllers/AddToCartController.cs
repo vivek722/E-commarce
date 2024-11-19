@@ -30,10 +30,10 @@ namespace E_commarceWebApi.Controllers
                 if (SerchString == null)
                 {
                     var CartAllProducts = await _addToCartService.GetUserCartItems(id);
-                    return Ok(CartAllProducts);
+                    return Ok(new DataResponseList() { Data = CartAllProducts, Status = StatusCodes.Status200OK, Message = "ok" });
                 }
                 var SearchCartProducts = await _addToCartService.SearcAddToCart(SerchString);
-                return Ok(SearchCartProducts);
+                return Ok(new DataResponseList() { Data = SearchCartProducts, Status = StatusCodes.Status200OK, Message = "ok" });
             }
             catch (Exception ex)
             {
@@ -61,8 +61,8 @@ namespace E_commarceWebApi.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = ex.Message });
             }
         }
-        [HttpDelete("DeleteProductInCart")]
-        public async Task<IActionResult> DeleteProductInCart( int id)
+        [HttpDelete("DeleteProductInCart/{id}")]
+        public async Task<IActionResult> DeleteProductInCart(int id)
         {
             try
             {
@@ -72,8 +72,8 @@ namespace E_commarceWebApi.Controllers
                 }
                 await _addToCartService.Delete(id);
                 return Ok(new Response { Status = "Success", Message = "Cart Product Remove Successfully" });
-                }
-            catch (Exception ex) 
+            }
+            catch (Exception ex)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = ex.Message });
             }
@@ -92,7 +92,7 @@ namespace E_commarceWebApi.Controllers
                         return Ok(new Response { Status = "Success", Message = "Your Cart Product Updated" });
                     }
                 }
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Cart Product Not Updated"});
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Cart Product Not Updated" });
             }
             catch (Exception ex)
             {
@@ -105,9 +105,9 @@ namespace E_commarceWebApi.Controllers
             var AddToCartData = await _addToCartService.isProductInCart(ProductId, UserId);
             if (AddToCartData != null)
             {
-                return Ok(AddToCartData);
+                return Ok(new DataResponseList() { Data = AddToCartData, Status = StatusCodes.Status200OK, Message = "ok" });
             }
-            return Ok(AddToCartData);
+            return Ok(new DataResponseList() { Data = AddToCartData, Status = StatusCodes.Status204NoContent, Message = "Empty" });
         }
     }
 }

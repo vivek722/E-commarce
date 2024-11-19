@@ -38,11 +38,24 @@ namespace E_commarceWebApi.Controllers
             {
                 if (SerchString == null)
                 {
-                    var roles = await _supplierService.GetAll();
-                    return Ok(roles);
+                    var AllSuppliers = await _supplierService.GetAll();
+                    return Ok(new DataResponseList() { Data = AllSuppliers, Status = StatusCodes.Status200OK, Message = "ok" });
                 }
-                var Searchroles = await _supplierService.SearchSupplier(SerchString);
-                return Ok(Searchroles);
+                var SearchSuppliers = await _supplierService.SearchSupplier(SerchString);
+                return Ok(new DataResponseList() { Data = SearchSuppliers, Status = StatusCodes.Status200OK, Message = "ok" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = ex.Message });
+            }
+        }
+        [HttpGet("GetSuppliersById/{id}")]
+        public async Task<IActionResult> GetSuppliersById(int id)
+        {
+            try
+            {
+                var SuppliersDataByid = await _supplierService.GetById(id);
+                return Ok(new DataResponseList() { Data = SuppliersDataByid, Status = StatusCodes.Status200OK, Message = "ok" });
             }
             catch (Exception ex)
             {

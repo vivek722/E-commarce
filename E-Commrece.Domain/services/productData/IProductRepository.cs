@@ -13,6 +13,6 @@ namespace E_Commrece.Domain.services.productData
     public interface IProductRepository  : IGenricRepository<Products>
     {
         Task<List<Products>> SearchProduct(string SearchString);
-        Task<List<ProductDto>> GetAllProducts(string SearchString);
+        Task<List<ProductDto>> GetAllProducts();
     }
 }

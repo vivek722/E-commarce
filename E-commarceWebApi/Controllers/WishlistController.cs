@@ -27,14 +27,27 @@ namespace E_commarceWebApi.Controllers
                 if (SerchString == null)
                 {
                     var CartAllProducts = await _wishlistService.GetAll();
-                    return Ok(CartAllProducts);
+                    return Ok(new DataResponseList() { Data = CartAllProducts, Status = StatusCodes.Status200OK, Message = "ok" });
                 }
                 var SearchCartProducts = await _wishlistService.SearcWishlist(SerchString);
-                return Ok(SearchCartProducts);
+                return Ok(new DataResponseList() { Data = SearchCartProducts, Status = StatusCodes.Status200OK, Message = "ok" });
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError,new Response { Status ="Error",Message= ex.Message });
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = ex.Message });
+            }
+        }
+        [HttpGet("GetWishlistById/{id}")]
+        public async Task<IActionResult> GetWishlistById(int id)
+        {
+            try
+            {
+                var UserGetWishlistByIdByid = await _wishlistService.GetById(id);
+                return Ok(new DataResponseList() { Data = UserGetWishlistByIdByid, Status = StatusCodes.Status200OK, Message = "ok" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = ex.Message });
             }
         }
         [HttpPost("AddWishlistProduct")]

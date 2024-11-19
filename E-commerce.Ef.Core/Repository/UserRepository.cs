@@ -20,10 +20,17 @@ namespace E_commerce.Ef.Core.Repository
         {
             applicationDbContext = _applicationDbContext;
         }
-
         public async Task<List<Users>> SearchUsers(string SearchString)
         {
-            return await applicationDbContext.Users.AsNoTracking().Where(x => x.UserName == SearchString|| x.Email == SearchString).Include(x=>x.Role).ToListAsync();
+            return await applicationDbContext.Users.AsNoTracking().Where(x => x.UserName == SearchString || x.Email == SearchString).Include(x => x.Role).ToListAsync();
+        }
+        public override async Task<List<Users>> GetAll()
+        {
+            return await applicationDbContext.Users.AsNoTracking().Include(x => x.Addresse).ToListAsync();
+        }
+        public override async Task<Users> GetById(int id)
+        {
+            return await applicationDbContext.Users.AsNoTracking().Where(x => x.id == id).Include(x => x.Addresse).FirstOrDefaultAsync();
         }
     }
 }

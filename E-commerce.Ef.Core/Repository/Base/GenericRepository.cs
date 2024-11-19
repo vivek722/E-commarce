@@ -35,7 +35,7 @@ namespace E_commerce.Ef.Core.Repository.Base
         {
             return await applicationDb.Set<TModel>().AsNoTracking().ToListAsync();
         }
-        public async Task<TModel> GetById(int id)
+        public virtual async Task<TModel> GetById(int id)
         {
             return await applicationDb.Set<TModel>().AsNoTracking().Where(x=>x.id == id).FirstOrDefaultAsync();
         }

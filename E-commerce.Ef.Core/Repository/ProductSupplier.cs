@@ -24,9 +24,10 @@ namespace E_commerce.Ef.Core.Repository
         {
             return _context.Products.AsNoTracking().Where(x => x.ProductName == SearchString).ToListAsync();
         }
-        public async Task<List<ProductDto>> GetAllProducts(string SearchString)
+        public async Task<List<ProductDto>> GetAllProducts()
         {
-            return await _context.ProductDto.FromSqlInterpolated($"EXEC getallproducts").ToListAsync();
+            var Data = _context.ProductDto.FromSqlRaw($"EXEC getallproducts").ToListAsync();
+            return await Data;
         }
 
        

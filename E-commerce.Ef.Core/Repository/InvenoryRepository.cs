@@ -1,5 +1,6 @@
 ﻿using E_commerce.Ef.Core.Product;
 using E_commerce.Ef.Core.Repository.Base;
+using E_commerce.Ef.Core.User;
 using E_Commrece.Domain;
 using E_Commrece.Domain.services.Payment;
 using Microsoft.EntityFrameworkCore;
@@ -25,7 +26,11 @@ namespace E_commerce.Ef.Core.Repository
         }
         public override Task<List<Inventory>> GetAll()
         {
-            return _applicationDbContext1.Inventories.AsNoTracking().Include(x => x.products).ThenInclude(x=>x.ProductImage).Include(x=>x.Warehouse).ToListAsync();
+            return _applicationDbContext1.Inventories.AsNoTracking().Include(x => x.products).ThenInclude(x => x.ProductImage).Include(x => x.Warehouse).ToListAsync();
+        }
+        public override async Task<Inventory> GetById(int id)
+        {
+            return await _applicationDbContext1.Inventories.AsNoTracking().Where(x => x.id == id).Include(x => x.products).ThenInclude(x=>x.ProductImage).Include(x=>x.Warehouse).FirstOrDefaultAsync();
         }
     }
 }

@@ -28,19 +28,32 @@ namespace E_commarceWebApi.Controllers
             _emailSender = emailSender;
         }
         [HttpGet("GetAllUser")]
-        public async Task<IActionResult> GetAllUser([FromForm] string? SerchString)
+        public async Task<IActionResult> GetAllUser(string? SerchString)
         {
             try
             {
                 if (SerchString == null)
                 {
-                    var roles = await _userService.GetAll();
-                    return Ok(roles);
+                    var AllUserData = await _userService.GetAll();
+                    return Ok(new DataResponseList() { Data = AllUserData, Status = StatusCodes.Status200OK, Message = "ok" });
                 }
-                var Searchroles = await _userService.SearchUsers(SerchString);
-                return Ok(Searchroles);
+                var SearchUser = await _userService.SearchUsers(SerchString);
+                return Ok(new DataResponseList() { Data = SearchUser, Status = StatusCodes.Status200OK, Message = "ok" });
             }
-            catch (Exception ex) 
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = ex.Message });
+            }
+        }
+        [HttpGet("GetUserById/{id}")]
+        public async Task<IActionResult> GetUserById(int id)
+        {
+            try
+            {
+                var UserDataByid = await _userService.GetById(id);
+                return Ok(new DataResponseList() { Data = UserDataByid, Status = StatusCodes.Status200OK, Message = "ok" });
+            }
+            catch (Exception ex)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = ex.Message });
             }
