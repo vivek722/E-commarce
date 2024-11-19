@@ -114,15 +114,5 @@ namespace E_commarceWebApi.Controllers
 
             }
         }
-        [HttpGet("isProductInWishlist")]
-        public async Task<IActionResult> isProductInWishlist(int ProductId, int UserId)
-        {
-           var wishlistData =  await _wishlistService.isProductInWishlist(ProductId, UserId);
-            if(wishlistData != null)
-            {
-                return Ok(wishlistData);
-            }
-            return Ok(wishlistData);
-        }
     }
 }

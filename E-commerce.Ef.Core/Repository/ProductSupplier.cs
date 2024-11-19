@@ -1,6 +1,7 @@
 ﻿using E_commerce.Ef.Core.Product;
 using E_commerce.Ef.Core.Repository.Base;
 using E_Commrece.Domain;
+using E_Commrece.Domain.ResponseModel;
 using E_Commrece.Domain.services.productData;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -23,9 +24,12 @@ namespace E_commerce.Ef.Core.Repository
         {
             return _context.Products.AsNoTracking().Where(x => x.ProductName == SearchString).ToListAsync();
         }
-        public override Task<List<Products>> GetAll()
+        public async Task<List<ProductDto>> GetAllProducts(string SearchString)
         {
-            return _context.Products.AsNoTracking().Include(x=>x.ProductImage).ToListAsync();
+            return await _context.ProductDto.FromSqlInterpolated($"EXEC getallproducts").ToListAsync();
         }
+
+       
+        
     }
 }

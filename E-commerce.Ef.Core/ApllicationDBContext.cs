@@ -1,8 +1,10 @@
-﻿using E_commerce.Ef.Core.Employee;
+﻿using E_commarceWebApi.ResponseModel;
+using E_commerce.Ef.Core.Employee;
 using E_commerce.Ef.Core.Payment;
 using E_commerce.Ef.Core.Product;
 using E_commerce.Ef.Core.User;
 using E_Commrece.Domain.ProductData;
+using E_Commrece.Domain.ResponseModel;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -47,11 +49,13 @@ namespace E_Commrece.Domain
         public DbSet<Projects> Projects { get; set; }
         public DbSet<Wishlist> Wishlist { get; set; }
         public DbSet<AddToCart> AddToCart { get; set; }
-
-
+        public DbSet<CartItemDto> CartItemDto { get; set; }
+        public DbSet<ProductDto> ProductDto { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<CartItemDto>().HasNoKey();
+            modelBuilder.Entity<ProductDto>().HasNoKey();
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetAssembly(typeof(ApplicationDbContext)));
         }
     }

@@ -55,7 +55,7 @@ namespace E_commarceWebApi.Controllers
             try
             {
                 var SupplierUserName = await _supplierService.SearchSupplier(supplierDto.UserName);
-                if (SupplierUserName != null)
+                if (SupplierUserName.Count() >0)
                 {
                     return Ok(new Response { Status = "Error", Message = "ThIs SupplierUserName Already Exists!" });
                 }
@@ -70,7 +70,7 @@ namespace E_commarceWebApi.Controllers
                         return Ok(new Response { Status = "Success", Message = "Supplier Add SuccessFully" });
                     }
                 }
-                return BadRequest("Data Is Not Proper");
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Supplier Not Add" });
             }
             catch (Exception ex)
             {

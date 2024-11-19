@@ -1,6 +1,7 @@
 ﻿using E_commarceWebApi.RequestModel;
 using E_commerce.Ef.Core.User;
 using E_Commrece.Domain.services.productData;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace E_commarceWebApi.Controllers
@@ -26,6 +27,7 @@ namespace E_commarceWebApi.Controllers
             var Searchroles = await _customerService.SearchCustomer(SerchString);
             return Ok(Searchroles);
         }
+        [Authorize(Roles ="Admin")]
         [HttpPost("AddCustomer")]
         public async Task<IActionResult> AddCustomer([FromForm] RoleDto RoleData)
         {

@@ -1,4 +1,7 @@
-﻿using E_commarceWebApi.RequestModel;
+﻿using AutoMapper;
+using E_commarceWebApi.RequestModel;
+using E_commarceWebApi.RequestModel.ResponseModel;
+using E_commerce.Ef.Core.Product;
 using E_commerce.Ef.Core.User;
 using E_Commrece.Domain.services.productData;
 using Microsoft.AspNetCore.Mvc;
@@ -10,61 +13,89 @@ namespace E_commarceWebApi.Controllers
     public class OrderController : Controller
     {
         private readonly OrderService _orderService;
-        public OrderController(OrderService orderService)
+        private readonly IMapper _mapper;
+        public OrderController(OrderService orderService, IMapper mapper)
         {
             _orderService = orderService;
+            _mapper = mapper;
         }
 
         [HttpGet("GetAllOrders")]
         public async Task<IActionResult> GetAllOrders(string? SerchString)
         {
-            if (SerchString == null)
+            try
             {
-                var roles = await _orderService.GetAll();
-                return Ok(roles);
+                if (SerchString == null)
+                {
+                    var roles = await _orderService.GetAll();
+                    return Ok(roles);
+                }
+                var Searchroles = await _orderService.SearchOrder(SerchString);
+                return Ok(Searchroles);
             }
-            var Searchroles = await _orderService.SearchOrder(SerchString);
-            return Ok(Searchroles);
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = ex.Message });
+            }
         }
         [HttpPost("AddOrder")]
-        public async Task<IActionResult> AddOrder([FromForm] RoleDto RoleData)
+        public async Task<IActionResult> AddOrder([FromForm] OrderDto orderDto)
         {
-            if (ModelState.IsValid)
+            try
             {
-                Role Roles = new Role();
-                Roles.RoleName = RoleData.RoleName;
-                if (Roles != null)
+                if (ModelState.IsValid)
                 {
-                   // await _orderService.Add(Roles);
-                    return Ok(Roles);
+                    var orderData = _mapper.Map<Orders>(orderDto);  
+                    if (orderData != null)
+                    {
+                         await _orderService.Add(orderData);
+                        return Ok(new Response { Status = "Success", Message = "Your Order Place SuccessFully" });
+                    }
                 }
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Your Order Not Place" });
             }
-            return BadRequest("Data Is Not Proper");
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = ex.Message });
+            }
         }
         [HttpDelete("DeleteOrder")]
         public async Task<IActionResult> DeleteOrder([FromForm] int id)
         {
-            if (id <= 0)
+            try
             {
-                return BadRequest("Id Not in 0 or Lessthen 0");
+                if (id <= 0)
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Id Not in 0 or Lessthen 0" });
+                }
+                await _orderService.Delete(id);
+                return Ok(new Response { Status = "Success", Message = "Your Order Remove SuccessFully" });
             }
-            await _orderService.Delete(id);
-            return Ok("Role Deleted Successfully");
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = ex.Message });
+            }
         }
         [HttpPut("UpdateOrder")]
-        public async Task<IActionResult> UpdateOrder([FromForm] RoleDto RoleData)
+        public async Task<IActionResult> UpdateOrder([FromForm] OrderDto OrderDto)
         {
-            if (ModelState.IsValid)
+            try
             {
-                Role Roles = new Role();
-                Roles.RoleName = RoleData.RoleName;
-                if (RoleData != null)
+                if (ModelState.IsValid)
                 {
-                   // await _orderService.update(Roles);
-                    return Ok("Role Updated Successfully");
+                    var orderData = _mapper.Map<Orders>(OrderDto);
+                    if (orderData != null)
+                    {
+                        await _orderService.update(orderData);
+                        return Ok(new Response { Status = "Success", Message = "Your Order Updated SuccessFully" });
+                    }
                 }
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Order Not Updated" });
             }
-            return BadRequest("Data Is Not Proper");
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = ex.Message });
+            }
         }
     }
 }

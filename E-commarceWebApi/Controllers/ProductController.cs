@@ -102,7 +102,7 @@ namespace E_commarceWebApi.Controllers
                     return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Id Is Not 0 or  Not Lessthen 0" });
                 }
                 await _productService.Delete(id);
-                return Ok("Role Deleted Successfully");
+                return Ok(new Response { Status="Success",Message="Product Delete Successfully"});
             }
             catch(Exception ex)
             {
@@ -112,16 +112,23 @@ namespace E_commarceWebApi.Controllers
         [HttpPut("UpdateProduct")]
         public async Task<IActionResult> UpdateProduct(ProductDto Product)
         {
-            if (ModelState.IsValid)
+            try
             {
-                var product = _mapper.Map<Products>(Product);
-                if (product != null)
+                if (ModelState.IsValid)
                 {
-                    await _productService.update(product);
-                    return Ok("Role Updated Successfully");
+                    var product = _mapper.Map<Products>(Product);
+                    if (product != null)
+                    {
+                        await _productService.update(product);
+                        return Ok(new Response { Status = "Success", Message = "Product Updated Successfully" });
+                    }
                 }
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Product not updated"});
             }
-            return BadRequest("Data Is Not Proper");
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = ex.Message });
+            }
         }
     }
 }

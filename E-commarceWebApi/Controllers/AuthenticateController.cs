@@ -1,4 +1,5 @@
 ﻿using E_commarceWebApi.RequestModel;
+using E_commarceWebApi.RequestModel.ResponseModel;
 using E_commerce.Ef.Core.Product;
 using E_commerce.Ef.Core.User;
 using E_Commrece.Domain.services.productData;
@@ -16,89 +17,70 @@ namespace E_commarceWebApi.Controllers
     [ApiController]
     public class AuthenticateController : Controller
     {
-
         private readonly IUserService _userService;
         private readonly ISupplierService _supplierService;
         private readonly IConfiguration _configuration;
+
         public AuthenticateController(IUserService userService, IConfiguration configuration, ISupplierService supplierService)
         {
             _userService = userService;
             _configuration = configuration;
             _supplierService = supplierService;
-
         }
+
         [HttpPost("Login")]
         public async Task<IActionResult> Login(LoginModel login)
         {
-            var users = await _userService.SearchUsers(login.UserName);
-            var User = users.FirstOrDefault();
-
-            if (User == null)
+            try
             {
+                var users = await _userService.SearchUsers(login.UserName);
+                var user =  users.FirstOrDefault();
+                if (user != null && VerifyPassword(user.PasswordHash, login.Password))
+                {
+                    return Ok(new { token = GenerateJwtToken(user.UserName, user.id, user.Role.RoleName) });
+                }
+
                 var suppliers = await _supplierService.SearchSupplier(login.UserName);
                 var supplier = suppliers.FirstOrDefault();
-
-                if (supplier != null)
+                if (supplier != null && VerifyPassword(supplier.Password, login.Password))
                 {
-                    var passwordHasher = new PasswordHasher<Supplier>();
-                    var verificationResult = passwordHasher.VerifyHashedPassword(supplier, supplier.Password, login.Password);
-
-                    if (verificationResult == PasswordVerificationResult.Failed)
-                    {
-                        return Unauthorized("Invalid username or password.");
-                    }
-
-                    var authClaims = new List<Claim>
-                    {
-                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                    new Claim(ClaimTypes.Name,supplier.UserName),
-                    new Claim("Id",supplier.id.ToString()),
-                    new Claim("Role",supplier.Role.RoleName),
-                    };
-                    var token = GetToken(authClaims);
-                    return Ok(new
-                    {
-                        token = new JwtSecurityTokenHandler().WriteToken(token),
-                    });
+                    return Ok(new { token = GenerateJwtToken(supplier.UserName, supplier.id, supplier.Role.RoleName) });
                 }
+
+                return Unauthorized("Invalid username or password.");
             }
-                if (User != null)
-                {
-                    var passwordHasher = new PasswordHasher<Users>();
-                    var verificationResult = passwordHasher.VerifyHashedPassword(User, User.PasswordHash, login.Password);
-
-                    if (verificationResult == PasswordVerificationResult.Failed)
-                    {
-                        return Unauthorized("Invalid username or password.");
-                    }
-                    var authClaims = new List<Claim>
-                {
-                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                    new Claim(ClaimTypes.Name,User.UserName),
-                    new Claim("Id",User.id.ToString()),
-                    new Claim("Role",User.Role.RoleName),
-                };
-                    var token = GetToken(authClaims);
-                    return Ok(new
-                    {
-                        token = new JwtSecurityTokenHandler().WriteToken(token),
-                    });
-                }
-            
-            return BadRequest("Please Provide Valid User");
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = ex.Message });
+            }
         }
-        private JwtSecurityToken GetToken(List<Claim> authClaims)
-        {
-            var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"]));
 
+        private bool VerifyPassword(string hashedPassword, string inputPassword)
+        {
+            var passwordHasher = new PasswordHasher<object>();
+            return passwordHasher.VerifyHashedPassword(null, hashedPassword, inputPassword) == PasswordVerificationResult.Success;
+        }
+
+        private string GenerateJwtToken(string userName, int id, string roleName)
+        {
+            var authClaims = new List<Claim>
+            {
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new Claim("Name", userName),
+                new Claim("Id", id.ToString()),
+                new Claim("Role", roleName)
+            };
+
+            var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"]));
             var token = new JwtSecurityToken(
                 issuer: _configuration["JWT:ValidIssuer"],
                 audience: _configuration["JWT:ValidAudience"],
                 expires: DateTime.Now.AddDays(1),
                 claims: authClaims,
                 signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
-                );
-            return token;
+            );
+
+            return new JwtSecurityTokenHandler().WriteToken(token);
         }
     }
 }

@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using E_commarceWebApi.RequestModel;
+using E_commarceWebApi.RequestModel.ResponseModel;
+using E_commerce.Ef.Core.Product;
 using E_commerce.Ef.Core.User;
 using E_Commrece.Domain.ProductData;
 using E_Commrece.Domain.services.productData;
@@ -20,54 +22,82 @@ namespace E_commarceWebApi.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet("GetAllCartProducts")]
-        public async Task<IActionResult> GetAllCartProducts(string? SerchString)
+        [HttpGet("GetAllCartProducts/{id}")]
+        public async Task<IActionResult> GetAllCartProducts(int id, string? SerchString)
         {
-            if (SerchString == null)
+            try
             {
-                var CartAllProducts = await _addToCartService.GetAll();
-                return Ok(CartAllProducts);
+                if (SerchString == null)
+                {
+                    var CartAllProducts = await _addToCartService.GetUserCartItems(id);
+                    return Ok(CartAllProducts);
+                }
+                var SearchCartProducts = await _addToCartService.SearcAddToCart(SerchString);
+                return Ok(SearchCartProducts);
             }
-            var SearchCartProducts = await _addToCartService.SearcAddToCart(SerchString);
-            return Ok(SearchCartProducts);
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = ex.Message });
+            }
         }
         [HttpPost("AddCartProduct")]
         public async Task<IActionResult> AddCartProduct(AddToCartDto AddToCartDto)
         {
-            if (ModelState.IsValid)
+            try
             {
-                var Product = _mapper.Map<AddToCart>(AddToCartDto);
-                if (Product != null)
+                if (ModelState.IsValid)
                 {
-                    await _addToCartService.Add(Product);
-                    return Ok(Product);
+                    var Product = _mapper.Map<AddToCart>(AddToCartDto);
+                    if (Product != null)
+                    {
+                        await _addToCartService.Add(Product);
+                        return Ok(new Response { Status = "Success", Message = "Product Add On Your Cart" });
+                    }
                 }
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Product is not add On Your Cart" });
             }
-            return BadRequest("Data Is Not Proper");
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = ex.Message });
+            }
         }
         [HttpDelete("DeleteProductInCart")]
         public async Task<IActionResult> DeleteProductInCart( int id)
         {
-            if (id <= 0)
+            try
             {
-                return BadRequest("Id Not in 0 or Lessthen 0");
+                if (id <= 0)
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Id Not in 0 or Lessthen 0" });
+                }
+                await _addToCartService.Delete(id);
+                return Ok(new Response { Status = "Success", Message = "Cart Product Remove Successfully" });
+                }
+            catch (Exception ex) 
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = ex.Message });
             }
-            await _addToCartService.Delete(id);
-            return Ok("Cart Product Remove Successfully");
         }
         [HttpPut("UpdateCartProduct")]
         public async Task<IActionResult> UpdateCartProduct(AddToCartDto AddToCartDto)
         {
-            if (ModelState.IsValid)
+            try
             {
-                var Product = _mapper.Map<AddToCart>(AddToCartDto);
-                if (Product != null)
+                if (ModelState.IsValid)
                 {
-                    await _addToCartService.update(Product);
-                    return Ok(Product);
+                    var Product = _mapper.Map<AddToCart>(AddToCartDto);
+                    if (Product != null)
+                    {
+                        await _addToCartService.update(Product);
+                        return Ok(new Response { Status = "Success", Message = "Your Cart Product Updated" });
+                    }
                 }
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Cart Product Not Updated"});
             }
-            return BadRequest("Data Is Not Proper");
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = ex.Message });
+            }
         }
         [HttpGet("isProductInCart")]
         public async Task<IActionResult> isProductInCart(int ProductId, int UserId)

@@ -4,6 +4,7 @@ using E_Commrece.Domain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace E_commerce.Ef.Core.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241118132651_test3")]
+    partial class test3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -100,61 +103,6 @@ namespace E_commerce.Ef.Core.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("WishList", (string)null);
-                });
-
-            modelBuilder.Entity("E_Commrece.Domain.ResponseModel.ProductDto", b =>
-                {
-                    b.Property<decimal>("ProductActualprice")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("ProductDesc")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ProductImag")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ProductName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("ProductOrignalprice")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.ToTable("ProductDto");
-                });
-
-            modelBuilder.Entity("E_commarceWebApi.ResponseModel.CartItemDto", b =>
-                {
-                    b.Property<int>("AddToCartId")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("ProductActualPrice")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("ProductDesc")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ProductImag")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ProductName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("ProductOrignalprice")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.ToTable("CartItemDto");
                 });
 
             modelBuilder.Entity("E_commerce.Ef.Core.Employee.Department", b =>
