@@ -1,4 +1,4 @@
-﻿using E_commarceWebApi.ResponseModel;
+﻿
 using E_commerce.Ef.Core.Repository.Base;
 using E_commerce.Ef.Core.User;
 using E_Commrece.Domain;
@@ -30,17 +30,21 @@ namespace E_commerce.Ef.Core.Repository
         {
             throw new NotImplementedException();
         }
-        //public override Task<List<AddToCart>> GetAll(int UserId)
-        //{
-        //    return _context.AddToCart.AsNoTracking().Include(x => x.Product).ThenInclude(x => x.ProductImage).ToListAsync();
-        //}
-
-        public async Task<List<CartItemDto>> GetUserCartItems(int UserId)
-            {
-
-            var Data = _context.CartItemDto
-                .FromSqlRaw($"EXEC GetUserCartData @useId = {UserId}").AsQueryable();
-            return await Data.ToListAsync();
+        public override async Task<List<AddToCart>> GetAll()
+        {
+            return await _context.AddToCart.AsNoTracking().Include(x => x.Product).ThenInclude(x => x.ProductImage).ToListAsync();
         }
-    }   
+        public override async Task<List<AddToCart>> GetByUserId(int id)
+        {
+            return await _context.AddToCart.AsNoTracking().Where(x=>x.UserId == id).Include(x => x.Product).ThenInclude(x => x.ProductImage).ToListAsync();
+        }
+
+        //public async Task<List<CartItemDto>> GetUserCartItems(int UserId)
+        //    {
+
+        //    var Data = _context.CartItemDto
+        //        .FromSqlRaw($"EXEC GetUserCartData @useId = {UserId}").AsQueryable();
+        //    return await Data.ToListAsync();
+        //}
+    }
 }

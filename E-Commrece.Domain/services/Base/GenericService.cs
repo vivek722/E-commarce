@@ -34,6 +34,12 @@ namespace E_Commrece.Domain.services.Base
         {
            return _genricRepository.GetById(id);
         }
+
+        public Task<List<TModel>> GetByUserId(int id)
+        {
+            return _genricRepository.GetByUserId(id);
+        }
+
         public Task<TModel> update(TModel TModel)
         {
            return _genricRepository.update(TModel);

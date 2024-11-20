@@ -1,4 +1,4 @@
-﻿using E_commarceWebApi.ResponseModel;
+﻿
 using E_Commrece.Domain.ProductData;
 using E_Commrece.Domain.services.Base;
 using System;
@@ -16,12 +16,6 @@ namespace E_Commrece.Domain.services.User
         {
             _repository = repository;
         }
-
-        public Task<List<CartItemDto>> GetUserCartItems(int UserId)
-        {
-            return _repository.GetUserCartItems(UserId);
-        }
-
         public Task<AddToCart> isProductInCart(int productId, int UserId)
         {
            return _repository.isProductInCart(productId, UserId);

@@ -1,6 +1,5 @@
 ﻿using E_commerce.Ef.Core.Employee;
 using E_commerce.Ef.Core.Product;
-using E_Commrece.Domain.ResponseModel;
 using E_Commrece.Domain.services.Base;
 using System;
 using System.Collections.Generic;
@@ -13,6 +12,6 @@ namespace E_Commrece.Domain.services.productData
     public interface IProductRepository  : IGenricRepository<Products>
     {
         Task<List<Products>> SearchProduct(string SearchString);
-        Task<List<ProductDto>> GetAllProducts();
+        //Task<List<ProductDto>> GetAllProducts();
     }
 }

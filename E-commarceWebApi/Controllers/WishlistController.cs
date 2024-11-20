@@ -117,9 +117,9 @@ namespace E_commarceWebApi.Controllers
                 var wishlistData = await _wishlistService.isProductInWishlist(ProductId, UserId);
                 if (wishlistData != null)
                 {
-                    return Ok(wishlistData);
+                    return Ok(new DataResponseList() { Data = wishlistData, Status = StatusCodes.Status200OK, Message = "Products is alredy in wishlist" });
                 }
-                return Ok(wishlistData);
+                return Ok(new DataResponseList() { Data = wishlistData, Status = StatusCodes.Status200OK, Message = "Empty" });
             }
             catch (Exception ex)
             {
