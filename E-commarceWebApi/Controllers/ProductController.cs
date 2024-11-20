@@ -32,7 +32,7 @@ namespace E_commarceWebApi.Controllers
             {
                 if (SerchString == null)
                 {
-                    var Allproducts = await _productService.GetAllProducts();
+                    var Allproducts = await _productService.GetAll();
                     return Ok(new DataResponseList() { Data = Allproducts, Status = StatusCodes.Status200OK, Message = "ok" });
                 }
                 var SearchProduct = await _productService.SearchProduct(SerchString);

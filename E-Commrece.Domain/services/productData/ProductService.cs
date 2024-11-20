@@ -1,5 +1,4 @@
 ﻿using E_commerce.Ef.Core.Product;
-using E_Commrece.Domain.ResponseModel;
 using E_Commrece.Domain.services.Base;
 using System;
 using System.Collections.Generic;
@@ -17,9 +16,9 @@ namespace E_Commrece.Domain.services.productData
             _productRepository = productRepository;
         }
 
-        public Task<List<ProductDto>> GetAllProducts()
+        public Task<List<Products>> GetAll()
         {
-            return _productRepository.GetAllProducts();
+            return _productRepository.GetAll();
         }
 
         public Task<List<Products>> SearchProduct(string SearchString)

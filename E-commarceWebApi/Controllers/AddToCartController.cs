@@ -29,7 +29,7 @@ namespace E_commarceWebApi.Controllers
             {
                 if (SerchString == null)
                 {
-                    var CartAllProducts = await _addToCartService.GetUserCartItems(id);
+                    var CartAllProducts = await _addToCartService.GetByUserId(id);
                     return Ok(new DataResponseList() { Data = CartAllProducts, Status = StatusCodes.Status200OK, Message = "ok" });
                 }
                 var SearchCartProducts = await _addToCartService.SearcAddToCart(SerchString);
@@ -102,12 +102,20 @@ namespace E_commarceWebApi.Controllers
         [HttpGet("isProductInCart")]
         public async Task<IActionResult> isProductInCart(int ProductId, int UserId)
         {
-            var AddToCartData = await _addToCartService.isProductInCart(ProductId, UserId);
-            if (AddToCartData != null)
+            try
             {
-                return Ok(new DataResponseList() { Data = AddToCartData, Status = StatusCodes.Status200OK, Message = "ok" });
+                var AddToCartData = await _addToCartService.isProductInCart(ProductId, UserId);
+                if (AddToCartData != null)
+                {
+                    return Ok(new DataResponseList() { Data = AddToCartData, Status = StatusCodes.Status200OK, Message = "Products is alredy in cart" });
+                }
+                return Ok(new DataResponseList() { Data = AddToCartData, Status = StatusCodes.Status200OK, Message = "Empty" });
             }
-            return Ok(new DataResponseList() { Data = AddToCartData, Status = StatusCodes.Status204NoContent, Message = "Empty" });
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = ex.Message });
+
+            }
         }
     }
 }

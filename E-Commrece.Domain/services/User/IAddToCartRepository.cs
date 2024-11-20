@@ -1,4 +1,4 @@
-﻿using E_commarceWebApi.ResponseModel;
+﻿
 using E_Commrece.Domain.ProductData;
 using E_Commrece.Domain.services.Base;
 using System;
@@ -14,7 +14,7 @@ namespace E_Commrece.Domain.services.User
     {
         Task<List<AddToCart>> SearcAddToCart(string SearchString);
         Task<AddToCart> isProductInCart(int productId, int UserId);
-        Task<List<CartItemDto>> GetUserCartItems(int UserId);
+        //Task<List<CartItemDto>> GetUserCartItems(int UserId);
 
     }
 }

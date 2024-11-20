@@ -15,5 +15,6 @@ namespace E_Commrece.Domain.services.Base
         Task<TModel> Add(TModel TModel);
         Task<TModel> Delete(int id);
         Task<TModel> update(TModel TModel);
+        Task<List<TModel>> GetByUserId(int id);
     }
 }

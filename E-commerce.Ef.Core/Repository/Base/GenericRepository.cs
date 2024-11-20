@@ -39,11 +39,22 @@ namespace E_commerce.Ef.Core.Repository.Base
         {
             return await applicationDb.Set<TModel>().AsNoTracking().Where(x=>x.id == id).FirstOrDefaultAsync();
         }
+
+        public virtual async Task<List<TModel>> GetByUserId(int id)
+        {
+            return await applicationDb.Set<TModel>().AsNoTracking().Where(x => x.id == id).ToListAsync();
+        }
+
         public async Task<TModel> update(TModel TModel)
         {
             applicationDb.Set<TModel>().Update(TModel);
             await applicationDb.SaveChangesAsync();
             return TModel;
+        }
+
+        Task<TModel> IGenricRepository<TModel>.GetById(int id)
+        {
+            throw new NotImplementedException();
         }
     }
 }
