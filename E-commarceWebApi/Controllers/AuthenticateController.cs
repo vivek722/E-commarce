@@ -82,5 +82,13 @@ namespace E_commarceWebApi.Controllers
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
-    }
+        //[HttpGet("GetRoledata/{email}")]
+        [HttpGet]
+        [Route("GetRoledata/{email}")]
+        public async Task<IActionResult> GetRoledata(string email)
+        {
+            var roleData = await _userService.GetRoledata(email);
+            return Ok(roleData.Role.RoleName);
+        }
+        }
 }

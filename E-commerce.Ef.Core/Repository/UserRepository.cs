@@ -32,5 +32,10 @@ namespace E_commerce.Ef.Core.Repository
         {
             return await applicationDbContext.Users.AsNoTracking().Where(x => x.id == id).Include(x => x.Addresse).FirstOrDefaultAsync();
         }
+
+        public async Task<Users> GetRoledata(string Email)
+        {
+            return await applicationDbContext.Users.AsNoTracking().Where(x => x.Email == Email).Include(x => x.Role).FirstOrDefaultAsync();
+        }
     }
 }
