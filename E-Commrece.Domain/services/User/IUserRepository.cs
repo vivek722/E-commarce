@@ -11,5 +11,7 @@ namespace E_Commrece.Domain.services.User
     public interface IUserRepository : IGenricRepository<Users>
     {
         Task<List<Users>> SearchUsers(string SearchString);
+
+        Task<Users> GetRoledata(string Email);
     }
 }

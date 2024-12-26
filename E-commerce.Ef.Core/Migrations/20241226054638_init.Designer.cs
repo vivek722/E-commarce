@@ -15,10 +15,9 @@ namespace E_commerce.Ef.Core.Migrations
     [Migration("20241226054638_init")]
     partial class init
     {
-        /// <inheritdoc />
+   
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
-#pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "8.0.8")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);

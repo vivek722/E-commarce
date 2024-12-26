@@ -17,6 +17,11 @@ namespace E_Commrece.Domain.services.User
             _userRepository = userRepository;
         }
 
+        public Task<Users> GetRoledata(string Email)
+        {
+            return _userRepository.GetRoledata(Email);
+        }
+
         public Task<List<Users>> SearchUsers(string SearchString)
         {
             return _userRepository.SearchUsers(SearchString);
