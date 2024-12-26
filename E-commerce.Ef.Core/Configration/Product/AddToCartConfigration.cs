@@ -20,7 +20,6 @@ namespace E_commerce.Ef.Core.Configration.Product
             builder.Property(x => x.LastUpdated);
 
             builder.HasOne(x => x.Product).WithMany(x => x.AddToCart).HasForeignKey(x => x.ProductId).OnDelete(DeleteBehavior.Cascade);
-            builder.HasOne(x => x.User).WithMany(x => x.AddToCart).HasForeignKey(x => x.UserId).OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

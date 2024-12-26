@@ -21,9 +21,9 @@ namespace E_commerce.Ef.Core.Repository
             _context = applicationDbContext;
         }
 
-        public Task<AddToCart> isProductInCart(int productId, int UserId)
+        public Task<AddToCart> isProductInCart(int productId, string emailId)
         {
-            return _context.AddToCart.AsNoTracking().Where(x => x.ProductId == productId && x.UserId == UserId).FirstOrDefaultAsync();
+            return _context.AddToCart.AsNoTracking().Where(x => x.ProductId == productId && x.UserEmail == emailId).FirstOrDefaultAsync();
         }
 
         public Task<List<AddToCart>> SearcAddToCart(string SearchString)
@@ -36,7 +36,7 @@ namespace E_commerce.Ef.Core.Repository
         }
         public override async Task<List<AddToCart>> GetByUserId(int id)
         {
-            return await _context.AddToCart.AsNoTracking().Where(x=>x.UserId == id).Include(x => x.Product).ThenInclude(x => x.ProductImage).ToListAsync();
+            return await _context.AddToCart.AsNoTracking().Where(x=>x.id == id).Include(x => x.Product).ThenInclude(x => x.ProductImage).ToListAsync();
         }
 
         //public async Task<List<CartItemDto>> GetUserCartItems(int UserId)

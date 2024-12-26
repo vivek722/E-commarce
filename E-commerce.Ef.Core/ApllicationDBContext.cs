@@ -3,6 +3,7 @@ using E_commerce.Ef.Core.Employee;
 using E_commerce.Ef.Core.Payment;
 using E_commerce.Ef.Core.Product;
 using E_commerce.Ef.Core.User;
+using E_Commrece.Domain.Admin;
 using E_Commrece.Domain.ProductData;
 
 using Microsoft.EntityFrameworkCore;
@@ -49,7 +50,8 @@ namespace E_Commrece.Domain
         public DbSet<Projects> Projects { get; set; }
         public DbSet<Wishlist> Wishlist { get; set; }
         public DbSet<AddToCart> AddToCart { get; set; }
-       
+        public DbSet<AdminModel> Admin { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

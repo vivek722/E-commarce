@@ -11,8 +11,8 @@ namespace E_commarceWebApi.Controllers
     [ApiController]
     public class RoleController : Controller
     {
-        private readonly RoleService _roleService;
-        public RoleController(RoleService roleService)
+        private readonly IRoleService _roleService;
+        public RoleController(IRoleService roleService)
         {
             _roleService = roleService;
         }
@@ -54,7 +54,7 @@ namespace E_commarceWebApi.Controllers
             try
             {
                 var roleExists = await _roleService.SearchRoles(RoleData.RoleName);
-                if (roleExists != null)
+                if (roleExists == null)
                 {
                     return Ok(new Response { Status = "Error", Message = "Role Already Have Exists!" });
                 }

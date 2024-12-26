@@ -11,7 +11,7 @@ namespace E_Commrece.Domain.BaseClass
         public int id { get; set; }
         //public DateTime? CreateAT { get; set; }
         //public DateTime? UpdateAt { get; set; }
-        //public  Boolean? IsDelete{ get; set; }
-        //public Boolean?  IsActive { get; set; }
+        //public Boolean? IsDelete { get; set; }
+        //public Boolean? IsActive { get; set; }
     }
 }

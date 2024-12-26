@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace E_commerce.Ef.Core.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241029130648_init")]
+    [Migration("20241226054638_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -45,15 +45,37 @@ namespace E_commerce.Ef.Core.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<string>("UserEmail")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("id");
 
-                    b.HasIndex("ProductId")
-                        .IsUnique();
+                    b.HasIndex("ProductId");
 
                     b.ToTable("AddToCart", (string)null);
+                });
+
+            modelBuilder.Entity("E_Commrece.Domain.ProductData.ProductImage", b =>
+                {
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ProductImag")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("id");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("ProductImages", (string)null);
                 });
 
             modelBuilder.Entity("E_Commrece.Domain.ProductData.Wishlist", b =>
@@ -75,8 +97,9 @@ namespace E_commerce.Ef.Core.Migrations
 
                     b.HasKey("id");
 
-                    b.HasIndex("ProductId")
-                        .IsUnique();
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("WishList", (string)null);
                 });
@@ -534,10 +557,6 @@ namespace E_commerce.Ef.Core.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.Property<string>("ProductImag")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("ProductName")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -612,10 +631,17 @@ namespace E_commerce.Ef.Core.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Phone")
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
+
+                    b.Property<int>("RoleId")
+                        .HasColumnType("int");
 
                     b.Property<string>("State")
                         .IsRequired()
@@ -626,12 +652,19 @@ namespace E_commerce.Ef.Core.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
                     b.Property<string>("ZipCode")
                         .IsRequired()
                         .HasMaxLength(10)
                         .HasColumnType("nvarchar(10)");
 
                     b.HasKey("id");
+
+                    b.HasIndex("RoleId");
 
                     b.ToTable("Supplier", (string)null);
                 });
@@ -775,15 +808,18 @@ namespace E_commerce.Ef.Core.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("E_commerce.Ef.Core.User.Users", "User")
-                        .WithOne("AddToCart")
-                        .HasForeignKey("E_Commrece.Domain.ProductData.AddToCart", "ProductId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("E_Commrece.Domain.ProductData.ProductImage", b =>
+                {
+                    b.HasOne("E_commerce.Ef.Core.Product.Products", "Product")
+                        .WithMany("ProductImage")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Product");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("E_Commrece.Domain.ProductData.Wishlist", b =>
@@ -795,8 +831,8 @@ namespace E_commerce.Ef.Core.Migrations
                         .IsRequired();
 
                     b.HasOne("E_commerce.Ef.Core.User.Users", "User")
-                        .WithOne("Wishlist")
-                        .HasForeignKey("E_Commrece.Domain.ProductData.Wishlist", "ProductId")
+                        .WithMany("Wishlist")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
@@ -1019,6 +1055,17 @@ namespace E_commerce.Ef.Core.Migrations
                     b.Navigation("Product");
                 });
 
+            modelBuilder.Entity("E_commerce.Ef.Core.Product.Supplier", b =>
+                {
+                    b.HasOne("E_commerce.Ef.Core.User.Role", "Role")
+                        .WithMany("Supplier")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Role");
+                });
+
             modelBuilder.Entity("E_commerce.Ef.Core.User.Addresse", b =>
                 {
                     b.HasOne("E_commerce.Ef.Core.User.Users", "User")
@@ -1117,6 +1164,8 @@ namespace E_commerce.Ef.Core.Migrations
                     b.Navigation("OrderDetail")
                         .IsRequired();
 
+                    b.Navigation("ProductImage");
+
                     b.Navigation("ProductSuppliers");
 
                     b.Navigation("Review");
@@ -1138,19 +1187,17 @@ namespace E_commerce.Ef.Core.Migrations
 
             modelBuilder.Entity("E_commerce.Ef.Core.User.Role", b =>
                 {
+                    b.Navigation("Supplier");
+
                     b.Navigation("users");
                 });
 
             modelBuilder.Entity("E_commerce.Ef.Core.User.Users", b =>
                 {
-                    b.Navigation("AddToCart")
-                        .IsRequired();
-
                     b.Navigation("Addresse")
                         .IsRequired();
 
-                    b.Navigation("Wishlist")
-                        .IsRequired();
+                    b.Navigation("Wishlist");
                 });
 #pragma warning restore 612, 618
         }

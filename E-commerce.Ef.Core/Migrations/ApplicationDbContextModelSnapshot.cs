@@ -22,6 +22,63 @@ namespace E_commerce.Ef.Core.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("E_Commrece.Domain.Admin.AdminModel", b =>
+                {
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Phone")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<int>("RoleId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("State")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Street")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("ZipCode")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.HasKey("id");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("Admin", (string)null);
+                });
+
             modelBuilder.Entity("E_Commrece.Domain.ProductData.AddToCart", b =>
                 {
                     b.Property<int>("id")
@@ -42,14 +99,13 @@ namespace E_commerce.Ef.Core.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<string>("UserEmail")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("id");
 
                     b.HasIndex("ProductId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("AddToCart", (string)null);
                 });
@@ -100,61 +156,6 @@ namespace E_commerce.Ef.Core.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("WishList", (string)null);
-                });
-
-            modelBuilder.Entity("E_Commrece.Domain.ResponseModel.ProductDto", b =>
-                {
-                    b.Property<decimal>("ProductActualprice")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("ProductDesc")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ProductImag")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ProductName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("ProductOrignalprice")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.ToTable("ProductDto");
-                });
-
-            modelBuilder.Entity("E_commarceWebApi.ResponseModel.CartItemDto", b =>
-                {
-                    b.Property<int>("AddToCartId")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("ProductActualPrice")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("ProductDesc")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ProductImag")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ProductName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("ProductOrignalprice")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.ToTable("CartItemDto");
                 });
 
             modelBuilder.Entity("E_commerce.Ef.Core.Employee.Department", b =>
@@ -703,7 +704,8 @@ namespace E_commerce.Ef.Core.Migrations
 
                     b.Property<string>("Street")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("UserName")
                         .IsRequired()
@@ -853,6 +855,17 @@ namespace E_commerce.Ef.Core.Migrations
                     b.ToTable("Users", (string)null);
                 });
 
+            modelBuilder.Entity("E_Commrece.Domain.Admin.AdminModel", b =>
+                {
+                    b.HasOne("E_commerce.Ef.Core.User.Role", "Role")
+                        .WithMany("AdminModel")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Role");
+                });
+
             modelBuilder.Entity("E_Commrece.Domain.ProductData.AddToCart", b =>
                 {
                     b.HasOne("E_commerce.Ef.Core.Product.Products", "Product")
@@ -861,15 +874,7 @@ namespace E_commerce.Ef.Core.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("E_commerce.Ef.Core.User.Users", "User")
-                        .WithMany("AddToCart")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.Navigation("Product");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("E_Commrece.Domain.ProductData.ProductImage", b =>
@@ -1248,6 +1253,8 @@ namespace E_commerce.Ef.Core.Migrations
 
             modelBuilder.Entity("E_commerce.Ef.Core.User.Role", b =>
                 {
+                    b.Navigation("AdminModel");
+
                     b.Navigation("Supplier");
 
                     b.Navigation("users");
@@ -1255,8 +1262,6 @@ namespace E_commerce.Ef.Core.Migrations
 
             modelBuilder.Entity("E_commerce.Ef.Core.User.Users", b =>
                 {
-                    b.Navigation("AddToCart");
-
                     b.Navigation("Addresse")
                         .IsRequired();
 

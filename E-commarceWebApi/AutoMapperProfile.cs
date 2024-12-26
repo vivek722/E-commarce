@@ -4,6 +4,7 @@ using E_commerce.Ef.Core.Employee;
 using E_commerce.Ef.Core.Payment;
 using E_commerce.Ef.Core.Product;
 using E_commerce.Ef.Core.User;
+using E_Commrece.Domain.Admin;
 using E_Commrece.Domain.ProductData;
 
 namespace E_commarceWebApi
@@ -29,6 +30,7 @@ namespace E_commarceWebApi
             CreateMap<Warehouse, InventoryDto>().ReverseMap();
             CreateMap<Wishlist, WishListDto>().ReverseMap();
             CreateMap<AddToCart, AddToCartDto>().ReverseMap();
+            CreateMap<AdminModel, AdminDto>().ReverseMap();
         }
     }
 }

@@ -100,11 +100,11 @@ namespace E_commarceWebApi.Controllers
             }
         }
         [HttpGet("isProductInCart")]
-        public async Task<IActionResult> isProductInCart(int ProductId, int UserId)
+        public async Task<IActionResult> isProductInCart(int ProductId,string emailId)
         {
             try
             {
-                var AddToCartData = await _addToCartService.isProductInCart(ProductId, UserId);
+                var AddToCartData = await _addToCartService.isProductInCart(ProductId, emailId);
                 if (AddToCartData != null)
                 {
                     return Ok(new DataResponseList() { Data = AddToCartData, Status = StatusCodes.Status200OK, Message = "Products is alredy in cart" });

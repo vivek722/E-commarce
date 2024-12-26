@@ -64,7 +64,7 @@ namespace E_commarceWebApi.Controllers
             try
             {
                 var UserName = await _userService.SearchUsers(UserData.UserName);
-                if (UserName != null)
+                if (UserName == null)
                 {
                     return StatusCode(StatusCodes.Status500InternalServerError ,new Response { Status = "Error", Message = "ThIs UserName Already Exists!" });
                 }

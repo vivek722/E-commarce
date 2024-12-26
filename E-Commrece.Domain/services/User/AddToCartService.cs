@@ -16,9 +16,9 @@ namespace E_Commrece.Domain.services.User
         {
             _repository = repository;
         }
-        public Task<AddToCart> isProductInCart(int productId, int UserId)
+        public Task<AddToCart> isProductInCart(int productId, string emailId)
         {
-           return _repository.isProductInCart(productId, UserId);
+           return _repository.isProductInCart(productId, emailId);
         }
 
         public Task<List<AddToCart>> SearcAddToCart(string SearchString)

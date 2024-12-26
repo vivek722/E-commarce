@@ -16,6 +16,7 @@ using E_commerce.Ef.Core.Repository.Base;
 using E_Commrece.Domain.services.Payment;
 using E_Commrece.Domain.Email_SMS_Sender;
 using Microsoft.Extensions.DependencyInjection;
+using E_Commrece.Domain.services.Admin;
 namespace E_commarceWebApi
 {
     public class Startup
@@ -88,10 +89,14 @@ namespace E_commarceWebApi
             services.AddTransient<IAddToCartRepository, AddToCartRepoSitory>();
             services.AddTransient<IAddToCartService, AddToCartService>();
 
+            services.AddScoped<AdminService>();
+            services.AddTransient<IAdminRepository, AdminRepository>();
+            services.AddTransient<IAdminService, AdminService>();
+
             services.AddScoped(typeof(IGenricRepository<>), typeof(GenericRepository<>));
 
 
-            string bucketName = "e-commerce-593f3.appspot.com";
+            var bucketName = "e-commerce-593f3.appspot.com";
             string firebaseStorageUrl = $"https://firebasestorage.googleapis.com/v0/b/{bucketName}/o/";
 
             services.AddSingleton(new FireBaseService(bucketName, firebaseStorageUrl));

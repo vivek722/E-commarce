@@ -13,7 +13,7 @@ namespace E_Commrece.Domain.services.User
     public interface IAddToCartService : IGenricservice<AddToCart>
     {
         Task<List<AddToCart>> SearcAddToCart(string SearchString);
-        Task<AddToCart> isProductInCart(int productId, int UserId);
+        Task<AddToCart> isProductInCart(int productId, string emailId);
         //Task<List<CartItemDto>> GetUserCartItems(int UserId);
     }
 }

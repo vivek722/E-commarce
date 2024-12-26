@@ -16,6 +16,6 @@ namespace E_Commrece.Domain.FireBaseSevice
         {
             _Bucketname = Bucketname;
             _FireBaseStorageUrl = FireBaseStorageUrl;
-        }
+        }   
     }
 }

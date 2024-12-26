@@ -22,7 +22,6 @@ namespace E_commerce.Ef.Core.User
         [ForeignKey("RoleId")]
         public Role Role { get; set; }
         public Addresse Addresse { get; set; }
-        public ICollection<AddToCart> AddToCart { get; set; }
         public ICollection<Wishlist> Wishlist { get; set; }
 
 

@@ -10,13 +10,13 @@ using System.Threading.Tasks;
 namespace E_Commrece.Domain.ProductData
 {
     public class AddToCart : BaseEntityModel
-    {     
-            public int UserId { get; set; }          
-            public int ProductId { get; set; }        
+    {
+
+        public string UserEmail { get; set; }
+        public int ProductId { get; set; }        
             public int Quantity { get; set; } = 1;    
             public DateTime AddedDate { get; set; } = DateTime.UtcNow;
             public DateTime LastUpdated { get; set; } = DateTime.UtcNow;
-            public Users User { get; set; }
             public Products Product { get; set; }
     }
 }
