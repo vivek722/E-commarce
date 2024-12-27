@@ -8,8 +8,10 @@ using System.Threading.Tasks;
 
 namespace E_Commrece.Domain.services.Admin
 {
-    public interface ICustomerPageSettingService : IGenricservice<CustomerPageSetting>
+    public class EmailService : GenericService<EmailSetting>, IEmailService
     {
-        Task<List<CustomerPageSetting>> SearchCustomerPage(string search);
+        public EmailService(IGenricRepository<EmailSetting> genricRepository) : base(genricRepository)
+        {
+        }
     }
 }
