@@ -11,7 +11,7 @@ using E_Commrece.Domain.BaseClass;
 
 namespace E_Commrece.Domain.Admin
 {
-    public class Supplier_Customer_pages : BaseEntityModel
+    public class SupplierPageSetting : BaseEntityModel
     {
         public string PageName { get; set; }
         public Boolean IsPageActive { get; set; }

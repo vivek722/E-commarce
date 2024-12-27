@@ -1,13 +1,6 @@
-﻿using E_Commrece.Domain.BaseClass;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace E_Commrece.Domain.Admin
+﻿namespace E_commarceWebApi.RequestModel
 {
-    public class Customer_Page_Setting : BaseEntityModel
+    public class CustomerPageSettingDto
     {
         public string PageName { get; set; }
         public Boolean IsPageActive { get; set; }

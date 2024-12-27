@@ -93,6 +93,11 @@ namespace E_commarceWebApi
             services.AddTransient<IAdminRepository, AdminRepository>();
             services.AddTransient<IAdminService, AdminService>();
 
+
+            services.AddScoped<CustomerPageSettingService>();
+            services.AddTransient<IAdminRepository, AdminRepository>();
+            services.AddTransient<IAdminService, AdminService>();
+
             services.AddScoped(typeof(IGenricRepository<>), typeof(GenericRepository<>));
 
 

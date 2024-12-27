@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace E_Commrece.Domain.services.Admin
 {
-    public interface ICustomerPageSettingService : IGenricservice<CustomerPageSetting>
+    public interface ICustomerPageSettingRepository : IGenricRepository<CustomerPageSetting>
     {
         Task<List<CustomerPageSetting>> SearchCustomerPage(string search);
     }

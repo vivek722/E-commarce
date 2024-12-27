@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace E_Commrece.Domain.services.Admin
 {
-    public interface ICustomerPageSettingService : IGenricservice<CustomerPageSetting>
+    public interface ISupplierPageSettingService : IGenricservice<SupplierPageSetting>
     {
-        Task<List<CustomerPageSetting>> SearchCustomerPage(string search);
+        Task<List<SupplierPageSetting>> SearchSupplierPage(string search);
     }
 }
