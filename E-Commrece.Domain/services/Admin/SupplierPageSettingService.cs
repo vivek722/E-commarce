@@ -10,13 +10,15 @@ namespace E_Commrece.Domain.services.Admin
 {
     public class SupplierPageSettingService : GenericService<SupplierPageSetting>, ISupplierPageSettingService
     {
-        public SupplierPageSettingService(IGenricRepository<SupplierPageSetting> genricRepository) : base(genricRepository)
+        private readonly ISupplierPageSettingRepository _supplierPageSettingRepository;
+        public SupplierPageSettingService(ISupplierPageSettingRepository supplierPageSettingRepository) : base(supplierPageSettingRepository)
         {
+            _supplierPageSettingRepository = supplierPageSettingRepository;
         }
 
         public Task<List<SupplierPageSetting>> SearchSupplierPage(string search)
         {
-            throw new NotImplementedException();
+            return _supplierPageSettingRepository.SearchSupplierPage(search);
         }
     }
 }

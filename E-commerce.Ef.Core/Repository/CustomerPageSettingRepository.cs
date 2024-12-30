@@ -2,6 +2,7 @@
 using E_Commrece.Domain;
 using E_Commrece.Domain.Admin;
 using E_Commrece.Domain.services.Admin;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,13 +13,15 @@ namespace E_commerce.Ef.Core.Repository
 {
     public class CustomerPageSettingRepository : GenericRepository<CustomerPageSetting>, ICustomerPageSettingRepository
     {
+        private readonly ApplicationDbContext _context;
         public CustomerPageSettingRepository(ApplicationDbContext applicationDbContext) : base(applicationDbContext)
         {
+            _context = applicationDbContext;
         }
 
-        public Task<List<CustomerPageSetting>> SearchCustomerPage(string search)
+        public async Task<List<CustomerPageSetting>> SearchCustomerPage(string search)
         {
-            throw new NotImplementedException();
+            return await _context.CustomerPageSetting.AsNoTracking().Where(x=>x.PageName == search).ToListAsync();
         }
     }
 }

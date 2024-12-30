@@ -14,9 +14,9 @@ namespace E_Commrece.Domain.Admin
     public class SupplierPageSetting : BaseEntityModel
     {
         public string PageName { get; set; }
-        public Boolean IsPageActive { get; set; }
-        public Boolean IsLoderActive { get; set; }
-        public Boolean IsTosterActive { get; set; }
-        public Boolean IsDeleteDialogActive { get; set; }
+        public string IsPageActive { get; set; }
+        public string IsLoderActive { get; set; }
+        public string IsTosterActive { get; set; }
+        public string IsDeleteDialogActive { get; set; }
     }
 }

@@ -31,6 +31,8 @@ namespace E_commarceWebApi
             CreateMap<Wishlist, WishListDto>().ReverseMap();
             CreateMap<AddToCart, AddToCartDto>().ReverseMap();
             CreateMap<AdminModel, AdminDto>().ReverseMap();
+            CreateMap<CustomerPageSetting, CustomerPageSettingDto>().ReverseMap();
+            CreateMap<SupplierPageSetting, SupplierPageSettingDto>().ReverseMap();
         }
     }
 }

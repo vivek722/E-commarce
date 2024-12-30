@@ -10,12 +10,14 @@ namespace E_Commrece.Domain.services.Admin
 {
     public class CustomerPageSettingService : GenericService<CustomerPageSetting>, ICustomerPageSettingService
     {
-        public CustomerPageSettingService(IGenricRepository<CustomerPageSetting> genricRepository) : base(genricRepository)
+        private readonly ICustomerPageSettingRepository _repository;
+        public CustomerPageSettingService(ICustomerPageSettingRepository repository) : base(repository)
         {
+            _repository = repository;
         }
         public Task<List<CustomerPageSetting>> SearchCustomerPage(string search)
         {
-            throw new NotImplementedException();
+          return _repository.SearchCustomerPage(search);
         }
     }
 }
