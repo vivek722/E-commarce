@@ -51,6 +51,8 @@ namespace E_Commrece.Domain
         public DbSet<Wishlist> Wishlist { get; set; }
         public DbSet<AddToCart> AddToCart { get; set; }
         public DbSet<AdminModel> Admin { get; set; }
+        public DbSet<CustomerPageSetting> CustomerPageSetting { get; set; }
+        public DbSet<SupplierPageSetting> SupplierPageSetting { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

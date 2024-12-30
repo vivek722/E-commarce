@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace E_commarceWebApi.Controllers
 {
+    [Route("[controller]")]
+    [ApiController]
     public class CustomerPageSettingController : Controller
     {
         private readonly ICustomerPageSettingService _customerPageSettingService;
@@ -49,8 +51,8 @@ namespace E_commarceWebApi.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = ex.Message });
             }
         }
-        [HttpPost("CustomerPageAdmin")]
-        public async Task<IActionResult> CustomerPageAdmin(CustomerPageSettingDto CustomerPageSettingDto)
+        [HttpPost("CustomerPageAdd")]
+        public async Task<IActionResult> CustomerPageAdd(CustomerPageSettingDto CustomerPageSettingDto)
         {
             try
             {

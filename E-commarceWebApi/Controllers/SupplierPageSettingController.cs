@@ -7,6 +7,9 @@ using E_Commrece.Domain.Admin;
 
 namespace E_commarceWebApi.Controllers
 {
+
+    [Route("[controller]")]
+    [ApiController]
     public class SupplierPageSettingController : Controller
     {
         private readonly ISupplierPageSettingService _supplierPageSettingService;
@@ -19,7 +22,7 @@ namespace E_commarceWebApi.Controllers
         }
         [HttpGet("GetAllSupplierPage")]
         public async Task<IActionResult> GetAllSupplierPage(string? SerchString)
-        {
+            {
             try
             {
                 if (SerchString == null)
@@ -48,8 +51,8 @@ namespace E_commarceWebApi.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = ex.Message });
             }
         }
-        [HttpPost("SupplierPageAdmin")]
-        public async Task<IActionResult> SupplierPageAdmin(SupplierPageSettingDto SupplierPageSettingDto)
+        [HttpPost("SupplierPageAdd")]
+        public async Task<IActionResult> SupplierPageAdd(SupplierPageSettingDto SupplierPageSettingDto)
         {
             try
             {
@@ -73,7 +76,7 @@ namespace E_commarceWebApi.Controllers
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = ex.Message });
             }
-        }
+            }
         [HttpDelete("DeleteSupplierPage")]
         public async Task<IActionResult> DeleteSupplierPage(int id)
         {
