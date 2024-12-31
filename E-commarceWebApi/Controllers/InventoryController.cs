@@ -59,7 +59,7 @@ namespace E_commarceWebApi.Controllers
             }
         }
         [HttpPost("AddInventory")]
-        public async Task<IActionResult> AddInventory(InventoryDto inventoryDto)
+        public async Task<IActionResult> AddInventory([FromForm] InventoryDto inventoryDto)
         {
             try
             {

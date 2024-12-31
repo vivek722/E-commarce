@@ -91,7 +91,7 @@ namespace E_commarceWebApi.Controllers
             }
         }
         [HttpDelete("DeleteSupplier")]
-        public async Task<IActionResult> DeleteSupplier([FromForm] int id)
+        public async Task<IActionResult> DeleteSupplier(int id)
         {
             try
             {
@@ -109,7 +109,7 @@ namespace E_commarceWebApi.Controllers
         }
 
         [HttpPut("UpdateSupplier")]
-        public async Task<IActionResult> UpdateSupplier([FromForm] SupplierDto supplierDto)
+        public async Task<IActionResult> UpdateSupplier(SupplierDto supplierDto)
         {
             try
             {
