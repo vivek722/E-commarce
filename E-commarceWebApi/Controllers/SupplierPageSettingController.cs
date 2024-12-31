@@ -77,7 +77,7 @@ namespace E_commarceWebApi.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = ex.Message });
             }
             }
-        [HttpDelete("DeleteSupplierPage")]
+        [HttpDelete("DeleteSupplierPage/{id}")]
         public async Task<IActionResult> DeleteSupplierPage(int id)
         {
             try
