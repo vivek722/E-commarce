@@ -52,7 +52,7 @@ namespace E_commarceWebApi.Controllers
             }
         }
         [HttpPost("CustomerPageAdd")]
-        public async Task<IActionResult> CustomerPageAdd(CustomerPageSettingDto CustomerPageSettingDto)
+        public async Task<IActionResult> CustomerPageAdd([FromForm]CustomerPageSettingDto CustomerPageSettingDto)
         {
             try
             {
@@ -96,7 +96,7 @@ namespace E_commarceWebApi.Controllers
         }
 
         [HttpPut("UpdateCustomerPage")]
-        public async Task<IActionResult> UpdateCustomerPage(CustomerPageSettingDto CustomerPageSettingDto)
+        public async Task<IActionResult> UpdateCustomerPage([FromForm] CustomerPageSettingDto CustomerPageSettingDto)
         {
             try
             {

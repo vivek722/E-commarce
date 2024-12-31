@@ -27,7 +27,7 @@ namespace E_commarceWebApi.Controllers
             _mapper = mapper;
         }
         [HttpGet("GetAllInventory")]
-        public async Task<IActionResult> GetAllInventory(string? SerchString)
+        public async Task<IActionResult> GetAllInventory([FromForm]string? SerchString)
         {
             try
             {
@@ -46,7 +46,7 @@ namespace E_commarceWebApi.Controllers
             }
         }
         [HttpGet("GetInventoryById/{id}")]
-        public async Task<IActionResult> GetInventoryById(int id)
+        public async Task<IActionResult> GetInventoryById([FromForm]int id)
         {
             try
             {
@@ -88,8 +88,8 @@ namespace E_commarceWebApi.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = ex.Message });
             }
         }
-        [HttpDelete("DeleteInventory")]
-        public async Task<IActionResult> DeleteInventory([FromForm] int id)
+        [HttpDelete("DeleteInventory/{id}")]
+        public async Task<IActionResult> DeleteInventory(int id)
         {
             try
             {
