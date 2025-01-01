@@ -4,6 +4,8 @@ using E_commarceWebApi.RequestModel;
 using E_Commrece.Domain.services.Admin;
 using Microsoft.AspNetCore.Mvc;
 using E_Commrece.Domain.Admin;
+using Newtonsoft.Json.Schema;
+using Microsoft.IdentityModel.Tokens;
 
 namespace E_commarceWebApi.Controllers
 {
@@ -25,7 +27,7 @@ namespace E_commarceWebApi.Controllers
             {
             try
             {
-                if (SerchString == null)
+                if (SerchString.IsNullOrEmpty() || SerchString ==  "undefined")
                 {
                     var AllAdmins = await _supplierPageSettingService.GetAll();
                     return Ok(new DataResponseList() { Data = AllAdmins, Status = StatusCodes.Status200OK, Message = "ok" });
