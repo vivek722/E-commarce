@@ -61,7 +61,7 @@ namespace E_commarceWebApi.Controllers
             }
         }
         [HttpPost("AddAdmin")]
-        public async Task<IActionResult> AddAdmin(AdminDto adminDto)
+        public async Task<IActionResult> AddAdmin([FromForm] AdminDto adminDto)
         {
             try
             {
@@ -107,7 +107,7 @@ namespace E_commarceWebApi.Controllers
         }
 
         [HttpPut("UpdateAdmin")]
-        public async Task<IActionResult> UpdateAdmin(AdminDto adminDto)
+        public async Task<IActionResult> UpdateAdmin([FromForm] AdminDto adminDto)
         {
             try
             {

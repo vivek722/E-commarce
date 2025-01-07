@@ -57,7 +57,7 @@ namespace E_commarceWebApi.Controllers
             }
         }
         [HttpPost("AddProduct")]
-        public async Task<IActionResult> AddProduct(ProductDto ProductDto)
+        public async Task<IActionResult> AddProduct([FromForm] ProductDto ProductDto)
         {
             try
             {
@@ -123,7 +123,7 @@ namespace E_commarceWebApi.Controllers
             }
         }
         [HttpPut("UpdateProduct")]
-        public async Task<IActionResult> UpdateProduct(ProductDto Product)
+        public async Task<IActionResult> UpdateProduct([FromForm] ProductDto Product)
         {
             try
             {

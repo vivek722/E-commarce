@@ -76,7 +76,7 @@ namespace E_commarceWebApi.Controllers
             }
         }
             [HttpDelete("DeleteRoles")]
-        public async Task<IActionResult> DeleteRoles([FromForm] int id)
+        public async Task<IActionResult> DeleteRoles(int id)
         {
             try
             {

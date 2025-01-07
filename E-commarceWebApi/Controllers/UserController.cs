@@ -59,7 +59,7 @@ namespace E_commarceWebApi.Controllers
             }
         }
         [HttpPost("AddUser")]
-        public async Task<IActionResult> AddUser(UserDto UserData)
+        public async Task<IActionResult> AddUser([FromForm] UserDto UserData)
         {
             try
             {
@@ -99,7 +99,7 @@ namespace E_commarceWebApi.Controllers
             }
           }
         [HttpDelete("DeleteUser")]
-        public async Task<IActionResult> DeleteUser([FromForm] int id)
+        public async Task<IActionResult> DeleteUser(int id)
         {
             try
             {

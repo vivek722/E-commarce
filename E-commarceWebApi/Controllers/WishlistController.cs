@@ -51,7 +51,7 @@ namespace E_commarceWebApi.Controllers
             }
         }
         [HttpPost("AddWishlistProduct")]
-        public async Task<IActionResult> AddWishlistProduct(WishListDto WishListDto)
+        public async Task<IActionResult> AddWishlistProduct([FromForm] WishListDto WishListDto)
         {
             try
             {
@@ -89,7 +89,7 @@ namespace E_commarceWebApi.Controllers
             }
         }
         [HttpPut("UpdateWishlistProduct")]
-        public async Task<IActionResult> UpdateWishlistProduct(WishListDto WishListDto)
+        public async Task<IActionResult> UpdateWishlistProduct([FromForm] WishListDto WishListDto)
         {
             try
             {
