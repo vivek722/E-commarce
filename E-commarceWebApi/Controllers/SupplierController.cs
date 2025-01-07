@@ -63,7 +63,7 @@ namespace E_commarceWebApi.Controllers
             }
         }
         [HttpPost("AddSupplier")]
-        public async Task<IActionResult> AddSupplier(SupplierDto supplierDto)
+        public async Task<IActionResult> AddSupplier([FromForm] SupplierDto supplierDto)
         {
             try
             {
@@ -109,7 +109,7 @@ namespace E_commarceWebApi.Controllers
         }
 
         [HttpPut("UpdateSupplier")]
-        public async Task<IActionResult> UpdateSupplier(SupplierDto supplierDto)
+        public async Task<IActionResult> UpdateSupplier([FromForm] SupplierDto supplierDto)
         {
             try
             {

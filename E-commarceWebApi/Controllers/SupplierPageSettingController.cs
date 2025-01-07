@@ -54,7 +54,7 @@ namespace E_commarceWebApi.Controllers
             }
         }
         [HttpPost("SupplierPageAdd")]
-        public async Task<IActionResult> SupplierPageAdd(SupplierPageSettingDto SupplierPageSettingDto)
+        public async Task<IActionResult> SupplierPageAdd([FromForm] SupplierPageSettingDto SupplierPageSettingDto)
         {
             try
             {
@@ -98,7 +98,7 @@ namespace E_commarceWebApi.Controllers
         }
 
         [HttpPut("UpdateSupplierPage")]
-        public async Task<IActionResult> UpdateSupplierPage(SupplierPageSettingDto SupplierPageSettingDto)
+        public async Task<IActionResult> UpdateSupplierPage([FromForm] SupplierPageSettingDto SupplierPageSettingDto)
         {
             try
             {

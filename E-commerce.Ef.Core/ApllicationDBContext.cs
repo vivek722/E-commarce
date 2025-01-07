@@ -54,6 +54,7 @@ namespace E_Commrece.Domain
         public DbSet<CustomerPageSetting> CustomerPageSetting { get; set; }
         public DbSet<SupplierPageSetting> SupplierPageSetting { get; set; }
 
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

@@ -41,7 +41,7 @@ namespace E_commarceWebApi.Controllers
             }
         }
         [HttpPost("AddCartProduct")]
-        public async Task<IActionResult> AddCartProduct(AddToCartDto AddToCartDto)
+        public async Task<IActionResult> AddCartProduct([FromForm] AddToCartDto AddToCartDto)
         {
             try
             {
@@ -79,7 +79,7 @@ namespace E_commarceWebApi.Controllers
             }
         }
         [HttpPut("UpdateCartProduct")]
-        public async Task<IActionResult> UpdateCartProduct(AddToCartDto AddToCartDto)
+        public async Task<IActionResult> UpdateCartProduct([FromForm] AddToCartDto AddToCartDto)
         {
             try
             {

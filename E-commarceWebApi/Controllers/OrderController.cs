@@ -73,7 +73,7 @@ namespace E_commarceWebApi.Controllers
             }
         }
         [HttpDelete("DeleteOrder")]
-        public async Task<IActionResult> DeleteOrder([FromForm] int id)
+        public async Task<IActionResult> DeleteOrder(int id)
         {
             try
             {
